@@ -6,7 +6,9 @@
 
 ##Tab 测试DEMO图片.
 
-<img src="https://git.oschina.net/hailongqiu/AndroidTVWidget/blob/master/design/test.png?dir=0&filepath=design%2Ftest.png&oid=09d26a68b0a5c10cfccefbff7793296a4f7bb4ff&sha=8dcf8eab1f72cb2fe5cc61f1448b4e352d153d70" />
+![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/050539_109ee7a3_111902.png "test1")
+
+![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/050611_b341a277_111902.png "test2")
 
 ## 后期加入
    
