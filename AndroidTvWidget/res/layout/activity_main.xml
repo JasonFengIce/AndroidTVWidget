@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content11"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    android:clipChildren="false"
+    android:clipToPadding="true"
+    tools:context="com.open.androidtvwidget.MainActivity" >
+
+    <com.open.androidtvwidget.view.ReflectItemView
+        android:id="@+id/relayout11"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:clipChildren="false"
+        android:clipToPadding="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="true" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/mine_handler" />
+
+            <ImageView
+                android:id="@+id/test_top_iv"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/top_test_bg" />
+        </FrameLayout>
+    </com.open.androidtvwidget.view.ReflectItemView>
+
+    <com.open.androidtvwidget.view.ReflectItemView
+        android:id="@+id/relayout2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/relayout11"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <FrameLayout
+            android:background="@drawable/icon_v_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:background="#FF0000"
+                android:textColor="#ffffff"
+                android:text="电影"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+        </FrameLayout>
+    </com.open.androidtvwidget.view.ReflectItemView>
+
+    <com.open.androidtvwidget.view.ReflectItemView
+        android:id="@+id/relayout3"
+        android:layout_width="200dp"
+        android:layout_height="280dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/relayout11"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:scaleType="fitXY"
+                android:src="@drawable/dianying" />
+        </FrameLayout>
+    </com.open.androidtvwidget.view.ReflectItemView>
+
+    <!-- 最顶层边框 -->
+
+    <com.open.androidtvwidget.view.MainUpView
+        android:id="@+id/mainUpView1"
+        android:layout_width="250dp"
+        android:layout_height="250dp" />
+
+</RelativeLayout>
