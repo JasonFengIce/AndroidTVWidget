@@ -6,3 +6,6 @@
 <p>
 <a href="https://github.com/XiaoMi/android_tv_metrohttps://github.com/XiaoMi/android_tv_metro">XiaoMi android_tv_metro </a>
 </p>
+<p>
+<a href="https://github.com/lf8289/BorderViewDemo">BorderViewDemo</a>
+</p>
