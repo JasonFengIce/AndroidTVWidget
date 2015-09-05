@@ -2,8 +2,6 @@ package com.open.androidtvwidget.view;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,14 +28,15 @@ public class MainUpView extends View {
 	private Context mContext;
 
 	private boolean isInDraw = true;
+	private boolean isTvScreen = false;
 
 	public MainUpView(Context context) {
-		super(context);
+		super(context, null, 0);
 		init(context);
 	}
 
 	public MainUpView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		super(context, attrs, 0);
 		init(context);
 	}
 
@@ -48,12 +47,27 @@ public class MainUpView extends View {
 
 	private void init(Context context) {
 		mContext = context;
-		mDrawableUpRect = getResources().getDrawable(R.drawable.item_highlight); // 边框.
-		mDrawableShadow = getResources().getDrawable(R.drawable.item_shadow); // 阴影.
+		try {
+			mDrawableUpRect = mContext.getResources().getDrawable(
+					R.drawable.item_highlight); // 边框.
+			mDrawableShadow = mContext.getResources().getDrawable(
+					R.drawable.item_shadow); // 阴影.
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setInDraw(boolean isInDraw) {
 		this.isInDraw = isInDraw;
+		invalidate();
+	}
+
+	public boolean isTvScreen() {
+		return isTvScreen;
+	}
+
+	public void setTvScreen(boolean isTvScreen) {
+		this.isTvScreen = isTvScreen;
 		invalidate();
 	}
 
@@ -81,14 +95,21 @@ public class MainUpView extends View {
 	private void onDrawMainUpView(Canvas canvas) {
 		canvas.save();
 		// 绘制倒影.
-		// if (mFocusView != null && mFocusView instanceof ReflectItemView
-		// && isInDraw) {
-		// Bitmap bmp = ((ReflectItemView) mFocusView).getReflectBitmap(); //
-		// 获取倒影bitmap.
-		// if (bmp != null) {
-		// canvas.drawBitmap(bmp, 0, getHeight(), null);
-		// }
-		// }
+//		if (mFocusView != null && mFocusView instanceof ReflectItemView
+//				&& isInDraw) {
+//			Bitmap bmp = ((ReflectItemView) mFocusView).getReflectBitmap(); //
+//			// 获取倒影bitmap.
+//			if (bmp != null) {
+//				canvas.save();
+//				float scaleX = (float) (this.getWidth())
+//						/ (float) mFocusView.getWidth();
+//				float scaleY = (float) (this.getHeight())
+//						/ (float) mFocusView.getHeight();
+//				canvas.scale(scaleX, scaleY);
+//				canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
+//				canvas.restore();
+//			}
+//		}
 		// 绘制阴影.
 		if (isInDraw) {
 			onDrawShadow(canvas);
@@ -98,14 +119,13 @@ public class MainUpView extends View {
 		onDrawUpRect(canvas);
 		// 绘制焦点子控件.
 		if (mFocusView != null && isInDraw) {
+			View view = mFocusView;
 			canvas.save();
-			ReflectItemView view = (ReflectItemView) mFocusView;
-			float scaleX = (float) (this.getWidth())
-					/ (float) mFocusView.getWidth();
+			float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
 			float scaleY = (float) (this.getHeight())
-					/ (float) mFocusView.getHeight();
+					/ (float) view.getHeight();
 			canvas.scale(scaleX, scaleY);
-			mFocusView.draw(canvas);
+			view.draw(canvas);
 			canvas.restore();
 		}
 		canvas.restore();
@@ -153,15 +173,13 @@ public class MainUpView extends View {
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(0, 0, 0 + getWidth(), 0 + getHeight(), paint);
 	}
-	
+
 	/**
 	 * 设置焦点子控件的移动和放大.
 	 */
 	public void setFocusView(View view, float scale) {
 		if (mFocusView != view) {
 			mFocusView = view;
-//			mFocusView.bringToFront();
-//			bringToFront();
 			mFocusView.animate().scaleX(scale).scaleY(scale).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
@@ -175,8 +193,6 @@ public class MainUpView extends View {
 				.start();
 	}
 
-	private static int X_BORDER_SIZE = 0;
-	private static int Y_BORDER_SIZE = 0;
 	private static int TRAN_DUR_ANIM = 500;
 
 	/**
@@ -191,7 +207,7 @@ public class MainUpView extends View {
 		int deltaX = (toView.getWidth() - this.getWidth()) / 2;
 		int deltaY = (toView.getHeight() - this.getHeight()) / 2;
 		// tv
-		if (false) {
+		if (isTvScreen) {
 			x = DensityUtil.dip2px(this.getContext(), x + deltaX);
 			y = DensityUtil.dip2px(this.getContext(), y + deltaY);
 		} else {
@@ -200,15 +216,6 @@ public class MainUpView extends View {
 		}
 		float toWidth = toView.getWidth() * scaleX;
 		float toHeight = toView.getHeight() * scaleY;
-		Log.d("LIF",
-				"width = " + toView.getWidth() + ", height = "
-						+ toView.getHeight());
-		float targetScaleX = (float) toWidth
-				/ (float) (this.getWidth() - 2 * X_BORDER_SIZE);
-		float targetScaleY = (float) toHeight
-				/ (float) (this.getHeight() - 2 * Y_BORDER_SIZE);
-		// int width = (int) (toWidth + 2 * X_BORDER_SIZE * targetScaleX);
-		// int height = (int) (toHeight + 2 * Y_BORDER_SIZE * targetScaleY);
 		int width = (int) (toWidth);
 		int height = (int) (toHeight);
 
@@ -223,11 +230,6 @@ public class MainUpView extends View {
 
 		float scaleX = (float) width / (float) mWidth;
 		float scaleY = (float) height / (float) mHeight;
-
-		// Log.d("LIF", "mWidth = " + mWidth + ", mHeight = " + mHeight);
-		// Log.d("LIF", "width = " + width + ", height = " + height);
-		// Log.d("LIF", "x = " + x + ", y = " + y);
-		// Log.d("LIF", "scaleX = " + scaleX + ", scaleY = " + scaleY);
 
 		animate().translationX(x).translationY(y).setDuration(TRAN_DUR_ANIM)
 				.scaleX(scaleX).scaleY(scaleY)

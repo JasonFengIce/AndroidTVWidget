@@ -47,7 +47,8 @@ public class ReflectItemView extends FrameLayout {
 			mRefPaint.setXfermode(new PorterDuffXfermode(
 					PorterDuff.Mode.MULTIPLY));
 		}
-		this.setClickable(true);
+		setClipChildren(false);
+		setClipToPadding(false);
 	}
 
 	@Override
