@@ -12,6 +12,10 @@
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/163056_5d6b6a7a_111902.png "test123")
 
+正在移动的边框.
+
+![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/163423_be647737_111902.png "在这里输入图片标题")
+
 ## 后期加入
    
    完整DEMO
