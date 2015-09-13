@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="50dp"
-    android:paddingTop="50dp" >
+    android:orientation="vertical" >
 
     <com.open.androidtvwidget.view.SmoothHorizontalScrollView
         android:layout_width="match_parent"
@@ -18,78 +16,276 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:padding="50dp" >
+            android:padding="15dp" >
 
             <!-- 直播 -->
 
-            <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/live_reflect_item_view"
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget1"
                 android:layout_width="160dp"
                 android:layout_height="90dp"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_cl_live" />
-                </FrameLayout>
-            </com.open.androidtvwidget.view.ReflectItemView>
-
+                android:layout_toRightOf="@+id/tv_reflect_item_view"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_live" />
             <!-- 电影 -->
 
-            <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/film_reflect_item_view"
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget2"
                 android:layout_width="160dp"
                 android:layout_height="90dp"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/live_reflect_item_view"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_cl_film" />
-                </FrameLayout>
-            </com.open.androidtvwidget.view.ReflectItemView>
-
-            <com.open.androidtvwidget.view.ReflectItemView
+                android:layout_toRightOf="@+id/mainClassWidget1"
                 app:isReflect="false"
-                android:layout_toRightOf="@+id/film_reflect_item_view"
-                android:layout_marginLeft="15dp"
+                app:src="@drawable/ic_cl_film" />
+            <!-- 少儿 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget3"
                 android:layout_width="160dp"
                 android:layout_height="90dp"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" >
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/mainClassWidget2"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_children" />
+            <!-- 电视剧 -->
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget4"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/mainClassWidget3"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_tv" />
+            <!-- 动漫 -->
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_cl_tv" />
-                </FrameLayout>
-            </com.open.androidtvwidget.view.ReflectItemView>
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget5"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/mainClassWidget4"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_animation" />
+
+            <!-- 公开课 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget6"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/mainClassWidget5"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_class" />
+
+            <!-- 新闻 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget7"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/mainClassWidget6"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_news" />
+
+            <!-- 第二行 -->
+            <!-- 排行榜 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget21"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget1"
+                android:layout_marginTop="55dp"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_paihang" />
+            <!-- 综艺 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget22"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget2"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget21"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_variety" />
+
+            <!-- 体育 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget23"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget3"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget22"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_sport" />
+
+            <!-- 纪录片 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget24"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget4"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget23"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_jilu" />
+
+            <!-- V时点 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget25"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget5"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget24"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_v" />
+
+            <!-- 游戏直播 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget26"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget6"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget25"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_game" />
+            <!-- 健康达人 -->
+
+            <com.androidtv.demo.widget.MainClassWidget
+                android:id="@+id/mainClassWidget27"
+                android:layout_width="160dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/mainClassWidget7"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="55dp"
+                android:layout_toRightOf="@+id/mainClassWidget26"
+                app:isReflect="false"
+                app:src="@drawable/ic_cl_health" />
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/main_class_textview"
+                android:layout_below="@+id/mainClassWidget1"
+                android:text="排行榜" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/main_class_textview"
+                android:layout_below="@+id/mainClassWidget21"
+                android:text="直播" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
+                android:layout_toLeftOf="@+id/mainClassWidget23"
+                android:text="综艺" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignBottom="@+id/textView1"
+                android:layout_toLeftOf="@+id/mainClassWidget3"
+                android:text="电影" />
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView4"
+                android:layout_alignBottom="@+id/textView4"
+                android:layout_toLeftOf="@+id/mainClassWidget4"
+                android:text="少儿" />
+
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView5"
+                android:layout_alignBottom="@+id/textView5"
+                android:layout_alignLeft="@+id/mainClassWidget24"
+                android:text="电视剧" />
+
+            <TextView
+                android:id="@+id/textView7"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView6"
+                android:layout_alignBottom="@+id/textView6"
+                android:layout_alignLeft="@+id/mainClassWidget5"
+                android:text="动漫" />
+
+            <TextView
+                android:id="@+id/textView8"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView7"
+                android:layout_alignBottom="@+id/textView7"
+                android:layout_alignLeft="@+id/mainClassWidget26"
+                android:text="公开课" />
+
+            <TextView
+                android:id="@+id/textView9"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView8"
+                android:layout_alignBottom="@+id/textView8"
+                android:layout_alignLeft="@+id/mainClassWidget7"
+                android:text="新闻" />
+
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView3"
+                android:layout_alignBottom="@+id/textView3"
+                android:layout_alignLeft="@+id/mainClassWidget23"
+                android:text="体育" />
+
+            <TextView
+                android:id="@+id/textView11"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView10"
+                android:layout_alignBottom="@+id/textView10"
+                android:layout_alignLeft="@+id/mainClassWidget24"
+                android:text="纪录片" />
+
+            <TextView
+                android:id="@+id/textView12"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView11"
+                android:layout_alignBottom="@+id/textView11"
+                android:layout_alignLeft="@+id/mainClassWidget25"
+                android:text="V视点" />
+
+            <TextView
+                android:id="@+id/textView13"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView12"
+                android:layout_alignBottom="@+id/textView12"
+                android:layout_alignLeft="@+id/mainClassWidget26"
+                android:text="游戏直播" />
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/main_class_textview"
+                android:layout_alignBaseline="@+id/textView13"
+                android:layout_alignBottom="@+id/textView13"
+                android:layout_alignLeft="@+id/mainClassWidget27"
+                android:text="健康达人" />
+
         </RelativeLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 

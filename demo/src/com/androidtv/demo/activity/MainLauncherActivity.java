@@ -24,6 +24,7 @@ public class MainLauncherActivity extends BaseActivity {
 		super.initAllViews();
 		setContentView(R.layout.activity_main);
 		findViews();
+		//
 		mMainLay.getViewTreeObserver().addOnGlobalFocusChangeListener(
 				new OnGlobalFocusChangeListener() {
 					@Override
