@@ -49,9 +49,9 @@ public class MainUpView extends View {
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(
-					R.drawable.item_highlight); // 边框.
+					R.drawable.item_highlight); // 移动的边框.
 			mDrawableShadow = mContext.getResources().getDrawable(
-					R.drawable.item_shadow); // 阴影.
+					R.drawable.item_shadow); // 外部的阴影.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,6 +100,7 @@ public class MainUpView extends View {
 			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
 			if (reflectItemView.isReflection()) {
 				Bitmap bmp = reflectItemView.getReflectBitmap(); //
+				Log.d(TAG, "onDrawMainUpView " + bmp);
 				// 获取倒影bitmap.
 				if (bmp != null) {
 					canvas.save();
@@ -108,6 +109,8 @@ public class MainUpView extends View {
 					float scaleY = (float) (this.getHeight())
 							/ (float) mFocusView.getHeight();
 					canvas.scale(scaleX, scaleY);
+					// 如果倒影放大被压在下面，那么就不要屏蔽这个函数.
+					// 如果倒影放大没有被压在下面，那就屏蔽这个函数.
 					canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
 					canvas.restore();
 				}

@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -43,8 +44,9 @@ public class ReflectItemView extends FrameLayout {
 		if (attrs != null) {
 			TypedArray tArray = context.obtainStyledAttributes(attrs,
 					R.styleable.reflectItemView);// 获取配置属性
-			boolean isReflect = tArray.getBoolean(R.styleable.reflectItemView_isReflect, false);
-//			setReflection(isReflect);
+			boolean isReflect = tArray.getBoolean(
+					R.styleable.reflectItemView_isReflect, true);
+			setReflection(isReflect);
 		}
 		//
 		if (mRefPaint == null) {
@@ -95,11 +97,11 @@ public class ReflectItemView extends FrameLayout {
 		mIsReflection = ref;
 		invalidate();
 	}
-	
+
 	public boolean isReflection() {
 		return this.mIsReflection;
 	}
-	
+
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
