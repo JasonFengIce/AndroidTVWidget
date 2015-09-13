@@ -95,21 +95,24 @@ public class MainUpView extends View {
 	private void onDrawMainUpView(Canvas canvas) {
 		canvas.save();
 		// 绘制倒影.
-//		if (mFocusView != null && mFocusView instanceof ReflectItemView
-//				&& isInDraw) {
-//			Bitmap bmp = ((ReflectItemView) mFocusView).getReflectBitmap(); //
-//			// 获取倒影bitmap.
-//			if (bmp != null) {
-//				canvas.save();
-//				float scaleX = (float) (this.getWidth())
-//						/ (float) mFocusView.getWidth();
-//				float scaleY = (float) (this.getHeight())
-//						/ (float) mFocusView.getHeight();
-//				canvas.scale(scaleX, scaleY);
-//				canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
-//				canvas.restore();
-//			}
-//		}
+		if (mFocusView != null && mFocusView instanceof ReflectItemView
+				&& isInDraw) {
+			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
+			if (reflectItemView.isReflection()) {
+				Bitmap bmp = reflectItemView.getReflectBitmap(); //
+				// 获取倒影bitmap.
+				if (bmp != null) {
+					canvas.save();
+					float scaleX = (float) (this.getWidth())
+							/ (float) mFocusView.getWidth();
+					float scaleY = (float) (this.getHeight())
+							/ (float) mFocusView.getHeight();
+					canvas.scale(scaleX, scaleY);
+					canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
+					canvas.restore();
+				}
+			}
+		}
 		// 绘制阴影.
 		if (isInDraw) {
 			onDrawShadow(canvas);
@@ -121,6 +124,13 @@ public class MainUpView extends View {
 		if (mFocusView != null && isInDraw) {
 			View view = mFocusView;
 			canvas.save();
+			if (mFocusView instanceof ReflectItemView) {
+				ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
+				View tempView = reflectItemView.getChildAt(0);
+				if (tempView != null) {
+					view = tempView;
+				}
+			}
 			float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
 			float scaleY = (float) (this.getHeight())
 					/ (float) view.getHeight();

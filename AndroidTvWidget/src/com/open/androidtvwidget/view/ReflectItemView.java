@@ -1,6 +1,10 @@
 package com.open.androidtvwidget.view;
 
+import com.open.androidtvwidget.R;
+
+import android.R.bool;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
@@ -22,20 +26,27 @@ public class ReflectItemView extends FrameLayout {
 
 	public ReflectItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context);
+		init(context, attrs);
 	}
 
 	public ReflectItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context);
+		init(context, attrs);
 	}
 
 	public ReflectItemView(Context context) {
 		super(context);
-		init(context);
+		init(context, null);
 	}
 
-	private void init(Context context) {
+	private void init(Context context, AttributeSet attrs) {
+		if (attrs != null) {
+			TypedArray tArray = context.obtainStyledAttributes(attrs,
+					R.styleable.reflectItemView);// 获取配置属性
+			boolean isReflect = tArray.getBoolean(R.styleable.reflectItemView_isReflect, false);
+//			setReflection(isReflect);
+		}
+		//
 		if (mRefPaint == null) {
 			mRefPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			// 倒影渐变.
@@ -84,7 +95,11 @@ public class ReflectItemView extends FrameLayout {
 		mIsReflection = ref;
 		invalidate();
 	}
-
+	
+	public boolean isReflection() {
+		return this.mIsReflection;
+	}
+	
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
