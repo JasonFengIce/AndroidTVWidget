@@ -16,6 +16,25 @@
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/163423_be647737_111902.png "在这里输入图片标题")
 
+【请根据填补的图片进入数据的填入】
+	/**
+	 * 绘制最上层的边框.
+	 */
+	private void onDrawUpRect(Canvas canvas) {
+		if (mDrawableUpRect != null) {
+			int width = getWidth();
+			int height = getHeight();
+			Rect padding = new Rect();
+			// 边框的绘制.
+			int ii = 27;   // 根据你的边框的宽度来调整.
+			mDrawableUpRect.getPadding(padding);
+			mDrawableUpRect.setBounds(-padding.left + ii, -padding.top + ii,
+					width + padding.right - (ii), height + padding.bottom  - ii);
+			// mDrawableWhite.setAlpha((int)(255*(scale-1)*10));
+			mDrawableUpRect.draw(canvas);
+		}
+	}
+
 ## 后期加入
    
    完整DEMO
