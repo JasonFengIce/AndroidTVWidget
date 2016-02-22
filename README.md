@@ -49,10 +49,15 @@
 	}
 
 【需要倒影功能 XML布局就可以设置 app:isReflect="false" 默认为 true ，有倒影，如果无法满足，请查看代码，自行修改】
+
  <com.open.androidtvwidget.view.ReflectItemView
+
                 ... ...
+
                 app:isReflect="false"
+
                 ... ...
+
 
 
 ## 后期加入
