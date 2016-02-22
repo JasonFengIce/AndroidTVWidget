@@ -29,7 +29,8 @@ public class MainUpView extends View {
 
 	private boolean isInDraw = true;
 	private boolean isTvScreen = false;
-
+	private boolean isDrawUpRect = false;
+	
 	public MainUpView(Context context) {
 		super(context, null, 0);
 		init(context);
@@ -70,7 +71,12 @@ public class MainUpView extends View {
 		this.isTvScreen = isTvScreen;
 		invalidate();
 	}
-
+	
+	public void setDrawUpRect(boolean isDrawUpRect) {
+		this.isDrawUpRect = isDrawUpRect;
+		invalidate();
+	}
+	
 	/**
 	 * 设置最上层的边框.
 	 */
@@ -122,7 +128,9 @@ public class MainUpView extends View {
 			// onTestDrawRect(canvas);
 		}
 		// 绘制最上层的边框.
-//		onDrawUpRect(canvas);
+		if (isDrawUpRect) {
+			onDrawUpRect(canvas);
+		}
 		// 绘制焦点子控件.
 		if (mFocusView != null && isInDraw) {
 			View view = mFocusView;
@@ -142,7 +150,9 @@ public class MainUpView extends View {
 			canvas.restore();
 		}
 		// 绘制最上层的边框.
-		onDrawUpRect(canvas);
+		if (!isDrawUpRect) {
+			onDrawUpRect(canvas);
+		}
 		canvas.restore();
 	}
 

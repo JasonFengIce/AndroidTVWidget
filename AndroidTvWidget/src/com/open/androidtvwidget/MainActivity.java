@@ -33,18 +33,21 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 					@Override
 					public void onGlobalFocusChanged(View oldFocus,
 							View newFocus) {
-						mainUpView1.setFocusView(newFocus, 1.2f);
-						if (oldFocus != null)
-						mainUpView1.setUnFocusView(oldFocus);
-						if (newFocus.getId() == R.id.relayout11) {
-							test_top_iv.animate().scaleX(1.2f).scaleY(1.2f)
-									.setDuration(500).start();
-						} else {
-							if (oldFocus != null)
-							test_top_iv.animate().scaleX(1.0f).scaleY(1.0f)
-									.setDuration(200).start();
-						}
+				mainUpView1.setFocusView(newFocus, 1.2f);
+				if (oldFocus != null)
+					mainUpView1.setUnFocusView(oldFocus);
+				if (newFocus.getId() == R.id.relayout11) {
+					mainUpView1.setDrawUpRect(true);
+					mainUpView1.setDrawUpRectPadding(-2);
+					test_top_iv.animate().scaleX(1.2f).scaleY(1.2f).setDuration(500).start();
+				} else {
+					mainUpView1.setDrawUpRectPadding(0);
+					mainUpView1.setDrawUpRect(false);
+					if (oldFocus != null) {
+						test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start();
 					}
+				}
+			}
 				});
 		// final ReflectItemView relayout1 = (ReflectItemView)
 		// findViewById(R.id.relayout11);
