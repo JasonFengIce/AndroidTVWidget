@@ -49,7 +49,7 @@ public class MainUpView extends View {
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(
-					R.drawable.item_highlight); // 移动的边框.
+					R.drawable.white_light_10); // 移动的边框.
 			mDrawableShadow = mContext.getResources().getDrawable(
 					R.drawable.item_shadow); // 外部的阴影.
 		} catch (Exception e) {
@@ -122,7 +122,7 @@ public class MainUpView extends View {
 			// onTestDrawRect(canvas);
 		}
 		// 绘制最上层的边框.
-		onDrawUpRect(canvas);
+//		onDrawUpRect(canvas);
 		// 绘制焦点子控件.
 		if (mFocusView != null && isInDraw) {
 			View view = mFocusView;
@@ -141,6 +141,8 @@ public class MainUpView extends View {
 			view.draw(canvas);
 			canvas.restore();
 		}
+		// 绘制最上层的边框.
+		onDrawUpRect(canvas);
 		canvas.restore();
 	}
 
@@ -169,9 +171,10 @@ public class MainUpView extends View {
 			int height = getHeight();
 			Rect padding = new Rect();
 			// 边框的绘制.
+			int ii = 27;   // 根据你的边框的宽度来调整.
 			mDrawableUpRect.getPadding(padding);
-			mDrawableUpRect.setBounds(-padding.left - 2, -padding.top - 2,
-					width + padding.right + 2, height + padding.bottom + 2);
+			mDrawableUpRect.setBounds(-padding.left + ii, -padding.top + ii,
+					width + padding.right - (ii), height + padding.bottom  - ii);
 			// mDrawableWhite.setAlpha((int)(255*(scale-1)*10));
 			mDrawableUpRect.draw(canvas);
 		}
@@ -206,7 +209,7 @@ public class MainUpView extends View {
 				.start();
 	}
 
-	private static int TRAN_DUR_ANIM = 500;
+	private static int TRAN_DUR_ANIM = 300;
 
 	/**
 	 */
