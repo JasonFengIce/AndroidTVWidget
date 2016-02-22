@@ -161,7 +161,13 @@ public class MainUpView extends View {
 			mDrawableShadow.draw(canvas);
 		}
 	}
-
+	
+	private int mPaddingSize = 0;
+	
+	public void setDrawUpRectPadding(int paddingSize) {
+		this.mPaddingSize = paddingSize;
+	}
+	
 	/**
 	 * 绘制最上层的边框.
 	 */
@@ -171,7 +177,7 @@ public class MainUpView extends View {
 			int height = getHeight();
 			Rect padding = new Rect();
 			// 边框的绘制.
-			int ii = 27;   // 根据你的边框的宽度来调整.
+			int ii = mPaddingSize;   // 根据你的边框的宽度来调整.
 			mDrawableUpRect.getPadding(padding);
 			mDrawableUpRect.setBounds(-padding.left + ii, -padding.top + ii,
 					width + padding.right - (ii), height + padding.bottom  - ii);
