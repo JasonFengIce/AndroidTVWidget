@@ -49,7 +49,7 @@ public class MainUpView extends View {
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(
-					R.drawable.white_light_10); // 移动的边框.
+					R.drawable.item_highlight); // 移动的边框.
 			mDrawableShadow = mContext.getResources().getDrawable(
 					R.drawable.item_shadow); // 外部的阴影.
 		} catch (Exception e) {

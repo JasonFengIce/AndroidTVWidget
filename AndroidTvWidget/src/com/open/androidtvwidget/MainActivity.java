@@ -25,7 +25,8 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 		// findViewById(R.id.content11);
 
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-
+		mainUpView1.setDrawUpRectPadding(0);
+		
 		MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay11);
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(
 				new OnGlobalFocusChangeListener() {
