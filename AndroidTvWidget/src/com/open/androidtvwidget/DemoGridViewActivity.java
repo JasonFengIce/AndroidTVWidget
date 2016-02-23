@@ -29,8 +29,8 @@ public class DemoGridViewActivity extends Activity {
 
 		SmoothGridView gridView = (SmoothGridView) findViewById(R.id.gridView);
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-		mainUpView1.setUpRect(R.drawable.white_light_10);
-		mainUpView1.setShadow(null);
+		mainUpView1.setUpRectResource(R.drawable.white_light_10);
+		mainUpView1.setShadowDrawable(null);
 		mainUpView1.setDrawUpRectPadding(10);
 		
 		getData();

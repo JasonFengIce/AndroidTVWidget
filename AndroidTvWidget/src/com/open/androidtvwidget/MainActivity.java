@@ -38,9 +38,10 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 		});
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
 		// mainUpView1 = new MainUpView(getApplicationContext(), relayout11);
-		mainUpView1.setUpRect(R.drawable.white_light_10);
-		mainUpView1.setShadow(null);
+		mainUpView1.setUpRectResource(R.drawable.white_light_10);
+		mainUpView1.setShadowDrawable(null);
 		mainUpView1.setDrawUpRectPadding(10);
+//		mainUpView1.setTranDurAnimTime(500);
 
 		MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay11);
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
@@ -54,10 +55,10 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 				}
 				// 测试第一个小人放大的效果.
 				if (newFocus.getId() == R.id.relayout11) {
-					mainUpView1.setDrawUpRect(false);
+					mainUpView1.setDrawUpRectEnabled(false);
 					test_top_iv.animate().scaleX(1.2f).scaleY(1.4f).setDuration(500).start();
 				} else {
-					mainUpView1.setDrawUpRect(true);
+					mainUpView1.setDrawUpRectEnabled(true);
 					if (oldFocus != null) {
 						test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start();
 					}

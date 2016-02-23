@@ -65,7 +65,7 @@ public class MainUpView extends View {
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.item_highlight); // 移动的边框.
-			mDrawableShadow = mContext.getResources().getDrawable(R.drawable.item_shadow); // 外部的阴影.
+			mDrawableShadow = null; // mContext.getResources().getDrawable(R.drawable.item_shadow); // 外部的阴影.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,11 +76,11 @@ public class MainUpView extends View {
 		invalidate();
 	}
 
-	public boolean isTvScreen() {
+	public boolean isTvScreenEnabled() {
 		return isTvScreen;
 	}
 
-	public void setTvScreen(boolean isTvScreen) {
+	public void setTvScreenEnabled(boolean isTvScreen) {
 		this.isTvScreen = isTvScreen;
 		invalidate();
 	}
@@ -88,12 +88,12 @@ public class MainUpView extends View {
 	/**
 	 * 设置是否移动边框在最下层. true : 移动边框在最上层. 反之否.
 	 */
-	public void setDrawUpRect(boolean isDrawUpRect) {
+	public void setDrawUpRectEnabled(boolean isDrawUpRect) {
 		this.isDrawUpRect = isDrawUpRect;
 		invalidate();
 	}
 
-	public void setUpRect(int resId) {
+	public void setUpRectResource(int resId) {
 		try {
 			this.mDrawableUpRect = mContext.getResources().getDrawable(resId); // 移动的边框.
 			invalidate();
@@ -105,12 +105,12 @@ public class MainUpView extends View {
 	/**
 	 * 设置最上层的边框.
 	 */
-	public void setUpRect(Drawable upRectDrawable) {
+	public void setUpRectDrawable(Drawable upRectDrawable) {
 		this.mDrawableUpRect = upRectDrawable;
 		invalidate();
 	}
 
-	public void setShadow(int resId) {
+	public void setShadowResource(int resId) {
 		try {
 			this.mDrawableShadow = mContext.getResources().getDrawable(resId); // 移动的边框.
 			invalidate();
@@ -121,9 +121,10 @@ public class MainUpView extends View {
 	}
 
 	/**
+	 * 当图片边框不自带阴影的话，可以自行设置阴影图片.
 	 * 设置阴影.
 	 */
-	public void setShadow(Drawable shadowDrawable) {
+	public void setShadowDrawable(Drawable shadowDrawable) {
 		this.mDrawableShadow = shadowDrawable;
 		invalidate();
 	}
@@ -259,7 +260,7 @@ public class MainUpView extends View {
 	public void setFocusView(View view, float scale) {
 		if (mFocusView != view) {
 			mFocusView = view;
-			mFocusView.animate().scaleX(scale).scaleY(scale).start();
+			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
@@ -272,7 +273,15 @@ public class MainUpView extends View {
 	}
 
 	private static int TRAN_DUR_ANIM = 300;
-
+	
+	/**
+	 * 控件动画时间.
+	 */
+	public void setTranDurAnimTime(int time) {
+		MainUpView.TRAN_DUR_ANIM = time;
+		invalidate();
+	}
+	
 	/**
 	 */
 	public void runTranslateAnimation(View toView, float scaleX, float scaleY) {
