@@ -1,7 +1,9 @@
 package com.open.androidtvwidget.view;
 
+import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.utils.DensityUtil;
+
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,9 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.open.androidtvwidget.R;
-import com.open.androidtvwidget.utils.DensityUtil;
-
 public class MainUpView extends View {
 
 	private static final String TAG = "MainUpView";
@@ -29,7 +28,7 @@ public class MainUpView extends View {
 
 	private boolean isInDraw = true;
 	private boolean isTvScreen = false;
-	private boolean isDrawUpRect = false;
+	private boolean isDrawUpRect = true;
 
 	public MainUpView(Context context) {
 		super(context, null, 0);
