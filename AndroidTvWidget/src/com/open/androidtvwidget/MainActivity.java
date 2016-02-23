@@ -37,6 +37,7 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 			}
 		});
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
+//		mainUpView1 = new MainUpView(getApplicationContext(), relayout11);
 		// mainUpView1.setUpRect(R.drawable.white_light_10);
 		// mainUpView1.setDrawUpRectPadding(new Rect(22, 22, 22, 22));
 

@@ -16,7 +16,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 
 public class MainUpView extends View {
 
@@ -32,6 +34,20 @@ public class MainUpView extends View {
 
 	public MainUpView(Context context) {
 		super(context, null, 0);
+		init(context);
+	}
+	
+	public MainUpView(Context context, View view) {
+		super(context, null, 0);
+		// 如果是单独添加，就将view加进来.
+		if (view != null) {
+			ViewGroup viewGroup = (ViewGroup) view.getRootView();
+			if (viewGroup != null && this.getParent() != viewGroup) {
+				LayoutParams layParams = new LayoutParams(500, 500);
+				viewGroup.addView(this, layParams);
+			}
+		}
+		//
 		init(context);
 	}
 
@@ -194,7 +210,7 @@ public class MainUpView extends View {
 	public void setDrawUpRectPadding(int size) {
 		setDrawUpRectPadding(new Rect(size, size, size, size));
 	}
-	
+
 	/**
 	 * 根据图片边框 自行 填写 相差的边距. <br>
 	 * 比如 res/drawble/white_light_10.9.png的图片，边距就差很多.
