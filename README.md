@@ -28,6 +28,8 @@
 
      public void setDrawUpRectPadding(int size) { // 根据图片边框 自行 填写 相差的边距.
 
+    public void setDrawUpRect(boolean isDrawUpRect) { // 设置是否移动边框在最下层. true : 移动边框在最上层. 反之否.
+
 
 【需要倒影功能 XML布局就可以设置 app:isReflect="false" 默认为 true ，有倒影，如果无法满足，请查看代码，自行修改】
 
