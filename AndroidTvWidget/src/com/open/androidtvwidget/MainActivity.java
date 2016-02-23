@@ -38,10 +38,10 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 					mainUpView1.setUnFocusView(oldFocus);
 				if (newFocus.getId() == R.id.relayout11) {
 					mainUpView1.setDrawUpRect(false);
-					mainUpView1.setDrawUpRectPadding(new Rect(-2, -2, -2, -2));
+					mainUpView1.setDrawUpRectPadding(-2);
 					test_top_iv.animate().scaleX(1.2f).scaleY(1.3f).setDuration(500).start();
 				} else {
-					mainUpView1.setDrawUpRectPadding(new Rect());
+					mainUpView1.setDrawUpRectPadding(0);
 					mainUpView1.setDrawUpRect(true);
 					if (oldFocus != null) {
 						test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start();

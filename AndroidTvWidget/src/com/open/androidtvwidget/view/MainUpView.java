@@ -30,7 +30,7 @@ public class MainUpView extends View {
 	private boolean isInDraw = true;
 	private boolean isTvScreen = false;
 	private boolean isDrawUpRect = false;
-	
+
 	public MainUpView(Context context) {
 		super(context, null, 0);
 		init(context);
@@ -49,10 +49,8 @@ public class MainUpView extends View {
 	private void init(Context context) {
 		mContext = context;
 		try {
-			mDrawableUpRect = mContext.getResources().getDrawable(
-					R.drawable.item_highlight); // 移动的边框.
-			mDrawableShadow = mContext.getResources().getDrawable(
-					R.drawable.item_shadow); // 外部的阴影.
+			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.item_highlight); // 移动的边框.
+			mDrawableShadow = mContext.getResources().getDrawable(R.drawable.item_shadow); // 外部的阴影.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,16 +69,15 @@ public class MainUpView extends View {
 		this.isTvScreen = isTvScreen;
 		invalidate();
 	}
-	
+
 	/**
-	 * 设置是否移动边框在最下层.
-	 * true : 移动边框在最上层. 反之否.
+	 * 设置是否移动边框在最下层. true : 移动边框在最上层. 反之否.
 	 */
 	public void setDrawUpRect(boolean isDrawUpRect) {
 		this.isDrawUpRect = isDrawUpRect;
 		invalidate();
 	}
-	
+
 	public void setUpRect(int resId) {
 		try {
 			this.mDrawableUpRect = mContext.getResources().getDrawable(resId); // 移动的边框.
@@ -89,7 +86,7 @@ public class MainUpView extends View {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 设置最上层的边框.
 	 */
@@ -106,7 +103,7 @@ public class MainUpView extends View {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 设置阴影.
 	 */
@@ -123,8 +120,7 @@ public class MainUpView extends View {
 	private void onDrawMainUpView(Canvas canvas) {
 		canvas.save();
 		// 绘制倒影.
-		if (mFocusView != null && mFocusView instanceof ReflectItemView
-				&& isInDraw) {
+		if (mFocusView != null && mFocusView instanceof ReflectItemView && isInDraw) {
 			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
 			if (reflectItemView.isReflection()) {
 				Bitmap bmp = reflectItemView.getReflectBitmap(); //
@@ -132,10 +128,8 @@ public class MainUpView extends View {
 				// 获取倒影bitmap.
 				if (bmp != null) {
 					canvas.save();
-					float scaleX = (float) (this.getWidth())
-							/ (float) mFocusView.getWidth();
-					float scaleY = (float) (this.getHeight())
-							/ (float) mFocusView.getHeight();
+					float scaleX = (float) (this.getWidth()) / (float) mFocusView.getWidth();
+					float scaleY = (float) (this.getHeight()) / (float) mFocusView.getHeight();
 					canvas.scale(scaleX, scaleY);
 					// 如果倒影放大被压在下面，那么就不要屏蔽这个函数.
 					// 如果倒影放大没有被压在下面，那就屏蔽这个函数.
@@ -165,8 +159,7 @@ public class MainUpView extends View {
 				}
 			}
 			float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
-			float scaleY = (float) (this.getHeight())
-					/ (float) view.getHeight();
+			float scaleY = (float) (this.getHeight()) / (float) view.getHeight();
 			canvas.scale(scaleX, scaleY);
 			view.draw(canvas);
 			canvas.restore();
@@ -187,23 +180,31 @@ public class MainUpView extends View {
 			int height = getHeight();
 			Rect padding = new Rect();
 			mDrawableShadow.getPadding(padding);
-			mDrawableShadow.setBounds(-padding.left, -padding.top, width
-					+ padding.right, padding.bottom + height);
+			mDrawableShadow.setBounds(-padding.left, -padding.top, width + padding.right, padding.bottom + height);
 			// mDrawableShadow.setAlpha((int)(255*(scale-1)*10));
 			mDrawableShadow.draw(canvas);
 		}
 	}
-	
+
 	private Rect mPaddingRect = new Rect(0, 0, 0, 0);
-	
-	public void setDrawUpRectPadding(Rect rect) {
-		mPaddingRect.left = rect.left;
-		mPaddingRect.top = rect.top;
-		mPaddingRect.right = rect.right;
-		mPaddingRect.bottom = rect.bottom;
-		invalidate();
+
+	/**
+	 * 根据图片边框 自行 填写 相差的边距. <br>
+	 * 比如 res/drawble/white_light_10.9.png的图片，边距就差很多.
+	 */
+	public void setDrawUpRectPadding(int size) {
+		setDrawUpRectPadding(new Rect(size, size, size, size));
 	}
 	
+	/**
+	 * 根据图片边框 自行 填写 相差的边距. <br>
+	 * 比如 res/drawble/white_light_10.9.png的图片，边距就差很多.
+	 */
+	public void setDrawUpRectPadding(Rect rect) {
+		mPaddingRect.set(rect);
+		invalidate();
+	}
+
 	/**
 	 * 绘制最上层的边框.
 	 */
@@ -216,7 +217,7 @@ public class MainUpView extends View {
 			// 边框的绘制.
 			mDrawableUpRect.getPadding(padding);
 			mDrawableUpRect.setBounds(-padding.left + (mPaddingRect.left), -padding.top + (mPaddingRect.top),
-					width + padding.right - (mPaddingRect.right), height + padding.bottom  - (mPaddingRect.bottom));
+					width + padding.right - (mPaddingRect.right), height + padding.bottom - (mPaddingRect.bottom));
 			// mDrawableWhite.setAlpha((int)(255*(scale-1)*10));
 			mDrawableUpRect.draw(canvas);
 		}
@@ -247,8 +248,7 @@ public class MainUpView extends View {
 	 * 设置无焦点子控件还原.
 	 */
 	public void setUnFocusView(View view) {
-		view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(TRAN_DUR_ANIM)
-				.start();
+		view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(TRAN_DUR_ANIM).start();
 	}
 
 	private static int TRAN_DUR_ANIM = 300;
@@ -289,10 +289,8 @@ public class MainUpView extends View {
 		float scaleX = (float) width / (float) mWidth;
 		float scaleY = (float) height / (float) mHeight;
 
-		animate().translationX(x).translationY(y).setDuration(TRAN_DUR_ANIM)
-				.scaleX(scaleX).scaleY(scaleY)
-				.setInterpolator(new DecelerateInterpolator())
-				.setListener(flyListener).start();
+		animate().translationX(x).translationY(y).setDuration(TRAN_DUR_ANIM).scaleX(scaleX).scaleY(scaleY)
+				.setInterpolator(new DecelerateInterpolator()).setListener(flyListener).start();
 	}
 
 	public Rect findLocationWithView(View view) {
