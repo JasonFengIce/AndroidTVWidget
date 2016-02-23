@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 
 		// Gridview demo 测试.
 		ReflectItemView relayout11 = (ReflectItemView) findViewById(R.id.relayout11);
-		relayout11.setOnClickListener(new OnClickListener() {
+		findViewById(R.id.gridview_flayt1).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(), "Gridview demo test", Toast.LENGTH_LONG).show();
