@@ -72,9 +72,22 @@ public class MainUpView extends View {
 		invalidate();
 	}
 	
+	/**
+	 * 设置是否移动边框在最下层.
+	 * true : 移动边框在最上层. 反之否.
+	 */
 	public void setDrawUpRect(boolean isDrawUpRect) {
 		this.isDrawUpRect = isDrawUpRect;
 		invalidate();
+	}
+	
+	public void setUpRect(int resId) {
+		try {
+			this.mDrawableUpRect = mContext.getResources().getDrawable(resId); // 移动的边框.
+			invalidate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -85,6 +98,15 @@ public class MainUpView extends View {
 		invalidate();
 	}
 
+	public void setShadow(int resId) {
+		try {
+			this.mDrawableShadow = mContext.getResources().getDrawable(resId); // 移动的边框.
+			invalidate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 设置阴影.
 	 */
@@ -128,7 +150,7 @@ public class MainUpView extends View {
 			// onTestDrawRect(canvas);
 		}
 		// 绘制最上层的边框.
-		if (isDrawUpRect) {
+		if (!isDrawUpRect) {
 			onDrawUpRect(canvas);
 		}
 		// 绘制焦点子控件.
@@ -150,7 +172,7 @@ public class MainUpView extends View {
 			canvas.restore();
 		}
 		// 绘制最上层的边框.
-		if (!isDrawUpRect) {
+		if (isDrawUpRect) {
 			onDrawUpRect(canvas);
 		}
 		canvas.restore();
@@ -172,10 +194,14 @@ public class MainUpView extends View {
 		}
 	}
 	
-	private int mPaddingSize = 0;
+	private Rect mPaddingRect = new Rect(0, 0, 0, 0);
 	
-	public void setDrawUpRectPadding(int paddingSize) {
-		this.mPaddingSize = paddingSize;
+	public void setDrawUpRectPadding(Rect rect) {
+		mPaddingRect.left = rect.left;
+		mPaddingRect.top = rect.top;
+		mPaddingRect.right = rect.right;
+		mPaddingRect.bottom = rect.bottom;
+		invalidate();
 	}
 	
 	/**
@@ -186,11 +212,11 @@ public class MainUpView extends View {
 			int width = getWidth();
 			int height = getHeight();
 			Rect padding = new Rect();
+			Log.d(TAG, "mPaddingRect:" + mPaddingRect);
 			// 边框的绘制.
-			int ii = mPaddingSize;   // 根据你的边框的宽度来调整.
 			mDrawableUpRect.getPadding(padding);
-			mDrawableUpRect.setBounds(-padding.left + ii, -padding.top + ii,
-					width + padding.right - (ii), height + padding.bottom  - ii);
+			mDrawableUpRect.setBounds(-padding.left + (mPaddingRect.left), -padding.top + (mPaddingRect.top),
+					width + padding.right - (mPaddingRect.right), height + padding.bottom  - (mPaddingRect.bottom));
 			// mDrawableWhite.setAlpha((int)(255*(scale-1)*10));
 			mDrawableUpRect.draw(canvas);
 		}
