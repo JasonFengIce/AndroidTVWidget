@@ -16,37 +16,18 @@
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2015/0905/163423_be647737_111902.png "在这里输入图片标题")
 
-【请根据填补的图片进入数据的填入】
-	/**
-	 * 绘制最上层的边框.
-	 */
-	private void onDrawUpRect(Canvas canvas) {
+【MainUpView 部分API】
+    
+     public void setShadow(int resId) { // 设置阴影图片
 
-		if (mDrawableUpRect != null) {
+     public void setShadow(Drawable shadowDrawable) { // 设置阴影图片
 
-			int width = getWidth();
+     mainUpView1.setUpRect(R.drawable.white_light_10); // 设置移动边框图片.
 
-			int height = getHeight();
+     mainUpView1.setDrawUpRectPadding(new Rect(22, 22, 22, 22)); // 根据图片边框 自行 填写 相差的边距.
 
-			Rect padding = new Rect();
+     public void setDrawUpRectPadding(int size) { // 根据图片边框 自行 填写 相差的边距.
 
-			// 边框的绘制.
-
-			int ii = 27;   // 根据你的边框的宽度来调整.
-
-			mDrawableUpRect.getPadding(padding);
-
-			mDrawableUpRect.setBounds(-padding.left + ii, -padding.top + ii,
-
-					width + padding.right - (ii), height + padding.bottom  - ii);
-
-			// mDrawableWhite.setAlpha((int)(255*(scale-1)*10));
-
-			mDrawableUpRect.draw(canvas);
-
-		}
-
-	}
 
 【需要倒影功能 XML布局就可以设置 app:isReflect="false" 默认为 true ，有倒影，如果无法满足，请查看代码，自行修改】
 
