@@ -115,6 +115,7 @@ public class MainUpView extends View {
 			this.mDrawableShadow = mContext.getResources().getDrawable(resId); // 移动的边框.
 			invalidate();
 		} catch (Exception e) {
+			this.mDrawableShadow = null;
 			e.printStackTrace();
 		}
 	}
@@ -164,20 +165,7 @@ public class MainUpView extends View {
 		}
 		// 绘制焦点子控件.
 		if (mFocusView != null && isInDraw) {
-			View view = mFocusView;
-			canvas.save();
-			if (mFocusView instanceof ReflectItemView) {
-				ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
-				View tempView = reflectItemView.getChildAt(0);
-				if (tempView != null) {
-					view = tempView;
-				}
-			}
-			float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
-			float scaleY = (float) (this.getHeight()) / (float) view.getHeight();
-			canvas.scale(scaleX, scaleY);
-			view.draw(canvas);
-			canvas.restore();
+			onDrawFocusView(canvas);
 		}
 		// 绘制最上层的边框.
 		if (isDrawUpRect) {
@@ -185,7 +173,24 @@ public class MainUpView extends View {
 		}
 		canvas.restore();
 	}
-
+	
+	private void onDrawFocusView(Canvas canvas) {
+		View view = mFocusView;
+		canvas.save();
+		if (mFocusView instanceof ReflectItemView) {
+			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
+			View tempView = reflectItemView.getChildAt(0);
+			if (tempView != null) {
+				view = tempView;
+			}
+		}
+		float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
+		float scaleY = (float) (this.getHeight()) / (float) view.getHeight();
+		canvas.scale(scaleX, scaleY);
+		view.draw(canvas);
+		canvas.restore();
+	}
+	
 	/**
 	 * 绘制外部阴影.
 	 */

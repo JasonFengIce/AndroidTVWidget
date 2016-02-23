@@ -29,8 +29,12 @@ public class DemoGridViewActivity extends Activity {
 
 		SmoothGridView gridView = (SmoothGridView) findViewById(R.id.gridView);
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
+		mainUpView1.setUpRect(R.drawable.white_light_10);
+		mainUpView1.setShadow(null);
+		mainUpView1.setDrawUpRectPadding(10);
 		
 		getData();
+		
 		String[] from = { "text" };
 		int[] to = { R.id.textView };
 
@@ -41,10 +45,12 @@ public class DemoGridViewActivity extends Activity {
 		gridView.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-				if (newFocus != null)
-					mainUpView1.setFocusView(newFocus, 1.2f);
-				if (oldFocus != null)
+				if (newFocus != null) {
+					mainUpView1.setFocusView(newFocus, 1.0f);
+				}
+				if (oldFocus != null) {
 					mainUpView1.setUnFocusView(oldFocus);
+				}
 			}
 		});
 	}

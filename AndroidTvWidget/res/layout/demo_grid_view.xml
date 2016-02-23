@@ -8,6 +8,7 @@
     <com.open.androidtvwidget.view.SmoothVorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#000000"
         android:clipChildren="false"
         android:scrollbars="none" >
 
