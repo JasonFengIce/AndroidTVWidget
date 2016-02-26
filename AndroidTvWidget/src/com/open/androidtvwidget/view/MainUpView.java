@@ -3,12 +3,9 @@ package com.open.androidtvwidget.view;
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.utils.DensityUtil;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,12 +13,10 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.RelativeLayout;
 
 public class MainUpView extends View {
 
@@ -138,7 +133,6 @@ public class MainUpView extends View {
 		if (!isDrawUpRect) {
 			onDrawUpRect(canvas);
 		}
-		Log.d(TAG, "isDrawUpRect:" + isDrawUpRect);
 		// 绘制焦点子控件.
 		if (mFocusView != null && !isDrawUpRect) {
 			onDrawFocusView(canvas);
@@ -172,7 +166,7 @@ public class MainUpView extends View {
 
 	/**
 	 * 根据阴影图片边框 自行 填写 相差的边距. <br>
-	 * 比如 res/drawble/white_light_10.9.png的图片，边距就差很多.
+	 * 比如 res/drawble/white_shadow.9.png的图片，边距就差很多.
 	 */
 	public void setDrawShadowPadding(int size) {
 		setDrawShadowRectPadding(new Rect(size, size, size, size));
@@ -180,7 +174,7 @@ public class MainUpView extends View {
 
 	/**
 	 * 根据阴影图片边框 自行 填写 相差的边距. <br>
-	 * 比如 res/drawble/white_light_10.9.png的图片，边距就差很多.
+	 * 比如 res/drawble/white_shadow.9.png的图片，边距就差很多.
 	 */
 	public void setDrawShadowRectPadding(Rect rect) {
 		mShadowPaddingRect.set(rect);
@@ -230,23 +224,12 @@ public class MainUpView extends View {
 			int width = getWidth();
 			int height = getHeight();
 			Rect padding = new Rect();
-			Log.d(TAG, "mPaddingRect:" + mPaddingRect);
 			// 边框的绘制.
 			mDrawableUpRect.getPadding(padding);
 			mDrawableUpRect.setBounds(-padding.left + (mPaddingRect.left), -padding.top + (mPaddingRect.top),
 					width + padding.right - (mPaddingRect.right), height + padding.bottom - (mPaddingRect.bottom));
 			mDrawableUpRect.draw(canvas);
 		}
-	}
-
-	/**
-	 * 测试.
-	 */
-	private void onTestDrawRect(Canvas canvas) {
-		Paint paint = new Paint();
-		paint.setColor(Color.RED);
-		paint.setStyle(Style.FILL);
-		canvas.drawRect(0, 0, 0 + getWidth(), 0 + getHeight(), paint);
 	}
 
 	/**
