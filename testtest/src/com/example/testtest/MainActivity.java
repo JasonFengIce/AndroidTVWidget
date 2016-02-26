@@ -1,15 +1,19 @@
 package com.example.testtest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,6 +72,11 @@ public class MainActivity extends Activity {
 		resolveInfos = mCustomApplicationHelper.getSpeAppResolveInfos(mainIntent);
 		//
 		initAllViews();
+		//
+		List<ComponentName> activities = mCustomApplicationHelper.getAllDefaultApp();
+		 for (ComponentName activity : activities) {
+			 Log.d("testtesttest", "activity:" + activity.getPackageName() + " " + activity.getClassName() + " " + mCustomApplicationHelper.isDefaultApp("com.xgimi.launcher"));
+		 }
 	}
 
 	Button test_btn;
@@ -188,6 +197,8 @@ public class MainActivity extends Activity {
 			ResolveInfo resolveInfo = mResolveInfos.get(position);
 			if (resolveInfo != null) {
 				String name = (String) resolveInfo.loadLabel(pm);
+				if (mCustomApplicationHelper.isDefaultApp(resolveInfo.activityInfo.packageName))
+					name += "(д╛хо)";
 				Drawable icon = resolveInfo.loadIcon(pm);
 				holder.title.setText(name);
 				holder.icon_iv.setImageDrawable(icon);

@@ -1,5 +1,6 @@
 package com.example.testtest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -110,7 +111,7 @@ public class CustomApplicationHelper {
 			pm.addPreferredActivity(filter, bestMatch, set, intent.getComponent());
 		}
 	}
-	
+
 	/**
 	 * 清除默认选择. 清除之前的选项.
 	 */
@@ -125,5 +126,31 @@ public class CustomApplicationHelper {
 			}
 		}
 	}
-	
+
+	/**
+	 * 获取所有默认的APP. 注意，如果只有一个，以前没有设置过.
+	 */
+	public List<ComponentName> getAllDefaultApp() {
+		List<ComponentName> activities = new ArrayList<ComponentName>();
+		List<IntentFilter> filters = new ArrayList<IntentFilter>();
+		final IntentFilter filter = new IntentFilter(Intent.ACTION_VIEW);
+		filters.add(filter);
+		pm.getPreferredActivities(filters, activities, null);
+		return activities;
+	}
+
+	/**
+	 * 判断是否为默认启动项.
+	 */
+	public boolean isDefaultApp(String packName) {
+		List<ComponentName> activities = getAllDefaultApp();
+		for (ComponentName cn : activities) {
+			String pn = cn.getPackageName();
+			if (pn.equals(packName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
