@@ -31,7 +31,7 @@ public class MainUpView extends View {
 	private View mFocusView;
 	private Context mContext;
 
-	private boolean isInDraw = true;
+	private boolean isInDraw = false;
 	private boolean isTvScreen = false;
 	private boolean isDrawUpRect = true;
 
@@ -131,7 +131,7 @@ public class MainUpView extends View {
 		this.mDrawableShadow = shadowDrawable;
 		invalidate();
 	}
-
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		onDrawMainUpView(canvas);
@@ -140,24 +140,24 @@ public class MainUpView extends View {
 	private void onDrawMainUpView(Canvas canvas) {
 		canvas.save();
 		// 绘制倒影.
-		if (mFocusView != null && mFocusView instanceof ReflectItemView && isInDraw) {
-			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
-			if (reflectItemView.isReflection()) {
-				Bitmap bmp = reflectItemView.getReflectBitmap(); //
-				Log.d(TAG, "onDrawMainUpView " + bmp);
-				// 获取倒影bitmap.
-				if (bmp != null) {
-					canvas.save();
-					float scaleX = (float) (this.getWidth()) / (float) mFocusView.getWidth();
-					float scaleY = (float) (this.getHeight()) / (float) mFocusView.getHeight();
-					canvas.scale(scaleX, scaleY);
-					// 如果倒影放大被压在下面，那么就不要屏蔽这个函数.
-					// 如果倒影放大没有被压在下面，那就屏蔽这个函数.
-					canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
-					canvas.restore();
-				}
-			}
-		}
+//		if (mFocusView != null && mFocusView instanceof ReflectItemView && isInDraw) {
+//			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
+//			if (reflectItemView.isReflection()) {
+//				Bitmap bmp = reflectItemView.getReflectBitmap(); //
+//				Log.d(TAG, "onDrawMainUpView " + bmp);
+//				// 获取倒影bitmap.
+//				if (bmp != null) {
+//					canvas.save();
+//					float scaleX = (float) (this.getWidth()) / (float) mFocusView.getWidth();
+//					float scaleY = (float) (this.getHeight()) / (float) mFocusView.getHeight();
+//					canvas.scale(scaleX, scaleY);
+//					// 如果倒影放大被压在下面，那么就不要屏蔽这个函数.
+//					// 如果倒影放大没有被压在下面，那就屏蔽这个函数.
+//					canvas.drawBitmap(bmp, 0, mFocusView.getHeight(), null);
+//					canvas.restore();
+//				}
+//			}
+//		}
 		// 绘制阴影.
 		if (isInDraw) {
 			onDrawShadow(canvas);
@@ -168,8 +168,8 @@ public class MainUpView extends View {
 			onDrawUpRect(canvas);
 		}
 		// 绘制焦点子控件.
-		if (mFocusView != null && isInDraw) {
-			onDrawFocusView(canvas);
+		if (mFocusView != null && !isDrawUpRect && isInDraw) {
+//			onDrawFocusView(canvas);
 		}
 		// 绘制最上层的边框.
 		if (isDrawUpRect) {
@@ -349,7 +349,7 @@ public class MainUpView extends View {
 		
 		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(this, "translationX", x);
 		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(this, "translationY", y);
-		// BUG，因为缩放会造成图片失真.
+		// BUG，因为缩放会造成图片失真(拉伸).
 		// hailong.qiu 2016.02.26 修复 :)
 		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(this), "width", mOldWidth, mNewWidth);
 		ObjectAnimator scaleYAnimator = ObjectAnimator.ofInt(new ScaleView(this), "height", mOldHeight, mNewHeight);
@@ -358,26 +358,6 @@ public class MainUpView extends View {
 		mAnimatorSet.playTogether(transAnimatorX, transAnimatorY, scaleXAnimator, scaleYAnimator);
 		mAnimatorSet.setInterpolator(new DecelerateInterpolator(1));
 		mAnimatorSet.setDuration(TRAN_DUR_ANIM);
-		mAnimatorSet.addListener(new AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animation) {
-				setInDraw(false);
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-			
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				setInDraw(true);
-			}
-			
-			@Override
-			public void onAnimationCancel(Animator animation) {
-				setInDraw(false);
-			}
-		});
 		mAnimatorSet.start();
 	}
 

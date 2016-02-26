@@ -54,6 +54,7 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+				newFocus.bringToFront(); // 防止放大的view被压在下面.
 				mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
 				// 测试第一个小人放大的效果.
 				if (newFocus.getId() == R.id.relayout11) {
