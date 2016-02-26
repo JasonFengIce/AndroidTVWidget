@@ -4,6 +4,9 @@ import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.utils.DensityUtil;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,7 +39,7 @@ public class MainUpView extends View {
 		super(context, null, 0);
 		init(context);
 	}
-	
+
 	public MainUpView(Context context, View view) {
 		super(context, null, 0);
 		// 如果是单独添加，就将view加进来.
@@ -64,8 +67,9 @@ public class MainUpView extends View {
 	private void init(Context context) {
 		mContext = context;
 		try {
-			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.item_highlight); // 移动的边框.
-			mDrawableShadow = null; // mContext.getResources().getDrawable(R.drawable.item_shadow); // 外部的阴影.
+			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.white_light_10); // 移动的边框.
+			mDrawableShadow = null; // mContext.getResources().getDrawable(R.drawable.item_shadow);
+									// // 外部的阴影.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,8 +125,7 @@ public class MainUpView extends View {
 	}
 
 	/**
-	 * 当图片边框不自带阴影的话，可以自行设置阴影图片.
-	 * 设置阴影.
+	 * 当图片边框不自带阴影的话，可以自行设置阴影图片. 设置阴影.
 	 */
 	public void setShadowDrawable(Drawable shadowDrawable) {
 		this.mDrawableShadow = shadowDrawable;
@@ -174,7 +177,7 @@ public class MainUpView extends View {
 		}
 		canvas.restore();
 	}
-	
+
 	private void onDrawFocusView(Canvas canvas) {
 		View view = mFocusView;
 		canvas.save();
@@ -191,7 +194,7 @@ public class MainUpView extends View {
 		view.draw(canvas);
 		canvas.restore();
 	}
-	
+
 	/**
 	 * 绘制外部阴影.
 	 */
@@ -259,21 +262,30 @@ public class MainUpView extends View {
 	 */
 	public void setFocusView(View view, float scale) {
 		if (mFocusView != view) {
+			mScale = scale;
 			mFocusView = view;
+			mNewFocus = view;
 			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
+	}
+
+	public void setFocusView(View newView, View oldView, float scale) {
+		setFocusView(newView, scale);
+		setUnFocusView(oldView);
 	}
 
 	/**
 	 * 设置无焦点子控件还原.
 	 */
 	public void setUnFocusView(View view) {
-		view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(TRAN_DUR_ANIM).start();
+		if (view != null) {
+			view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(TRAN_DUR_ANIM).start();
+		}
 	}
 
 	private static int TRAN_DUR_ANIM = 300;
-	
+
 	/**
 	 * 控件动画时间.
 	 */
@@ -281,7 +293,7 @@ public class MainUpView extends View {
 		MainUpView.TRAN_DUR_ANIM = time;
 		invalidate();
 	}
-	
+
 	/**
 	 */
 	public void runTranslateAnimation(View toView, float scaleX, float scaleY) {
@@ -291,8 +303,8 @@ public class MainUpView extends View {
 		int x = toRect.left - fromRect.left;
 		int y = toRect.top - fromRect.top;
 
-		int deltaX = (toView.getWidth() - this.getWidth()) / 2;
-		int deltaY = (toView.getHeight() - this.getHeight()) / 2;
+		int deltaX = 0; // (toView.getWidth() - this.getWidth()) / 2;
+		int deltaY = 0; // (toView.getHeight() - this.getHeight()) / 2;
 		// tv
 		if (isTvScreen) {
 			x = DensityUtil.dip2px(this.getContext(), x + deltaX);
@@ -309,6 +321,13 @@ public class MainUpView extends View {
 		flyWhiteBorder(width, height, x, y);
 	}
 
+	private View mNewFocus;
+	private float mScale = 1.0f;
+	private int mNewWidth;
+	private int mNewHeight;
+	private int mOldWidth;
+	private int mOldHeight;
+
 	/**
 	 * */
 	private void flyWhiteBorder(int width, int height, float x, float y) {
@@ -318,8 +337,78 @@ public class MainUpView extends View {
 		float scaleX = (float) width / (float) mWidth;
 		float scaleY = (float) height / (float) mHeight;
 
-		animate().translationX(x).translationY(y).setDuration(TRAN_DUR_ANIM).scaleX(scaleX).scaleY(scaleY)
-				.setInterpolator(new DecelerateInterpolator()).setListener(flyListener).start();
+		if (mNewFocus != null) {
+			mNewWidth = (int) ((float) mNewFocus.getMeasuredWidth() * mScale);
+			mNewHeight = (int) ((float) mNewFocus.getMeasuredHeight() * mScale);
+			x = x + (mNewFocus.getMeasuredWidth() - mNewWidth) / 2;
+			y = y + (mNewFocus.getMeasuredHeight() - mNewHeight) / 2;
+		}
+		
+		mOldWidth = this.getMeasuredWidth();
+		mOldHeight = this.getMeasuredHeight();
+		
+		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(this, "translationX", x);
+		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(this, "translationY", y);
+		// BUG，因为缩放会造成图片失真.
+		// hailong.qiu 2016.02.26 修复 :)
+		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(this), "width", mOldWidth, mNewWidth);
+		ObjectAnimator scaleYAnimator = ObjectAnimator.ofInt(new ScaleView(this), "height", mOldHeight, mNewHeight);
+		
+		AnimatorSet mAnimatorSet = new AnimatorSet();
+		mAnimatorSet.playTogether(transAnimatorX, transAnimatorY, scaleXAnimator, scaleYAnimator);
+		mAnimatorSet.setInterpolator(new DecelerateInterpolator(1));
+		mAnimatorSet.setDuration(TRAN_DUR_ANIM);
+		mAnimatorSet.addListener(new AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				setInDraw(false);
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				setInDraw(true);
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				setInDraw(false);
+			}
+		});
+		mAnimatorSet.start();
+	}
+
+	private class ScaleView {
+		private View view;
+		private int width;
+		private int height;
+
+		public ScaleView(View view) {
+			this.view = view;
+		}
+
+		public int getWidth() {
+			return view.getLayoutParams().width;
+		}
+
+		public void setWidth(int width) {
+			this.width = width;
+			view.getLayoutParams().width = width;
+			view.requestLayout();
+		}
+
+		public int getHeight() {
+			return view.getLayoutParams().height;
+		}
+
+		public void setHeight(int height) {
+			this.height = height;
+			view.getLayoutParams().height = height;
+			view.requestLayout();
+		}
 	}
 
 	public Rect findLocationWithView(View view) {
@@ -328,28 +417,5 @@ public class MainUpView extends View {
 		root.offsetDescendantRectToMyCoords(view, rect);
 		return rect;
 	}
-
-	private Animator.AnimatorListener flyListener = new Animator.AnimatorListener() {
-
-		@Override
-		public void onAnimationCancel(Animator arg0) {
-			setInDraw(true);
-		}
-
-		@Override
-		public void onAnimationEnd(Animator arg0) {
-			setInDraw(true);
-		}
-
-		@Override
-		public void onAnimationRepeat(Animator arg0) {
-		}
-
-		@Override
-		public void onAnimationStart(Animator arg0) {
-			setInDraw(false);
-		}
-
-	};
 
 }

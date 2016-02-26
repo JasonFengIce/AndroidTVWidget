@@ -47,19 +47,14 @@ public class MainActivity extends Activity implements OnFocusChangeListener {
 		// mainUpView1 = new MainUpView(getApplicationContext(), relayout11);
 		mainUpView1.setUpRectResource(R.drawable.white_light_10);
 		mainUpView1.setShadowDrawable(null);
-		mainUpView1.setDrawUpRectPadding(10);
+		mainUpView1.setDrawUpRectPadding(0);
 //		mainUpView1.setTranDurAnimTime(500);
 
 		MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay11);
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-				if (newFocus != null) {
-					mainUpView1.setFocusView(newFocus, 1.2f);
-				}
-				if (oldFocus != null) {
-					mainUpView1.setUnFocusView(oldFocus);
-				}
+				mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
 				// 测试第一个小人放大的效果.
 				if (newFocus.getId() == R.id.relayout11) {
 					mainUpView1.setDrawUpRectEnabled(false);
