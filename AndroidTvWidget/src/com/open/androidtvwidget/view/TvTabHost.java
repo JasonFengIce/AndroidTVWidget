@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -186,18 +187,17 @@ public class TvTabHost extends RelativeLayout {
 		});
 		tv.setId(titleList.size() + 1);
 		tv.setTag(titleList.size());
-		tv.setOnFocusChangeListener(new OnFocusChangeListener() {
-
+		getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
-			public void onFocusChange(final View item, boolean focus) {
-				if (focus) {
+			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
+				if (newFocus != null) {
 					// 翻页
-					int targetPage = Integer.parseInt(item.getTag().toString());
+					int targetPage = Integer.parseInt(newFocus.getTag().toString());
 					new Handler().postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							if (item.isFocused()) {
-								moveCover(item);
+							if (newFocus.isFocused()) {
+								moveCover(newFocus);
 							}
 						}
 					}, delay);
@@ -209,11 +209,40 @@ public class TvTabHost extends RelativeLayout {
 					}
 					isTopFocused = true;
 					flushTopBar(targetPage);
-				} else {
-					returnCover(item);
+				}
+				if (oldFocus != null) {
+					returnCover(oldFocus);
 				}
 			}
 		});
+//		tv.setOnFocusChangeListener(new OnFocusChangeListener() {
+//
+//			@Override
+//			public void onFocusChange(final View item, boolean focus) {
+//				if (focus) {
+//					// 翻页
+//					int targetPage = Integer.parseInt(item.getTag().toString());
+//					new Handler().postDelayed(new Runnable() {
+//						@Override
+//						public void run() {
+//							if (item.isFocused()) {
+//								moveCover(item);
+//							}
+//						}
+//					}, delay);
+//
+//					if (isTopFocused) {
+//						if (onTopBarFocusChange != null) {
+//							onTopBarFocusChange.onFocusChange(isTopFocused, targetPage);
+//						}
+//					}
+//					isTopFocused = true;
+//					flushTopBar(targetPage);
+//				} else {
+//					returnCover(item);
+//				}
+//			}
+//		});
 		tv.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int id, KeyEvent key) {
