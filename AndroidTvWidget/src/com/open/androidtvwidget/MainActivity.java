@@ -8,6 +8,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,19 +49,19 @@ public class MainActivity extends Activity {
 		// MainUpView 设置.
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
 		// mainUpView1 = new MainUpView(getApplicationContext(), gridview_lay);
-		// mainUpView1.setUpRectResource(R.drawable.item_highlight);
-		 mainUpView1.setUpRectResource(R.drawable.white_light_10);
-		// mainUpView1.setShadowResource(R.drawable.item_shadow);
-		mainUpView1.setDrawUpRectPadding(getResources().getDimensionPixelSize(R.dimen.px25));
-		// mainUpView1.setDrawShadowPadding(-3); // 阴影图片设置距离.
+//		 mainUpView1.setUpRectResource(R.drawable.item_highlight);
+//		 mainUpView1.setUpRectResource(R.drawable.white_light_10);
+		 mainUpView1.setUpRectResource(R.drawable.test_rectangle);
+		 mainUpView1.setShadowResource(R.drawable.item_shadow);
+//		mainUpView1.setDrawUpRectPadding(12);//getResources().getDimensionPixelSize(R.dimen.px25));
+//		 mainUpView1.setDrawShadowPadding(0); // 阴影图片设置距离.
 		// mainUpView1.setTranDurAnimTime(500);
 		MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay);
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
-
 			@Override
 			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
 				newFocus.bringToFront(); // 防止放大的view被压在下面.
-				mainUpView1.setFocusView(newFocus, oldFocus, 1.1f);
+				mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
 				mainUpView1.setDrawUpRectEnabled(true);
 				if (newFocus != null) {
 //					testTopDemo(newFocus);
