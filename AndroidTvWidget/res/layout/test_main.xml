@@ -19,6 +19,8 @@
             android:layout_height="@dimen/px394"
             android:layout_marginLeft="@dimen/px96"
             android:layout_marginTop="@dimen/px204"
+            android:nextFocusRight="@+id/top_lay"
+            android:nextFocusDown="@+id/listview_lay"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true" >
@@ -62,20 +64,25 @@
             android:focusable="true"
             android:focusableInTouchMode="true" >
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/mainview_searchsong" />
+                android:layout_height="match_parent" >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:background="#FF0000"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="listview 测试"
-                android:textColor="#ffffff" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mainview_searchsong" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:background="#FF0000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="listview 测试"
+                    android:textColor="#ffffff" />
+            </FrameLayout>
         </com.open.androidtvwidget.view.ReflectItemView>
 
         <com.open.androidtvwidget.view.ReflectItemView
@@ -122,6 +129,7 @@
             android:layout_marginLeft="@dimen/px532"
             android:layout_marginTop="@dimen/px630"
             android:background="@drawable/mainview_type"
+            android:nextFocusRight="@+id/top_lay"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true" >
