@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 				mainUpView1.setFocusView(newFocus, oldFocus, 1.1f);
 				mainUpView1.setDrawUpRectEnabled(true);
 				if (newFocus != null) {
-					testTopDemo(newFocus);
+//					testTopDemo(newFocus);
 				}
 			}
 		});
