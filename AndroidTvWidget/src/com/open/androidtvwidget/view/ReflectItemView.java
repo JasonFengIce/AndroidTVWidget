@@ -45,7 +45,7 @@ public class ReflectItemView extends FrameLayout {
 			TypedArray tArray = context.obtainStyledAttributes(attrs,
 					R.styleable.reflectItemView);// 获取配置属性
 			boolean isReflect = tArray.getBoolean(
-					R.styleable.reflectItemView_isReflect, true);
+					R.styleable.reflectItemView_isReflect, false);
 			setReflection(isReflect);
 		}
 		//
