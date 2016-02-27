@@ -3,13 +3,12 @@ package com.open.androidtvwidget.view;
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.utils.DensityUtil;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -59,6 +58,7 @@ public class MainUpView extends View {
 	}
 
 	private void init(Context context) {
+		setVisibility(View.GONE);
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.white_light_10); // 移动的边框.
@@ -240,7 +240,24 @@ public class MainUpView extends View {
 			mScale = scale;
 			mFocusView = view;
 			mNewFocus = view;
-			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
+			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).setListener(new AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator animation) {
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+				}
+				
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					setVisibility(View.VISIBLE);
+				}
+				
+				@Override
+				public void onAnimationCancel(Animator animation) {
+				}
+			}).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
