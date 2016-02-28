@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="px_23">-23.0px</dimen>
-    <dimen name="px_500">-500.0px</dimen>
-    <dimen name="px2300">2300.0px</dimen>
-    <dimen name="px2400">2400.0px</dimen>
-    <dimen name="screen_width">1920.0px</dimen>
-    <dimen name="screen_height">1080.0px</dimen>
     <dimen name="px1">1.0px</dimen>
     <dimen name="px2">2.0px</dimen>
     <dimen name="px3">3.0px</dimen>

@@ -37,8 +37,8 @@
 
                 <ImageView
                     android:id="@+id/test_top_iv"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
+                    android:layout_width="@dimen/px220"
+                    android:layout_height="@dimen/px350"
                     android:scaleType="fitXY"
                     android:src="@drawable/top_test_bg" />
 
