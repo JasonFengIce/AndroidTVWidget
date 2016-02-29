@@ -2,13 +2,13 @@ package com.open.androidtvwidget;
 
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.androidtvwidget.view.MainUpView.NewAnimatorListener;
 import com.open.androidtvwidget.view.ReflectItemView;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,13 +61,25 @@ public class MainActivity extends Activity {
 			@Override
 			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
 				newFocus.bringToFront(); // 防止放大的view被压在下面.
-				mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
+				float scale = 1.2f;
+				if (newFocus.getId() == R.id.top_lay) {
+					scale = 1.0f;
+					// 测试隐藏边框.
+					mainUpView1.setVisibleWidget(true);
+				} else {
+					mainUpView1.setVisibleWidget(false);
+				}
+				mainUpView1.setFocusView(newFocus, oldFocus, scale);
 				mainUpView1.setDrawUpRectEnabled(true);
 				if (newFocus != null) {
 //					testTopDemo(newFocus);
 				}
 			}
 		});
+		// 测试边框无操作开关.
+//		mainUpView1.setAnimEnabled(false);
+		// 测试监听回调.
+//		mainUpView1.setOnAnimatorListener(new NewAnimatorListener() {
 	}
 
 	public void testTopDemo(View newView) {

@@ -236,6 +236,8 @@ public class MainUpView extends View {
 	 * 设置焦点子控件的移动和放大.
 	 */
 	public void setFocusView(View view, float scale) {
+		if (!mAnimEnabled)
+			return;
 		if (view != null && mFocusView != view) {
 			mScale = scale;
 			mFocusView = view;
@@ -243,13 +245,20 @@ public class MainUpView extends View {
 			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).setListener(new AnimatorListener() {
 				@Override
 				public void onAnimationStart(Animator animation) {
+					if (mIsHide) {
+						setVisibility(View.GONE);
+					}
+					if (mNewAnimatorListener != null)
+						mNewAnimatorListener.onAnimationStart(mFocusView, animation);
 				}
 				@Override
 				public void onAnimationRepeat(Animator animation) {
 				}
 				@Override
 				public void onAnimationEnd(Animator animation) {
-					setVisibility(View.VISIBLE);
+					setVisibility(mIsHide ? View.GONE : View.VISIBLE);
+					if (mNewAnimatorListener != null)
+						mNewAnimatorListener.onAnimationEnd(mFocusView, animation);
 				}
 				@Override
 				public void onAnimationCancel(Animator animation) {
@@ -258,8 +267,41 @@ public class MainUpView extends View {
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
-
+	
+	private boolean mIsHide = false;
+	private boolean mAnimEnabled = true;
+	
+	/**
+	 * 让控件什么都不能操作.
+	 */
+	public void setAnimEnabled(boolean animEnabled) {
+		this.mAnimEnabled = animEnabled;
+	}
+	
+	/**
+	 * 隐藏移动的边框.
+	 */
+	public void setVisibleWidget(boolean isHide) {
+		this.mIsHide = isHide;
+	}
+	
+	private NewAnimatorListener mNewAnimatorListener;
+	
+	public interface NewAnimatorListener {
+		public void onAnimationStart(View view, Animator animation);
+		public void onAnimationEnd(View view, Animator animation);
+	}
+	
+	/**
+	 * 监听动画的回调.
+	 */
+	public void setOnAnimatorListener(NewAnimatorListener newAnimatorListener) {
+		mNewAnimatorListener = newAnimatorListener;
+	}
+	
 	public void setFocusView(View newView, View oldView, float scale) {
+		if (!mAnimEnabled)
+			return;
 		setFocusView(newView, scale);
 		setUnFocusView(oldView);
 	}
@@ -268,6 +310,8 @@ public class MainUpView extends View {
 	 * 设置无焦点子控件还原.
 	 */
 	public void setUnFocusView(View view) {
+		if (!mAnimEnabled)
+			return;
 		if (view != null) {
 			view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(TRAN_DUR_ANIM).start();
 		}
