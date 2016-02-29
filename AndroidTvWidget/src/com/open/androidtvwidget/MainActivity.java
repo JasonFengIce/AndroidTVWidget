@@ -2,7 +2,6 @@ package com.open.androidtvwidget;
 
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
-import com.open.androidtvwidget.view.MainUpView.NewAnimatorListener;
 import com.open.androidtvwidget.view.ReflectItemView;
 
 import android.animation.Animator;
@@ -65,12 +64,13 @@ public class MainActivity extends Activity {
 				if (newFocus.getId() == R.id.top_lay) {
 					scale = 1.0f;
 					// 测试隐藏边框.
-					mainUpView1.setVisibleWidget(true);
+//					mainUpView1.setVisibleWidget(true);
 				} else {
-					mainUpView1.setVisibleWidget(false);
+//					mainUpView1.setVisibleWidget(false);
 				}
 				mainUpView1.setFocusView(newFocus, oldFocus, scale);
-				mainUpView1.setDrawUpRectEnabled(true);
+				// 测试是否让边框绘制在下面，还是上面.
+//				mainUpView1.setDrawUpRectEnabled(true);
 				if (newFocus != null) {
 //					testTopDemo(newFocus);
 				}
