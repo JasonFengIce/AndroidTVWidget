@@ -69,6 +69,7 @@
                 android:background="@drawable/mainview_searchsong"
                 android:clickable="true"
                 android:focusable="true"
+                app:isReflect="true"
                 android:focusableInTouchMode="true" >
 
                 <FrameLayout
@@ -118,6 +119,7 @@
                 android:layout_marginTop="@dimen/px204"
                 android:clickable="true"
                 android:focusable="true"
+                app:isReflect="true"
                 android:focusableInTouchMode="true"
                 android:src="@drawable/mainview_cloudlist" >
 
@@ -138,6 +140,7 @@
                 android:background="@drawable/mainview_type"
                 android:clickable="true"
                 android:focusable="true"
+                app:isReflect="true"
                 android:focusableInTouchMode="true"
                 android:nextFocusRight="@+id/top_lay" >
 
