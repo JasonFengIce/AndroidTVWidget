@@ -8,6 +8,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -30,7 +31,7 @@ public class MainUpView extends View {
 
 	public MainUpView(Context context) {
 		super(context, null, 0);
-		init(context);
+		init(context, null);
 	}
 
 	public MainUpView(Context context, View view) {
@@ -44,26 +45,39 @@ public class MainUpView extends View {
 			}
 		}
 		//
-		init(context);
+		init(context, null);
 	}
 
 	public MainUpView(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
-		init(context);
+		init(context, attrs);
 	}
 
 	public MainUpView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init(context);
+		init(context, attrs);
 	}
 
-	private void init(Context context) {
+	private void init(Context context, AttributeSet attrs) {
 		setVisibility(View.GONE);
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.white_light_10); // 移动的边框.
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		// 初始化.
+		if (attrs != null) {
+			TypedArray tArray = context.obtainStyledAttributes(attrs, R.styleable.mainUpView);// 获取配置属性
+			isTvScreen = tArray.getBoolean(R.styleable.mainUpView_isTvScreen, false);
+			isDrawUpRect = tArray.getBoolean(R.styleable.mainUpView_isDrawUpRect, true); // 是否绘制在最顶层.
+			int upImageRes = tArray.getResourceId(R.styleable.mainUpView_upImageRes, 0); // 顶层图片.
+			if (upImageRes != 0)
+				mDrawableUpRect = context.getResources().getDrawable(upImageRes);
+			int shadowImageRes = tArray.getResourceId(R.styleable.mainUpView_shadowImageRes, 0); // 阴影图片.
+			if (shadowImageRes != 0)
+				mDrawableShadow = context.getResources().getDrawable(shadowImageRes);
+			tArray.recycle();
 		}
 	}
 
@@ -180,7 +194,7 @@ public class MainUpView extends View {
 		mShadowPaddingRect.set(rect);
 		invalidate();
 	}
-	
+
 	/**
 	 * 绘制外部阴影.
 	 */
@@ -242,63 +256,68 @@ public class MainUpView extends View {
 			mScale = scale;
 			mFocusView = view;
 			mNewFocus = view;
-			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).setListener(new AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator animation) {
-					if (mIsHide) {
-						setVisibility(View.GONE);
-					}
-					if (mNewAnimatorListener != null)
-						mNewAnimatorListener.onAnimationStart(mFocusView, animation);
-				}
-				@Override
-				public void onAnimationRepeat(Animator animation) {
-				}
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					setVisibility(mIsHide ? View.GONE : View.VISIBLE);
-					if (mNewAnimatorListener != null)
-						mNewAnimatorListener.onAnimationEnd(mFocusView, animation);
-				}
-				@Override
-				public void onAnimationCancel(Animator animation) {
-				}
-			}).start();
+			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM)
+					.setListener(new AnimatorListener() {
+						@Override
+						public void onAnimationStart(Animator animation) {
+							if (mIsHide) {
+								setVisibility(View.GONE);
+							}
+							if (mNewAnimatorListener != null)
+								mNewAnimatorListener.onAnimationStart(mFocusView, animation);
+						}
+
+						@Override
+						public void onAnimationRepeat(Animator animation) {
+						}
+
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							setVisibility(mIsHide ? View.GONE : View.VISIBLE);
+							if (mNewAnimatorListener != null)
+								mNewAnimatorListener.onAnimationEnd(mFocusView, animation);
+						}
+
+						@Override
+						public void onAnimationCancel(Animator animation) {
+						}
+					}).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
-	
+
 	private boolean mIsHide = false;
 	private boolean mAnimEnabled = true;
-	
+
 	/**
 	 * 让控件什么都不能操作.
 	 */
 	public void setAnimEnabled(boolean animEnabled) {
 		this.mAnimEnabled = animEnabled;
 	}
-	
+
 	/**
 	 * 隐藏移动的边框.
 	 */
 	public void setVisibleWidget(boolean isHide) {
 		this.mIsHide = isHide;
 	}
-	
+
 	private NewAnimatorListener mNewAnimatorListener;
-	
+
 	public interface NewAnimatorListener {
 		public void onAnimationStart(View view, Animator animation);
+
 		public void onAnimationEnd(View view, Animator animation);
 	}
-	
+
 	/**
 	 * 监听动画的回调.
 	 */
 	public void setOnAnimatorListener(NewAnimatorListener newAnimatorListener) {
 		mNewAnimatorListener = newAnimatorListener;
 	}
-	
+
 	public void setFocusView(View newView, View oldView, float scale) {
 		if (!mAnimEnabled)
 			return;
@@ -342,8 +361,8 @@ public class MainUpView extends View {
 		if (isTvScreen) {
 			x = DensityUtil.dip2px(this.getContext(), x);
 			y = DensityUtil.dip2px(this.getContext(), y);
-		} 
-		
+		}
+
 		flyWhiteBorder(x, y);
 	}
 
@@ -382,9 +401,7 @@ public class MainUpView extends View {
 	}
 
 	/*
-	 * BUG 2016.02.26
-	 * 因为以前是顶层移动边框不改变宽高，
-	 * 原有是放大，会导致图片严重的失真变形，
+	 * BUG 2016.02.26 因为以前是顶层移动边框不改变宽高， 原有是放大，会导致图片严重的失真变形，
 	 * 无法适应现有开发中去，所以才去改成改变宽高.
 	 */
 	private class ScaleView {
