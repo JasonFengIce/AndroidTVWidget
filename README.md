@@ -1,4 +1,6 @@
-# AndroidTVWidget 使用说明: https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual
+# AndroidTVWidget 
+
+使用说明: https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual
 
  欢迎进入 TV开发，希望大家不断的分享代码，一起进步，谢谢.
   
