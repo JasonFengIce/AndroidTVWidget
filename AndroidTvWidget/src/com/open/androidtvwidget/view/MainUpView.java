@@ -148,7 +148,7 @@ public class MainUpView extends View {
 			onDrawUpRect(canvas);
 		}
 		// 绘制焦点子控件.
-		if (mFocusView != null && !isDrawUpRect) {
+		if (mFocusView != null && (!isDrawUpRect || isInDraw)) {
 			onDrawFocusView(canvas);
 		}
 		// 绘制最上层的边框.
@@ -163,9 +163,11 @@ public class MainUpView extends View {
 		canvas.save();
 		if (mFocusView instanceof ReflectItemView) {
 			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
-			View tempView = reflectItemView.getChildAt(0);
-			if (tempView != null) {
-				view = tempView;
+			if (reflectItemView.isReflection()) { // 判断是否使用了倒影.
+				View tempView = reflectItemView.getChildAt(0);
+				if (tempView != null) {
+					view = tempView;
+				}
 			}
 		}
 		float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
@@ -256,32 +258,7 @@ public class MainUpView extends View {
 			mScale = scale;
 			mFocusView = view;
 			mNewFocus = view;
-			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM)
-					.setListener(new AnimatorListener() {
-						@Override
-						public void onAnimationStart(Animator animation) {
-							if (mIsHide) {
-								setVisibility(View.GONE);
-							}
-							if (mNewAnimatorListener != null)
-								mNewAnimatorListener.onAnimationStart(mFocusView, animation);
-						}
-
-						@Override
-						public void onAnimationRepeat(Animator animation) {
-						}
-
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							setVisibility(mIsHide ? View.GONE : View.VISIBLE);
-							if (mNewAnimatorListener != null)
-								mNewAnimatorListener.onAnimationEnd(mFocusView, animation);
-						}
-
-						@Override
-						public void onAnimationCancel(Animator animation) {
-						}
-					}).start();
+			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
@@ -383,6 +360,10 @@ public class MainUpView extends View {
 			y = y + (mNewFocus.getMeasuredHeight() - mNewHeight) / 2;
 		}
 
+		// 取消之前的动画.
+		if (mCurrentAnimatorSet != null)
+			mCurrentAnimatorSet.cancel();
+
 		mOldWidth = this.getMeasuredWidth();
 		mOldHeight = this.getMeasuredHeight();
 
@@ -397,8 +378,53 @@ public class MainUpView extends View {
 		mAnimatorSet.playTogether(transAnimatorX, transAnimatorY, scaleXAnimator, scaleYAnimator);
 		mAnimatorSet.setInterpolator(new DecelerateInterpolator(1));
 		mAnimatorSet.setDuration(TRAN_DUR_ANIM);
+		mAnimatorSet.addListener(new AnimatorListener() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				if (!isbringToFront)
+					isInDraw = false;
+				if (mIsHide) {
+					setVisibility(View.GONE);
+				}
+				if (mNewAnimatorListener != null)
+					mNewAnimatorListener.onAnimationStart(mFocusView, animation);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				if (!isbringToFront)
+					isInDraw = false;
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				if (!isbringToFront)
+					isInDraw = true;
+				setVisibility(mIsHide ? View.GONE : View.VISIBLE);
+				if (mNewAnimatorListener != null)
+					mNewAnimatorListener.onAnimationEnd(mFocusView, animation);
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				if (!isbringToFront)
+					isInDraw = false;
+			}
+		});
 		mAnimatorSet.start();
+		mCurrentAnimatorSet = mAnimatorSet;
 	}
+
+	/**
+	 * 置顶有两种模式. </br>
+	 * 一种是焦点控制使用bringToFront </br>
+	 * 另一种就是移动边框绘制(isbringToFront = false 使用，反之). </br>
+	 * 建议使用第一种，因为绘制在最上层，感觉有断开感，而且在倒影控件还要再加一层布局. </br>
+	 * 但是焦点使用bringToFront，焦点会错乱.自己考虑. </br>
+	 */
+	private boolean isInDraw = false;
+	private boolean isbringToFront = true;
+	private AnimatorSet mCurrentAnimatorSet;
 
 	/*
 	 * BUG 2016.02.26 因为以前是顶层移动边框不改变宽高， 原有是放大，会导致图片严重的失真变形，
