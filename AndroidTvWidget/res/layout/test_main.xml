@@ -16,9 +16,9 @@
 
         <com.open.androidtvwidget.view.MainLayout
             android:id="@+id/main_lay"
-            android:paddingRight="80dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingRight="80dp" >
 
             <com.open.androidtvwidget.view.ReflectItemView
                 android:id="@+id/gridview_lay"
@@ -69,8 +69,8 @@
                 android:background="@drawable/mainview_searchsong"
                 android:clickable="true"
                 android:focusable="true"
-                app:isReflect="true"
-                android:focusableInTouchMode="true" >
+                android:focusableInTouchMode="true"
+                app:isReflect="true" >
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -119,9 +119,9 @@
                 android:layout_marginTop="@dimen/px204"
                 android:clickable="true"
                 android:focusable="true"
-                app:isReflect="true"
                 android:focusableInTouchMode="true"
-                android:src="@drawable/mainview_cloudlist" >
+                android:src="@drawable/mainview_cloudlist"
+                app:isReflect="true" >
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -129,6 +129,19 @@
                     android:clickable="false"
                     android:scaleType="fitXY"
                     android:src="@drawable/mainview_cloudlist" />
+
+                <com.open.androidtvwidget.view.LabelView
+                    xmlns:lv="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    lv:lv_background_color="#3F9FE0"
+                    lv:lv_fill_triangle="true"
+                    lv:lv_gravity="TOP_RIGHT"
+                    lv:lv_text="热门"
+                    lv:lv_text_size="18sp" />
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
@@ -140,9 +153,9 @@
                 android:background="@drawable/mainview_type"
                 android:clickable="true"
                 android:focusable="true"
-                app:isReflect="true"
                 android:focusableInTouchMode="true"
-                android:nextFocusRight="@+id/top_lay" >
+                android:nextFocusRight="@+id/top_lay"
+                app:isReflect="true" >
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -168,7 +181,6 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/mainview_cloudlist" />
             </com.open.androidtvwidget.view.ReflectItemView>
-            
         </com.open.androidtvwidget.view.MainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 
