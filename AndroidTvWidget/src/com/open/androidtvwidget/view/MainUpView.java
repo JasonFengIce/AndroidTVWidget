@@ -147,7 +147,7 @@ public class MainUpView extends View {
 			onDrawUpRect(canvas);
 		}
 		// 绘制焦点子控件.
-		if (mFocusView != null && (!isDrawUpRect || isInDraw)) {
+		if (mFocusView != null && (!isDrawUpRect && isInDraw)) {
 			onDrawFocusView(canvas);
 		}
 		//
@@ -384,7 +384,7 @@ public class MainUpView extends View {
 		mAnimatorSet.addListener(new AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animation) {
-				if (!isbringToFront)
+				if (!isDrawUpRect)
 					isInDraw = false;
 				if (mIsHide) {
 					setVisibility(View.GONE);
@@ -395,13 +395,13 @@ public class MainUpView extends View {
 
 			@Override
 			public void onAnimationRepeat(Animator animation) {
-				if (!isbringToFront)
+				if (!isDrawUpRect)
 					isInDraw = false;
 			}
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				if (!isbringToFront)
+				if (!isDrawUpRect)
 					isInDraw = true;
 				setVisibility(mIsHide ? View.GONE : View.VISIBLE);
 				if (mNewAnimatorListener != null)
@@ -410,7 +410,7 @@ public class MainUpView extends View {
 
 			@Override
 			public void onAnimationCancel(Animator animation) {
-				if (!isbringToFront)
+				if (!isDrawUpRect)
 					isInDraw = false;
 			}
 		});
@@ -426,7 +426,6 @@ public class MainUpView extends View {
 	 * 但是焦点使用bringToFront，焦点会错乱.自己考虑. </br>
 	 */
 	private boolean isInDraw = false;
-	private boolean isbringToFront = true;
 	private AnimatorSet mCurrentAnimatorSet;
 
 	/*

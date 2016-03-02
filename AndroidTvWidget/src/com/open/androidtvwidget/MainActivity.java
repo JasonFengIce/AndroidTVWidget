@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 					mainUpView1.setVisibleWidget(true);
 				}
 				mainUpView1.setFocusView(newFocus, oldFocus, scale);
-				// 测试是否让边框绘制在下面，还是上面.
+				// 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
 //				mainUpView1.setDrawUpRectEnabled(true);
 //				if (newFocus != null) {
 //					testTopDemo(newFocus);
