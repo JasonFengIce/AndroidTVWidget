@@ -61,19 +61,18 @@ public class MainActivity extends Activity {
 			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
 				newFocus.bringToFront(); // 防止放大的view被压在下面.
 				float scale = 1.2f;
-				if (newFocus.getId() == R.id.top_lay) {
-					scale = 1.0f;
-					// 测试隐藏边框.
-//					mainUpView1.setVisibleWidget(true);
+				if (newFocus instanceof ReflectItemView) {
+					mainUpView1.setVisibleWidget(false);
 				} else {
-//					mainUpView1.setVisibleWidget(false);
+					scale = 1.1f;
+					mainUpView1.setVisibleWidget(true);
 				}
 				mainUpView1.setFocusView(newFocus, oldFocus, scale);
 				// 测试是否让边框绘制在下面，还是上面.
 //				mainUpView1.setDrawUpRectEnabled(true);
-				if (newFocus != null) {
+//				if (newFocus != null) {
 //					testTopDemo(newFocus);
-				}
+//				}
 			}
 		});
 		// 测试边框无操作开关.

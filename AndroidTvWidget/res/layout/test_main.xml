@@ -181,6 +181,26 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/mainview_cloudlist" />
             </com.open.androidtvwidget.view.ReflectItemView>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/gridview_lay"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="28dp"
+                android:text="首页" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/button1"
+                android:layout_alignBottom="@+id/button1"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/button1"
+                android:text="电影" />
+
         </com.open.androidtvwidget.view.MainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 

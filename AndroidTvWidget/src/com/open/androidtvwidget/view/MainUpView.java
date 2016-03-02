@@ -140,19 +140,21 @@ public class MainUpView extends View {
 
 	private void onDrawMainUpView(Canvas canvas) {
 		canvas.save();
-		// 绘制阴影.
-		onDrawShadow(canvas);
-		// onTestDrawRect(canvas);
-		// 绘制最上层的边框.
 		if (!isDrawUpRect) {
+			// 绘制阴影.
+			onDrawShadow(canvas);
+			// 绘制最上层的边框.
 			onDrawUpRect(canvas);
 		}
 		// 绘制焦点子控件.
 		if (mFocusView != null && (!isDrawUpRect || isInDraw)) {
 			onDrawFocusView(canvas);
 		}
-		// 绘制最上层的边框.
+		//
 		if (isDrawUpRect) {
+			// 绘制阴影.
+			onDrawShadow(canvas);
+			// 绘制最上层的边框.
 			onDrawUpRect(canvas);
 		}
 		canvas.restore();
@@ -161,15 +163,15 @@ public class MainUpView extends View {
 	private void onDrawFocusView(Canvas canvas) {
 		View view = mFocusView;
 		canvas.save();
-		if (mFocusView instanceof ReflectItemView) {
-			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
-			if (reflectItemView.isReflection()) { // 判断是否使用了倒影.
-				View tempView = reflectItemView.getChildAt(0);
-				if (tempView != null) {
-					view = tempView;
-				}
-			}
-		}
+//		if (mFocusView instanceof ReflectItemView) {
+//			ReflectItemView reflectItemView = (ReflectItemView) mFocusView;
+//			if (reflectItemView.isReflection()) { // 判断是否使用了倒影.
+//				View tempView = reflectItemView.getChildAt(0);
+//				if (tempView != null) {
+//					view = tempView;
+//				}
+//			}
+//		}
 		float scaleX = (float) (this.getWidth()) / (float) view.getWidth();
 		float scaleY = (float) (this.getHeight()) / (float) view.getHeight();
 		canvas.scale(scaleX, scaleY);
@@ -258,7 +260,8 @@ public class MainUpView extends View {
 			mScale = scale;
 			mFocusView = view;
 			mNewFocus = view;
-			mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
+			if (!mIsHide)
+				mFocusView.animate().scaleX(scale).scaleY(scale).setDuration(TRAN_DUR_ANIM).start();
 			runTranslateAnimation(mFocusView, scale, scale);
 		}
 	}
@@ -373,7 +376,7 @@ public class MainUpView extends View {
 		// hailong.qiu 2016.02.26 修复 :)
 		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(this), "width", mOldWidth, mNewWidth);
 		ObjectAnimator scaleYAnimator = ObjectAnimator.ofInt(new ScaleView(this), "height", mOldHeight, mNewHeight);
-
+		//
 		AnimatorSet mAnimatorSet = new AnimatorSet();
 		mAnimatorSet.playTogether(transAnimatorX, transAnimatorY, scaleXAnimator, scaleYAnimator);
 		mAnimatorSet.setInterpolator(new DecelerateInterpolator(1));
@@ -415,7 +418,7 @@ public class MainUpView extends View {
 		mCurrentAnimatorSet = mAnimatorSet;
 	}
 
-	/**
+	/*
 	 * 置顶有两种模式. </br>
 	 * 一种是焦点控制使用bringToFront </br>
 	 * 另一种就是移动边框绘制(isbringToFront = false 使用，反之). </br>
@@ -427,8 +430,10 @@ public class MainUpView extends View {
 	private AnimatorSet mCurrentAnimatorSet;
 
 	/*
-	 * BUG 2016.02.26 因为以前是顶层移动边框不改变宽高， 原有是放大，会导致图片严重的失真变形，
-	 * 无法适应现有开发中去，所以才去改成改变宽高.
+	 * BUG 2016.02.26 </br>
+	 * 因为以前是顶层移动边框不改变宽高， </br>
+	 * 原有是放大，会导致图片严重的失真变形，</br>
+	 * 无法适应现有开发中去，所以才去改成改变宽高. </br>
 	 */
 	private class ScaleView {
 		private View view;
