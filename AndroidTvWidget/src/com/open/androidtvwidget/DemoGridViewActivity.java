@@ -64,8 +64,7 @@ public class DemoGridViewActivity extends Activity {
 			}
 		});
 		// 不知道为何设置 0 不显示.(暂时无解)
-		gridView.requestFocus();
-		gridView.setSelection(0);
+		gridView.setSelection(1);
 	}
 
 	public List<Map<String, Object>> getData() {
