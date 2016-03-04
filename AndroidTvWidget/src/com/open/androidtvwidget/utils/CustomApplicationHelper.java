@@ -22,9 +22,7 @@ import android.net.Uri;
 public class CustomApplicationHelper {
 
 	private Context mContext;
-	private Intent mInitIntent;
 	private PackageManager pm;
-	private List<ResolveInfo> resolveInfos;
 
 	public CustomApplicationHelper(Context context) {
 		this.mContext = context;
@@ -33,27 +31,19 @@ public class CustomApplicationHelper {
 		}
 	}
 
-	public CustomApplicationHelper(Context context, Intent intent) {
-		this.mContext = context;
-		if (mContext != null) {
-			this.pm = context.getPackageManager();
-			getSpeAppResolveInfos(intent);
-		}
-	}
-
 	public List<ResolveInfo> getSpeAppResolveInfos(Intent intent) {
-		this.mInitIntent = intent;
+		List<ResolveInfo> resolveInfos = null;
 		if (intent != null && pm != null) {
-			this.resolveInfos = pm.queryIntentActivities(mInitIntent, PackageManager.MATCH_DEFAULT_ONLY);
+			resolveInfos = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		}
-		return this.resolveInfos;
+		return resolveInfos;
 	}
 
 	/**
 	 * 处理Intent.
 	 */
-	public Intent intentForResolveInfo(ResolveInfo dri) {
-		Intent intent = new Intent(mInitIntent);
+	public Intent intentForResolveInfo(ResolveInfo dri, Intent initIntent) {
+		Intent intent = new Intent(initIntent);
 		intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		ActivityInfo ai = dri.activityInfo;
 		intent.setComponent(new ComponentName(ai.applicationInfo.packageName, ai.name));
@@ -63,9 +53,9 @@ public class CustomApplicationHelper {
 	/**
 	 * 设置默认APP.
 	 */
-	public void setDefaultApplication(ResolveInfo dri) {
+	public void setDefaultApplication(Intent initIntent, ResolveInfo dri, List<ResolveInfo> resolveInfos) {
 		// 获取 Intent.
-		Intent intent = intentForResolveInfo(dri);
+		Intent intent = intentForResolveInfo(dri, initIntent);
 		//
 		IntentFilter filter = new IntentFilter();
 		// 初始化 action.
@@ -115,7 +105,7 @@ public class CustomApplicationHelper {
 	/**
 	 * 清除默认选择. 清除之前的选项.
 	 */
-	public void clearDefaultApp() {
+	public void clearDefaultApp(List<ResolveInfo> resolveInfos) {
 		if (resolveInfos != null) {
 			for (int i = 0; i < resolveInfos.size(); i++) {
 				ResolveInfo resolveInfo = resolveInfos.get(i);
