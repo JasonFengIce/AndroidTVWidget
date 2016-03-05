@@ -12,6 +12,10 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.provider.Settings;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 /**
  * 设置默认APP.
@@ -37,6 +41,36 @@ public class CustomApplicationHelper {
 			resolveInfos = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		}
 		return resolveInfos;
+	}
+
+	public List<InputMethodInfo> getAllInputMethod() {
+		InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+		List<InputMethodInfo> methodList = imm.getInputMethodList();
+		return methodList;
+	}
+
+	public void setDefaultInputMethod(InputMethodInfo info) {
+		// 设置默认输入法.
+		String packName = info.getPackageName();
+		String serviceName = info.getServiceName();
+		int lastIndex = serviceName.lastIndexOf(".");
+		if (lastIndex != -1) {
+			String setInfo = packName + "/" + serviceName.substring(lastIndex);
+			Settings.Secure.putString(mContext.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD,
+					"" + setInfo);
+			String text = setInfo;
+			Toast.makeText(mContext, text, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	public boolean isDefualtInputMethod(InputMethodInfo info) {
+		// 获取当前默认输入法.
+		String currentInputmethod = Settings.Secure.getString(mContext.getContentResolver(),
+				Settings.Secure.DEFAULT_INPUT_METHOD);
+		if (currentInputmethod.contains("" + info.getPackageName())) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -142,5 +176,5 @@ public class CustomApplicationHelper {
 		}
 		return false;
 	}
-	
+
 }
