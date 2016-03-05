@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 /**
  * 设置默认APP.
@@ -58,8 +57,6 @@ public class CustomApplicationHelper {
 			String setInfo = packName + "/" + serviceName.substring(lastIndex);
 			Settings.Secure.putString(mContext.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD,
 					"" + setInfo);
-			String text = setInfo;
-			Toast.makeText(mContext, text, Toast.LENGTH_LONG).show();
 		}
 	}
 
