@@ -44,21 +44,31 @@ public class XmlKeyboardLoader {
 	 * 保存数据到 SoftKeyboard 中去.
 	 */
 	public SoftKeyboard loadKeyboard(int resourceId) {
-		SoftKeyboard softKeyboard = null;
+		SoftKeyboard softKeyboard = new SoftKeyboard();
 		XmlResourceParser xrp = mResources.getXml(resourceId);
 		try {
 			mXmlEventType = xrp.next();
 			while (mXmlEventType != XmlResourceParser.END_DOCUMENT) {
-
+				if (mXmlEventType == XmlResourceParser.START_TAG) {
+					//
+				} else if (mXmlEventType == XmlResourceParser.END_TAG) {
+					//
+				}
+				mXmlEventType = xrp.next();
 			}
+			xrp.close();
+			return softKeyboard;
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 			Log.e(TAG, "loadKeyboard XmlPullParserException " + e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e(TAG, "loadKeyboard IOException " + e.getMessage());
+		} finally {
+			if (xrp != null)
+				xrp.close();
 		}
-		return softKeyboard;
+		return null;
 	}
 
 	private int getInteger(XmlResourceParser xrp, String name, int defValue) {

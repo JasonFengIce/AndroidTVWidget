@@ -4,6 +4,10 @@ import com.open.androidtvwidget.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
@@ -13,7 +17,9 @@ import android.widget.RelativeLayout;
  *
  */
 public class SkbContainer extends RelativeLayout {
-
+	
+	private static final String TAG = "SkbContainer";
+	
 	public SkbContainer(Context context) {
 		super(context);
 		init(context, null);
@@ -40,6 +46,7 @@ public class SkbContainer extends RelativeLayout {
 	 */
 	private void init(Context context, AttributeSet attrs) {
 		this.mContext = context;
+		View.inflate(context, R.layout.softkey_layout_view, this);
 		mInputModeSwitcher = new InputModeSwitcher();
 		updateInputMode();
 	}
@@ -62,16 +69,33 @@ public class SkbContainer extends RelativeLayout {
 
 	private void updateSkbLayout() {
 		SkbPool skbPool = SkbPool.getInstance();
-		SoftKeyboard majorSkb = null; // XML中读取保存的键值.
+		SoftKeyboard softKeyboard = null; // XML中读取保存的键值.
 		switch (mSkbLayout) {
 		case R.xml.sbd_qwerty: // 全英文键盘.
-			majorSkb = skbPool.getSoftKeyboard(mContext, R.xml.sbd_qwerty);
+			softKeyboard = skbPool.getSoftKeyboard(mContext, R.xml.sbd_qwerty);
 			break;
 		default:
 			break;
 		}
+		Log.d(TAG, "softKeyboard:" + softKeyboard);
+		mSoftKeyboardView = (SoftKeyboardView) findViewById(R.id.softKeyboardView);
 		// 重新绘制 软键盘.
-		mSoftKeyboardView.setSoftKeyboard(majorSkb);
+		mSoftKeyboardView.setSoftKeyboard(softKeyboard);
 	}
-
+	
+	public boolean onKeyDown() {
+		return false;
+	}
+	
+	SoftKeyListener mSoftKeyListener;
+	
+	public void setOnSoftKeyListener(SoftKeyListener cb) {
+		mSoftKeyListener = cb;
+	}
+	
+	class SoftKeyListener {
+		public void onCommitText(String text) {
+		}
+	}
+	
 }

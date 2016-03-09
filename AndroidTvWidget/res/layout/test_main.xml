@@ -211,4 +211,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <com.open.androidtvwidget.keyboard.SkbContainer
+        android:id="@+id/skbContainer1"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.open.androidtvwidget.keyboard.SkbContainer>
+
 </RelativeLayout>
