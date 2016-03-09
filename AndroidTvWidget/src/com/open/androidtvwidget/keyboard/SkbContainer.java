@@ -3,25 +3,53 @@ package com.open.androidtvwidget.keyboard;
 import com.open.androidtvwidget.R;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.RelativeLayout;
 
 /**
- * 软键盘.
+ * 软键盘主容器.
+ * 
  * @author hailong.qiu 356752238@qq.com
  *
  */
-public class SkbContainer {
+public class SkbContainer extends RelativeLayout {
+
+	public SkbContainer(Context context) {
+		super(context);
+		init(context, null);
+	}
+
+	public SkbContainer(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(context, attrs);
+	}
+
+	public SkbContainer(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init(context, attrs);
+	}
 
 	private InputModeSwitcher mInputModeSwitcher;
 	private SoftKeyboardView mSoftKeyboardView; // 主要的子软键盘.
+	private SoftKeyboardView mPopupKeyboardView; // 弹出的软键盘.
 	private int mSkbLayout;
 	private Context mContext;
 
-	public SkbContainer(Context context) {
+	/**
+	 * 初始化.
+	 */
+	private void init(Context context, AttributeSet attrs) {
 		this.mContext = context;
+		mInputModeSwitcher = new InputModeSwitcher();
+		updateInputMode();
 	}
 
-	public void setInputModeSwitcher(InputModeSwitcher inputModeSwitcher) {
-		mInputModeSwitcher = inputModeSwitcher;
+	/**
+	 * 设置软键盘类型.
+	 */
+	public void setInputMode(int inputMode) {
+		mInputModeSwitcher.setInputMode(inputMode);
+		updateInputMode();
 	}
 
 	public void updateInputMode() {

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * 键盘控件.
+ * 软键盘绘制控件.(主软键盘，弹出键盘)
  * 
  * @author hailong.qiu
  *
