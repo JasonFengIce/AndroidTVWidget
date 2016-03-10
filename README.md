@@ -8,6 +8,8 @@
  
  ---- hailongqiu 356752238@qq.com
 
+![欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133540_9122f6e5_111902.jpeg "在这里输入图片标题")
+
 ##Tab 测试DEMO图片.
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0229/221023_f9d44844_111902.jpeg "倒影效果")
