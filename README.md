@@ -2,13 +2,15 @@
 
 使用说明: https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual
 
- 欢迎进入 TV开发，希望大家不断的分享代码，一起进步，谢谢.
+ 欢迎进入 TV开发，希望大家不断的分享代码，一起进步，谢谢. （hailongqiu 356752238@qq.com）
   
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0223/094451_e49419a7_111902.png "在这里输入图片标题")
  
- ---- hailongqiu 356752238@qq.com
 
-![天天加班加点，欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133650_1cc016cc_111902.png "在这里输入图片标题")
+天天加班加点，欢迎支持
+
+![天天加班加点，欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133650_1cc016cc_111902.png "天天加班加点，欢迎支持")
+
 
 ##Tab 测试DEMO图片.
 
