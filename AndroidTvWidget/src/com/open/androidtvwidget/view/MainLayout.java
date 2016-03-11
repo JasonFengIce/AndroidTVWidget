@@ -53,7 +53,8 @@ public class MainLayout extends RelativeLayout {
 	public void bringChildToFront(View child) {
 		position = indexOfChild(child);
 		if (position != -1) {
-			invalidate();
+//			invalidate();
+			postInvalidate();
 		}
 	}
 	
