@@ -3,7 +3,12 @@
 使用说明: 
 
    https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual
+
+项目导入说明:
+   
    https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual%28Android-Studio%29
+
+   https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual%28Eclipse%E5%AF%BC%E5%85%A5%29
 
  欢迎进入 TV开发，希望大家不断的分享代码，一起进步，谢谢. （hailongqiu 356752238@qq.com）
   
