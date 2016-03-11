@@ -1,7 +1,6 @@
 package com.open.androidtvwidget.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
@@ -30,16 +29,32 @@ public class MainLayout extends RelativeLayout {
 		setClipChildren(false);
 		setClipToPadding(false);
 		setChildrenDrawingOrderEnabled(true);
-		getViewTreeObserver()
-		.addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
-			@Override
-			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-				position = indexOfChild(newFocus);
-				if (position != -1) {
-					invalidate();
-				}
-			}
-		});
+//		getViewTreeObserver()
+//		.addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
+//			@Override
+//			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+//				position = indexOfChild(newFocus);
+//				if (position != -1) {
+//					invalidate();
+//				}
+//			}
+//		});
+		// 添加焦点监听事件.
+//		for (int i = 0; i < getChildCount(); i++) {
+//			getChildAt(i).setOnFocusChangeListener(new OnFocusChangeListener() {
+//				@Override
+//				public void onFocusChange(View v, boolean hasFocus) {
+//				}
+//			});
+//		}
+	}
+	
+	@Override
+	public void bringChildToFront(View child) {
+		position = indexOfChild(child);
+		if (position != -1) {
+			invalidate();
+		}
 	}
 	
 	/**
