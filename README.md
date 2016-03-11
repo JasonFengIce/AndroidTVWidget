@@ -92,12 +92,6 @@
 
 ## 后期加入
    
-   完整DEMO
-   
-   GridView demo
-   
-   ListView demo
-   
    网络加载布局
    
 ## 感谢开源[参考代码]
