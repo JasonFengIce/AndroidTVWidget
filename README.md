@@ -1,6 +1,7 @@
 # AndroidTVWidget 
 
 使用说明: 
+
    https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual
    https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/AndroidTVWidget-use-manual%28Android-Studio%29
 
