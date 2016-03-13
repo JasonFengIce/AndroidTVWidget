@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -93,7 +92,24 @@ public class SkbContainer extends RelativeLayout {
 		mSoftKeyListener = cb;
 	}
 	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		return super.onKeyUp(keyCode, event);
+	}
+	
+	@Override
+	public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+		return super.onKeyLongPress(keyCode, event);
+	}
+	
 	class SoftKeyListener {
+		/**
+		 */
 		public void onCommitText(String text) {
 		}
 	}
