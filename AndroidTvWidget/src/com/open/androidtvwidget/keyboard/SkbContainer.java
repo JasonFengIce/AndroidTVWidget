@@ -59,18 +59,18 @@ public class SkbContainer extends RelativeLayout {
 		mInputModeSwitcher.setInputMode(inputMode);
 		updateInputMode();
 	}
-	
+
 	public void setSoftKeyboardType(int type) {
-		
+
 	}
-	
+
 	/**
 	 * 更新软键盘类型.
 	 */
 	public void updateSoftKeyboardType() {
-		
+
 	}
-	
+
 	public void updateInputMode() {
 		int skbLayout = mInputModeSwitcher.getSkbLayout(); // 输入类型转换出布局XML id.
 		if (mSkbLayout != skbLayout) {
@@ -112,12 +112,24 @@ public class SkbContainer extends RelativeLayout {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		onSoftKeyDown(keyCode, event);
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		onSoftKeyUp(keyCode, event);
+		return super.onKeyUp(keyCode, event);
+	}
+
+	public boolean onSoftKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			String ch = "";
 			SoftKeyboard softKeyboard = mSoftKeyboardView.getSoftKeyboard();
 			SoftKey softKey = softKeyboard.getSelectSoftKey();
+			mSoftKeyboardView.setSoftKeyPress(true);
 			if (softKey != null) {
 				ch = softKey.getKeyLabel();
 				Log.d(TAG, "onKeyDown onCommitText text:" + ch);
@@ -130,12 +142,12 @@ public class SkbContainer extends RelativeLayout {
 			actionForKeyEvent(keyCode); // 按键移动.
 			break;
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		return super.onKeyUp(keyCode, event);
+
+	public boolean onSoftKeyUp(int keyCode, KeyEvent event) {
+		mSoftKeyboardView.setSoftKeyPress(false);
+		return true;
 	}
 
 	public boolean actionForKeyEvent(int direction) {

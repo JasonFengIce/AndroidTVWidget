@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 public class SoftKey {
 
 	private Drawable mKeySelectDrawable;
+	private Drawable mKeyPressDrawable;
 	private Drawable mKeyBgDrawable;
 	private Drawable mKeyIcon;
 	private String mKeyLabel;
@@ -26,6 +27,23 @@ public class SoftKey {
 	private int mTextColor; // 字体颜色.
 
 	private boolean isSelected;
+	private boolean isPressed; // 是否按下.
+
+	public Drawable getKeyPressDrawable() {
+		return mKeyPressDrawable;
+	}
+
+	public void setKeyPressDrawable(Drawable keyPressDrawable) {
+		this.mKeyPressDrawable = keyPressDrawable;
+	}
+
+	public boolean isKeyPressed() {
+		return isPressed;
+	}
+
+	public void setKeyPressed(boolean isPressed) {
+		this.isPressed = isPressed;
+	}
 
 	public int getKeyCode() {
 		return mKeyCode;

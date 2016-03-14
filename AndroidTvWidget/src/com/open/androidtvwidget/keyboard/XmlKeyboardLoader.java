@@ -78,6 +78,7 @@ public class XmlKeyboardLoader {
 	private static final String XMLATTR_KEYBOARD_BG = "bg_res"; // 键盘界面.
 	private static final String XMLATTR_KEY_BG = "key_bg_res"; // 键盘按键背景图片.
 	private static final String XMLATTR_KEY_SELECT_RES = "key_select_res"; // 键盘按键选中状态图片.
+	private static final String XMLATTR_KEY_PRESS_RES = "key_press_res"; // 键盘按键按下.
 
 	float mSaveKeyXPos; // 保存键值的位置.
 	float mSaveKeyYPos;
@@ -212,6 +213,7 @@ public class XmlKeyboardLoader {
 		softKey.setTextColor(textColor);
 		softKey.setKeyCode(keyCode); // 自定义的一些值,比如删除,回车.
 		softKey.setKeySelectDrawable(attrKey.mKeySelectDrawable); // 设置选中的图片.
+		softKey.setKeyPressDrawable(attrKey.mKeyPressDrawable); // 按下的图片.
 		softKey.setKeyBgDrawable(attrKey.mKeyBgDrawable); // 按键背景.
 		softKey.setKeyDimensions(left, top, right, bottom);
 		return softKey;
@@ -234,6 +236,7 @@ public class XmlKeyboardLoader {
 		int mTextColor = Color.RED; // 按键文本颜色.
 
 		Drawable mKeySelectDrawable;
+		Drawable mKeyPressDrawable;
 		Drawable mKeyBgDrawable;
 
 		public KeyCommonAttributes(XmlResourceParser xrp) {
@@ -243,6 +246,7 @@ public class XmlKeyboardLoader {
 		boolean getAttributes(KeyCommonAttributes defAttr) {
 			this.mKeyBgDrawable = getDrawable(mXrp, XMLATTR_KEY_BG, defAttr.mKeyBgDrawable); // 按键背景.
 			this.mKeySelectDrawable = getDrawable(mXrp, XMLATTR_KEY_SELECT_RES, defAttr.mKeySelectDrawable); // 按键选中.
+			this.mKeyPressDrawable = getDrawable(mXrp, XMLATTR_KEY_PRESS_RES, defAttr.mKeyPressDrawable); // 按键按下.
 			this.mKeyLeftPadding = getFloat(mXrp, XMLATTR_LEFT_PADDING, defAttr.mKeyLeftPadding);
 			this.mKeyTopPadding = getFloat(mXrp, XMLATTR_TOP_PADDING, defAttr.mKeyTopPadding);
 			this.mKeyXPos = getFloat(mXrp, XMLATTR_START_POS_X, defAttr.mKeyXPos);

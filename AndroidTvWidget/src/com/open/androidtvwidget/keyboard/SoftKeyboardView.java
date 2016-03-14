@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
@@ -18,7 +17,7 @@ import android.view.View;
 /**
  * 软键盘绘制控件.(主软键盘，弹出键盘)
  * 
- * @author hailong.qiu
+ * @author hailong.qiu 356752238@qq.com
  *
  */
 public class SoftKeyboardView extends View {
@@ -104,6 +103,9 @@ public class SoftKeyboardView extends View {
 		if (softKey.isKeySelected()) {
 			drawSoftKeySelectState(canvas, softKey);
 		}
+		if (softKey.isKeyPressed()) {
+			drawSoftKeyPressState(canvas, softKey);
+		}
 		// 绘制按键内容.
 		String keyLabel = softKey.getKeyLabel();
 		Drawable keyIcon = softKey.getKeyIcon();
@@ -158,44 +160,44 @@ public class SoftKeyboardView extends View {
 		if (bgDrawable != null) {
 			bgDrawable.setBounds(softKey.getRect());
 			bgDrawable.draw(canvas);
-		} 
-//		else {
-//			Paint paint = new Paint();
-//			int round = 4;
-//			paint.setColor(Color.WHITE);
-//			paint.setAntiAlias(true);
-//			paint.setStyle(Paint.Style.STROKE);
-//			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
-//		}
+		}
 	}
 
 	/**
 	 * 绘制按键的选中状态.
 	 */
 	private void drawSoftKeySelectState(Canvas canvas, SoftKey softKey) {
-		//
 		Drawable selectDrawable = softKey.getKeySelectDrawable();
 		if (selectDrawable != null) {
 			selectDrawable.setBounds(softKey.getRect());
 			selectDrawable.draw(canvas);
 		}
-//		else {
-//			Paint paint = new Paint();
-//			int round = 4;
-//			paint.setColor(Color.WHITE);
-//			paint.setAntiAlias(true);
-//			paint.setStyle(Paint.Style.STROKE);
-//			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
-//		}
+	}
+	
+	/**
+	 * 绘制按下的状态.
+	 */
+	private void drawSoftKeyPressState(Canvas canvas, SoftKey softKey) {
+		Drawable pressDrawable = softKey.getKeyPressDrawable();
+		if (pressDrawable != null) {
+			pressDrawable.setBounds(softKey.getRect());
+			pressDrawable.draw(canvas);
+		}
 	}
 
 	public SoftKeyboard getSoftKeyboard() {
 		return mSoftKeyboard;
 	}
-
+	
+	public void setSoftKeyPress(boolean isPress) {
+		SoftKey softKey = mSoftKeyboard.getSelectSoftKey();
+		softKey.setKeyPressed(isPress);
+		invalidate();
+	}
+	
 	/**
 	 * 按键移动. <br>
-	 * 感觉按照left,top,right,bottom<br>
+	 * 感觉按照left,top,right,bottom区域<br>
 	 * 来查找按键,会影响效率.<br>
 	 * 所以使用了最简单的 行,列概念.
 	 */
