@@ -1,7 +1,7 @@
 package com.open.androidtvwidget.keyboard;
 
-import com.open.androidtvwidget.R.drawable;
-
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -15,17 +15,41 @@ public class SoftKey {
 	private Drawable mKeySelectDrawable;
 	private Drawable mKeyBgDrawable;
 	private Drawable mKeyIcon;
-	private Drawable mKeyIconPopup;
 	private String mKeyLabel;
-	private int mKeyCode;
+	private int mKeyCode; // 自定义值.
 
 	private float mLeftF;
 	private float mRightF;
 	private float mTopF;
 	private float mBottomF;
 	private float mTextSize; // 字体大小.
+	private int mTextColor; // 字体颜色.
 
 	private boolean isSelected;
+
+	public int getKeyCode() {
+		return mKeyCode;
+	}
+
+	public void setKeyCode(int keyCode) {
+		this.mKeyCode = keyCode;
+	}
+
+	public Drawable getKeyIcon() {
+		return mKeyIcon;
+	}
+
+	public void setKeyIcon(Drawable mKeyIcon) {
+		this.mKeyIcon = mKeyIcon;
+	}
+
+	public int getTextColor() {
+		return mTextColor;
+	}
+
+	public void setTextColor(int textColor) {
+		this.mTextColor = textColor;
+	}
 
 	public float getTextSize() {
 		return mTextSize;
@@ -51,20 +75,44 @@ public class SoftKey {
 		return this.mKeySelectDrawable;
 	}
 
+	public RectF getRectF() {
+		return new RectF(mLeftF, mTopF, mRightF, mBottomF);
+	}
+
+	public Rect getRect() {
+		return new Rect((int) mLeftF, (int) mTopF, (int) mRightF, (int) mBottomF);
+	}
+
 	public float getLeftF() {
 		return mLeftF;
+	}
+
+	public int getLeft() {
+		return (int) this.mLeftF;
 	}
 
 	public float getRightF() {
 		return mRightF;
 	}
 
+	public int getRight() {
+		return (int) this.mRightF;
+	}
+
 	public float getTopF() {
 		return mTopF;
 	}
 
+	public int getTop() {
+		return (int) this.mTopF;
+	}
+
 	public float getBottomF() {
 		return mBottomF;
+	}
+
+	public int getBottom() {
+		return (int) this.mBottomF;
 	}
 
 	public float getWidth() {
@@ -86,17 +134,6 @@ public class SoftKey {
 		this.mKeyLabel = label;
 	}
 
-	public Drawable getKeyIcon() {
-		return mKeyIcon;
-	}
-
-	public Drawable getKeyIconPopup() {
-		if (null != mKeyIconPopup) {
-			return mKeyIconPopup;
-		}
-		return mKeyIcon;
-	}
-
 	public String getKeyLabel() {
 		return mKeyLabel;
 	}
@@ -114,8 +151,7 @@ public class SoftKey {
 
 	@Override
 	public String toString() {
-		return "SoftKey [mKeyIcon=" + mKeyIcon + ", mKeyIconPopup=" + mKeyIconPopup + ", mKeyLabel=" + mKeyLabel
-				+ ", mKeyCode=" + mKeyCode + "]";
+		return "SoftKey [mKeyIcon=" + mKeyIcon + ", mKeyLabel=" + mKeyLabel + ", mKeyCode=" + mKeyCode + "]";
 	}
 
 }

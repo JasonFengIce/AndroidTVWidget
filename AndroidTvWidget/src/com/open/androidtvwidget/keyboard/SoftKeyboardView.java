@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -101,6 +100,10 @@ public class SoftKeyboardView extends View {
 	private void drawSoftKey(Canvas canvas, SoftKey softKey) {
 		// 绘制按键背景.
 		drawSoftKeyBg(canvas, softKey);
+		// 绘制选中状态.
+		if (softKey.isKeySelected()) {
+			drawSoftKeySelectState(canvas, softKey);
+		}
 		// 绘制按键内容.
 		String keyLabel = softKey.getKeyLabel();
 		Drawable keyIcon = softKey.getKeyIcon();
@@ -109,18 +112,18 @@ public class SoftKeyboardView extends View {
 		} else if (!TextUtils.isEmpty(keyLabel)) {
 			drawSoftKeyText(canvas, softKey, keyLabel);
 		}
-		// 绘制选中状态.
-		if (softKey.isKeySelected()) {
-			drawSoftKeySelectState(canvas, softKey);
-		}
 	}
 
 	/**
 	 * 绘制按键的图片.
 	 */
 	private void drawSoftKeyIcon(Canvas canvas, SoftKey softKey, Drawable keyIcon) {
-		Rect rect = new Rect();
-		keyIcon.setBounds(rect);
+		int marginLeft = (int) ((softKey.getWidth() - keyIcon.getIntrinsicWidth()) / 2);
+		int marginRight = (int) (softKey.getWidth() - keyIcon.getIntrinsicWidth() - marginLeft);
+		int marginTop = (int) ((softKey.getHeight() - keyIcon.getIntrinsicHeight()) / 2);
+		int marginBottom = (int) (softKey.getHeight() - keyIcon.getIntrinsicHeight() - marginTop);
+		keyIcon.setBounds(softKey.getLeft() + marginLeft, softKey.getTop() + marginTop,
+				softKey.getRight() - marginRight, softKey.getBottom() - marginBottom);
 		keyIcon.draw(canvas);
 	}
 
@@ -130,32 +133,30 @@ public class SoftKeyboardView extends View {
 	 * 绘制按键的文本字符.
 	 */
 	private void drawSoftKeyText(Canvas canvas, SoftKey softKey, String keyLabel) {
-		mPaint.setTextSize(softKey.getTextSize());
-		mPaint.setColor(Color.RED);
-//		mPaint.setTextAlign(Paint.Align.);
-		mFmi = mPaint.getFontMetricsInt(); 
+		mPaint.setTextSize(softKey.getTextSize()); // 文本大小.
+		mPaint.setColor(softKey.getTextColor()); // 文本颜色.
+		mFmi = mPaint.getFontMetricsInt();
 		int fontHeight = mFmi.bottom - mFmi.top; // 字體的高度.
+		float fontWidth = mPaint.measureText(keyLabel);
 		Log.d(TAG, "drawSoftKeyText fontHeight:" + fontHeight);
-		float marginX = (softKey.getWidth() - mPaint.measureText(keyLabel)) / 2.0f;
+		float marginX = (softKey.getWidth() - fontWidth) / 2.0f;
 		float marginY = (softKey.getHeight() - fontHeight) / 2.0f;
 		float x = softKey.getLeftF() + marginX;
-		float y = softKey.getTopF() - (mFmi.top) + marginY;// + softKey.getHeight();// + fontHeight+ marginY;
-		canvas.drawText(keyLabel,  x, y, mPaint);
+		// float y = softKey.getTopF() - (mFmi.top) + marginY;
+		/**
+		 * +1，绘制文字的地方才不会出现问题。
+		 */
+		float y = softKey.getTopF() - (mFmi.top + 1) + marginY;
+		canvas.drawText(keyLabel, x, y, mPaint);
 	}
-	
+
 	/**
 	 * 绘制按键背景.
 	 */
 	private void drawSoftKeyBg(Canvas canvas, SoftKey softKey) {
-		float left = softKey.getLeftF();
-		float top = softKey.getTopF();
-		float right = softKey.getRightF();
-		float bottom = softKey.getBottomF();
-		RectF bgRect = new RectF(left, top, right, bottom);
 		Drawable bgDrawable = softKey.getKeyBgDrawable();
 		if (bgDrawable != null) {
-			Rect rect = new Rect((int)left, (int)top, (int)right, (int)bottom);
-			bgDrawable.setBounds(rect);
+			bgDrawable.setBounds(softKey.getRect());
 			bgDrawable.draw(canvas);
 		} else {
 			Paint paint = new Paint();
@@ -163,24 +164,18 @@ public class SoftKeyboardView extends View {
 			paint.setColor(Color.WHITE);
 			paint.setAntiAlias(true);
 			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawRoundRect(bgRect, round, round, paint);
+			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
 		}
 	}
-	
+
 	/**
 	 * 绘制按键的选中状态.
 	 */
 	private void drawSoftKeySelectState(Canvas canvas, SoftKey softKey) {
-		float left = softKey.getLeftF();
-		float top = softKey.getTopF();
-		float right = softKey.getRightF();
-		float bottom = softKey.getBottomF();
-		RectF selectRect = new RectF(left, top, right, bottom);
 		//
 		Drawable selectDrawable = softKey.getKeySelectDrawable();
 		if (selectDrawable != null) {
-			Rect rect = new Rect((int)left, (int)top, (int)right, (int)bottom);
-			selectDrawable.setBounds(rect);
+			selectDrawable.setBounds(softKey.getRect());
 			selectDrawable.draw(canvas);
 		} else {
 			Paint paint = new Paint();
@@ -188,14 +183,14 @@ public class SoftKeyboardView extends View {
 			paint.setColor(Color.WHITE);
 			paint.setAntiAlias(true);
 			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawRoundRect(selectRect, round, round, paint);
+			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
 		}
 	}
-	
+
 	public SoftKeyboard getSoftKeyboard() {
 		return mSoftKeyboard;
 	}
-	
+
 	/**
 	 * 按键移动. <br>
 	 * 感觉按照left,top,right,bottom<br>
@@ -205,7 +200,7 @@ public class SoftKeyboardView extends View {
 	public boolean moveToNextKey(int direction) {
 		int currentRow = mSoftKeyboard.getSelectRow();
 		int currentIndex = mSoftKeyboard.getSelectIndex();
-		
+
 		KeyRow keyRow = mSoftKeyboard.getKeyRowForDisplay(currentRow);
 		if (keyRow == null)
 			return false;
@@ -213,7 +208,7 @@ public class SoftKeyboardView extends View {
 		if (softKeys == null)
 			return false;
 		SoftKey softKey = null;
-		
+
 		switch (direction) {
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			currentIndex--;
@@ -223,7 +218,7 @@ public class SoftKeyboardView extends View {
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
 			currentIndex++;
-			if (currentIndex > (softKeys.size() -1))
+			if (currentIndex > (softKeys.size() - 1))
 				currentIndex = 0;
 			softKey = softKeys.get(currentIndex);
 			break;

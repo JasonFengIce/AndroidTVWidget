@@ -3,20 +3,26 @@
 <Keyboard
     bg_res="@drawable/mainbackground"
     height="50.0"
-    key_bg_res="@drawable/test_rectangle"
-    key_select_res="@drawable/key_select_rectangle"
+    key_bg_res="@drawable/key_bg_rectangle"
+    key_select_res="@drawable/softkey_bg_select2"
     start_pos_x="300"
     text_size="40"
+    text_color="#FFFFFF"
     width="50.0" >
 
     <!-- 第一行 -->
     <row
         text_size="30"
+        text_color="@color/red"
         left_padding="10.0"
         start_pos_y="50" >
         <keys
             labels="A|B|C|D|E|F"
             splitter="|" />
+        <key
+            key_code="32"
+            key_icon="@drawable/delete"
+            />
     </row>
 
     <!-- 第二行 -->
@@ -24,6 +30,7 @@
         left_padding="10.0"
         start_pos_y="110">
         <keys
+            text_color="@color/green"
             text_size="20"
             labels="G|H|I|J|K|L"
             splitter="|" />
