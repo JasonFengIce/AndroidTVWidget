@@ -117,7 +117,7 @@ public class XmlKeyboardLoader {
 						Drawable bg = getDrawable(xrp, XMLATTR_KEYBOARD_BG, null); // 获取键盘背景.
 						softKeyboard = new SoftKeyboard();
 						softKeyboard.setKeyboardBg(bg);
-						mSaveKeyYPos = 0;
+						mSaveKeyYPos = attrSkb.mKeyYPos;
 					} else if (XMLTAG_ROW.compareTo(attr) == 0) { // row 列.
 						if (!attrRow.getAttributes(attrSkb)) {
 							return null;
