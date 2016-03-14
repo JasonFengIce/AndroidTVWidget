@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 全键盘-26-字母 -->
 <Keyboard
+    bg_res="@drawable/mainbackground"
     height="50.0"
+    key_bg_res="@drawable/test_rectangle"
+    key_select_res="@drawable/key_select_rectangle"
+    start_pos_x="300"
+    text_size="40"
     width="50.0" >
 
+    <!-- 第一行 -->
     <row
+        text_size="30"
         left_padding="10.0"
-        start_pos_x="100"
-        start_pos_y="50"
-        textSize="13sp" >
+        start_pos_y="50" >
         <keys
             labels="A|B|C|D|E|F"
-            splitter="|"
-            text_size="35" />
+            splitter="|" />
     </row>
+
+    <!-- 第二行 -->
     <row
         left_padding="10.0"
-        start_pos_x="100"
-        start_pos_y="110"
-        textSize="13sp" >
+        start_pos_y="110">
         <keys
+            text_size="20"
             labels="G|H|I|J|K|L"
-            splitter="|"
-            text_size="35" />
+            splitter="|" />
     </row>
+
+    <!-- 第三行 -->
     <row
         left_padding="10.0"
-        start_pos_x="100"
         start_pos_y="170"
         textSize="13sp" >
         <keys
             labels="M|N|O|P|Q|R"
-            splitter="|"
-            text_size="35" />
+            splitter="|" />
     </row>
-	
+    <!-- 第四行 -->
     <row
         left_padding="10.0"
-        start_pos_x="100"
-        start_pos_y="230"
-        textSize="13sp" >
+        start_pos_y="230" >
         <keys
             labels="S|T|U|V|W|X"
-            splitter="|"
-            text_size="35" />
+            splitter="|" />
     </row>
-    
+
+    <!-- 第五行 -->
     <row
         left_padding="10.0"
-        start_pos_x="220"
-        start_pos_y="290"
-        textSize="13sp" >
+        start_pos_x="420"
+        start_pos_y="290" >
         <keys
             labels="Y|Z"
-            splitter="|"
-            text_size="35" />
+            splitter="|" />
     </row>
-    
+
 </Keyboard>

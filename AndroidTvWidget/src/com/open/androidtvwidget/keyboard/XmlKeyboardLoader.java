@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.open.androidtvwidget.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -70,10 +72,16 @@ public class XmlKeyboardLoader {
 	private static final String XMLATTR_KEY_WIDTH = "width";
 	private static final String XMLATTR_KEY_HEIGHT = "height";
 
+	private static final String XMLATTR_KEYBOARD_BG = "bg_res"; // 键盘界面.
+	private static final String XMLATTR_KEY_BG = "key_bg_res"; // 键盘按键背景图片.
+	private static final String XMLATTR_KEY_SELECT_RES = "key_select_res"; // 键盘按键选中状态图片.
+
 	int mTextSize = 0;
 	float mSaveKeyXPos;
 	float mSaveKeyYPos;
-
+	
+	Drawable d;
+	
 	/**
 	 * 解析XML键盘文件.
 	 * 
@@ -103,7 +111,9 @@ public class XmlKeyboardLoader {
 					if (XMLTAG_KEYBOARD.compareTo(attr) == 0) { // keyboard
 						if (!attrSkb.getAttributes(attrDef))
 							return null;
+						Drawable bg = getDrawable(xrp, XMLATTR_KEYBOARD_BG, null); // 获取键盘背景.
 						softKeyboard = new SoftKeyboard();
+						softKeyboard.setKeyboardBg(bg);
 					} else if (XMLTAG_ROW.compareTo(attr) == 0) { // row 列.
 						if (!attrRow.getAttributes(attrSkb)) {
 							return null;
@@ -139,6 +149,9 @@ public class XmlKeyboardLoader {
 							top = attrKeys.mKeyYPos;
 							bottom = top + attrKeys.keyHeight;
 							softKey.setKeyDimensions(left, top, right, bottom);
+							softKey.setTextSize(attrKeys.mTextSize); // 按键文本大小.
+							softKey.setKeySelectDrawable(attrKeys.mKeySelectDrawable); // 设置选中的图片.
+							softKey.setKeyBgDrawable(attrKeys.mKeyBgDrawable); // 按键背景.
 							softKeyboard.addSoftKey(softKey);
 							saveKeyX += softKey.getWidth() + attrKeys.mKeyLeftPadding;
 						}
@@ -174,25 +187,32 @@ public class XmlKeyboardLoader {
 	 * 用于读取键值中的属性.
 	 */
 	class KeyCommonAttributes {
+		private static final float KEY_TEXT_SIZE = 30;
+		
 		XmlResourceParser mXrp;
 		float keyWidth;
 		float keyHeight;
 		float mKeyXPos;
 		float mKeyYPos;
 		float mKeyLeftPadding;
-
+		float mTextSize = KEY_TEXT_SIZE;
+		
+		Drawable mKeySelectDrawable;
+		Drawable mKeyBgDrawable;
+		
 		public KeyCommonAttributes(XmlResourceParser xrp) {
 			this.mXrp = xrp;
 		}
 
 		boolean getAttributes(KeyCommonAttributes defAttr) {
-			mKeyLeftPadding = getFloat(mXrp, XMLATTR_LEFT_PADDING, defAttr.mKeyLeftPadding);
-			mKeyXPos = getFloat(mXrp, XMLATTR_START_POS_X, defAttr.mKeyXPos);
-			mKeyYPos = getFloat(mXrp, XMLATTR_START_POS_Y, defAttr.mKeyYPos);
-			// 宽度.
-			keyWidth = getFloat(mXrp, XMLATTR_KEY_WIDTH, defAttr.keyWidth);
-			// 高度.
-			keyHeight = getFloat(mXrp, XMLATTR_KEY_HEIGHT, defAttr.keyHeight);
+			this.mKeyBgDrawable =getDrawable(mXrp, XMLATTR_KEY_BG, defAttr.mKeyBgDrawable); // 按键背景.
+			this.mKeySelectDrawable = getDrawable(mXrp, XMLATTR_KEY_SELECT_RES, defAttr.mKeySelectDrawable); // 按键选中.
+			this.mKeyLeftPadding = getFloat(mXrp, XMLATTR_LEFT_PADDING, defAttr.mKeyLeftPadding);
+			this.mKeyXPos = getFloat(mXrp, XMLATTR_START_POS_X, defAttr.mKeyXPos);
+			this.mKeyYPos = getFloat(mXrp, XMLATTR_START_POS_Y, defAttr.mKeyYPos);
+			this.keyWidth = getFloat(mXrp, XMLATTR_KEY_WIDTH, defAttr.keyWidth);
+			this.keyHeight = getFloat(mXrp, XMLATTR_KEY_HEIGHT, defAttr.keyHeight);
+			this.mTextSize = getFloat(mXrp, XMLATTR_TEXT_SIZE, defAttr.mTextSize); // 按键文本大小.
 			return true;
 		}
 	}

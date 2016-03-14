@@ -98,15 +98,17 @@ public class SkbContainer extends RelativeLayout {
 		SoftKeyboard softKeyboard = mSoftKeyboardView.getSoftKeyboard();
 		softKeyboard.setOneKeySelected(row, index);
 	}
-	
+
 	/**
 	 * 暂时测试,不能使用这个事件,<br>
 	 * 必须使用activity的事件.
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_ENTER) {
-			String ch = ""; 
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_ENTER:
+		case KeyEvent.KEYCODE_DPAD_CENTER:
+			String ch = "";
 			SoftKeyboard softKeyboard = mSoftKeyboardView.getSoftKeyboard();
 			SoftKey softKey = softKeyboard.getSelectSoftKey();
 			if (softKey != null) {
@@ -115,9 +117,11 @@ public class SkbContainer extends RelativeLayout {
 			}
 			if (mSoftKeyListener != null) {
 				mSoftKeyListener.onCommitText(ch);
-			} 
-		} else {
+			}
+			break;
+		default:
 			actionForKeyEvent(keyCode); // 按键移动.
+			break;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -138,5 +142,5 @@ public class SkbContainer extends RelativeLayout {
 	public boolean onKeyLongPress(int keyCode, KeyEvent event) {
 		return super.onKeyLongPress(keyCode, event);
 	}
-	
+
 }

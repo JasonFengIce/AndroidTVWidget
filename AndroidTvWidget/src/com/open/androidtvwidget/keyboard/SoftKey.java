@@ -1,5 +1,7 @@
 package com.open.androidtvwidget.keyboard;
 
+import com.open.androidtvwidget.R.drawable;
+
 import android.graphics.drawable.Drawable;
 
 /**
@@ -10,6 +12,8 @@ import android.graphics.drawable.Drawable;
  */
 public class SoftKey {
 
+	private Drawable mKeySelectDrawable;
+	private Drawable mKeyBgDrawable;
 	private Drawable mKeyIcon;
 	private Drawable mKeyIconPopup;
 	private String mKeyLabel;
@@ -19,8 +23,33 @@ public class SoftKey {
 	private float mRightF;
 	private float mTopF;
 	private float mBottomF;
+	private float mTextSize; // 字体大小.
 
 	private boolean isSelected;
+
+	public float getTextSize() {
+		return mTextSize;
+	}
+
+	public void setTextSize(float textSize) {
+		this.mTextSize = textSize;
+	}
+
+	public Drawable getKeyBgDrawable() {
+		return mKeyBgDrawable;
+	}
+
+	public void setKeyBgDrawable(Drawable keyBgDrawable) {
+		this.mKeyBgDrawable = keyBgDrawable;
+	}
+
+	public void setKeySelectDrawable(Drawable d) {
+		this.mKeySelectDrawable = d;
+	}
+
+	public Drawable getKeySelectDrawable() {
+		return this.mKeySelectDrawable;
+	}
 
 	public float getLeftF() {
 		return mLeftF;
@@ -73,8 +102,7 @@ public class SoftKey {
 	}
 
 	/**
-	 * 是否選中.
-	 * 键值要高亮.
+	 * 是否選中. 键值要高亮.
 	 */
 	public void setKeySelected(boolean is) {
 		isSelected = is;
