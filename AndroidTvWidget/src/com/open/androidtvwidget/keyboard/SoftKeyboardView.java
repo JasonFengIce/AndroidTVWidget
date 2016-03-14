@@ -158,14 +158,15 @@ public class SoftKeyboardView extends View {
 		if (bgDrawable != null) {
 			bgDrawable.setBounds(softKey.getRect());
 			bgDrawable.draw(canvas);
-		} else {
-			Paint paint = new Paint();
-			int round = 4;
-			paint.setColor(Color.WHITE);
-			paint.setAntiAlias(true);
-			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
-		}
+		} 
+//		else {
+//			Paint paint = new Paint();
+//			int round = 4;
+//			paint.setColor(Color.WHITE);
+//			paint.setAntiAlias(true);
+//			paint.setStyle(Paint.Style.STROKE);
+//			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
+//		}
 	}
 
 	/**
@@ -177,14 +178,15 @@ public class SoftKeyboardView extends View {
 		if (selectDrawable != null) {
 			selectDrawable.setBounds(softKey.getRect());
 			selectDrawable.draw(canvas);
-		} else {
-			Paint paint = new Paint();
-			int round = 4;
-			paint.setColor(Color.WHITE);
-			paint.setAntiAlias(true);
-			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
 		}
+//		else {
+//			Paint paint = new Paint();
+//			int round = 4;
+//			paint.setColor(Color.WHITE);
+//			paint.setAntiAlias(true);
+//			paint.setStyle(Paint.Style.STROKE);
+//			canvas.drawRoundRect(softKey.getRectF(), round, round, paint);
+//		}
 	}
 
 	public SoftKeyboard getSoftKeyboard() {

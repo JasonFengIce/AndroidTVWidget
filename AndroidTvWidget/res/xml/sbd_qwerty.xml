@@ -2,21 +2,21 @@
 <!-- 全键盘-26-字母 -->
 <Keyboard
     bg_res="@drawable/mainbackground"
-    height="50.0"
+    height="@dimen/px100"
     key_bg_res="@drawable/key_bg_rectangle"
     key_select_res="@drawable/softkey_bg_select2"
-    left_padding="10.0"
-    start_pos_x="300"
-    start_pos_y="50"
+    left_padding="@dimen/px10"
+    start_pos_x="@dimen/px400"
+    start_pos_y="@dimen/px150"
     text_color="#FFFFFF"
-    text_size="40"
-    top_padding="10.0"
-    width="50.0" >
+    text_size="@dimen/px60"
+    top_padding="@dimen/px10"
+    width="@dimen/px100" >
 
     <!-- 第一行 -->
     <row
         text_color="@color/red"
-        text_size="30" >
+        text_size="40" >
         <keys
             labels="A|B|C|D|E|F"
             splitter="|" />
@@ -24,7 +24,7 @@
         <key
             key_code="32"
             key_icon="@drawable/delete"
-            width="80" />
+            width="@dimen/px150" />
     </row>
 
     <!-- 第二行 -->
@@ -33,26 +33,26 @@
             labels="G|H|I|J|K|L"
             splitter="|"
             text_color="@color/green"
-            text_size="20" />
+            text_size="30" />
     </row>
 
     <!-- 第三行 -->
     <row
         text_color="@color/yellow"
-        text_size="25" >
+        text_size="@dimen/px30" >
         <keys
             labels="M|N|O|P|Q|R"
             splitter="|" />
     </row>
     <!-- 第四行 -->
-    <row text_size="30" >
+    <row text_size="@dimen/px40" >
         <keys
             labels="S|T|U|V|W|X"
             splitter="|" />
     </row>
 
     <!-- 第五行 -->
-    <row start_pos_x="420" >
+    <row start_pos_x="@dimen/px400" >
         <keys
             labels="Y|Z"
             splitter="|" />
