@@ -59,7 +59,18 @@ public class SkbContainer extends RelativeLayout {
 		mInputModeSwitcher.setInputMode(inputMode);
 		updateInputMode();
 	}
-
+	
+	public void setSoftKeyboardType(int type) {
+		
+	}
+	
+	/**
+	 * 更新软键盘类型.
+	 */
+	public void updateSoftKeyboardType() {
+		
+	}
+	
 	public void updateInputMode() {
 		int skbLayout = mInputModeSwitcher.getSkbLayout(); // 输入类型转换出布局XML id.
 		if (mSkbLayout != skbLayout) {
@@ -82,10 +93,6 @@ public class SkbContainer extends RelativeLayout {
 		mSoftKeyboardView = (SoftKeyboardView) findViewById(R.id.softKeyboardView);
 		// 重新绘制 软键盘.
 		mSoftKeyboardView.setSoftKeyboard(softKeyboard);
-	}
-
-	public boolean onKeyDown() {
-		return false;
 	}
 
 	SoftKeyBoardListener mSoftKeyListener;
@@ -116,7 +123,7 @@ public class SkbContainer extends RelativeLayout {
 				Log.d(TAG, "onKeyDown onCommitText text:" + ch);
 			}
 			if (mSoftKeyListener != null) {
-				mSoftKeyListener.onCommitText(ch);
+				mSoftKeyListener.onCommitText(softKey);
 			}
 			break;
 		default:
@@ -125,7 +132,7 @@ public class SkbContainer extends RelativeLayout {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
+	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		return super.onKeyUp(keyCode, event);
