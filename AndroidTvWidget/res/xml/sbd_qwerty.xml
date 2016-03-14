@@ -5,40 +5,39 @@
     height="50.0"
     key_bg_res="@drawable/key_bg_rectangle"
     key_select_res="@drawable/softkey_bg_select2"
+    left_padding="10.0"
     start_pos_x="300"
-    text_size="40"
     text_color="#FFFFFF"
+    text_size="40"
+    top_padding="10.0"
     width="50.0" >
 
     <!-- 第一行 -->
     <row
-        text_size="30"
+        start_pos_y="50"
         text_color="@color/red"
-        left_padding="10.0"
-        start_pos_y="50" >
+        text_size="30" >
         <keys
             labels="A|B|C|D|E|F"
             splitter="|" />
+
         <key
             key_code="32"
             key_icon="@drawable/delete"
-            />
+            width="80" />
     </row>
 
     <!-- 第二行 -->
-    <row
-        left_padding="10.0"
-        start_pos_y="110">
+    <row start_pos_y="110" >
         <keys
-            text_color="@color/green"
-            text_size="20"
             labels="G|H|I|J|K|L"
-            splitter="|" />
+            splitter="|"
+            text_color="@color/green"
+            text_size="20" />
     </row>
 
     <!-- 第三行 -->
     <row
-        left_padding="10.0"
         start_pos_y="170"
         textSize="13sp" >
         <keys
@@ -46,9 +45,7 @@
             splitter="|" />
     </row>
     <!-- 第四行 -->
-    <row
-        left_padding="10.0"
-        start_pos_y="230" >
+    <row>
         <keys
             labels="S|T|U|V|W|X"
             splitter="|" />
@@ -56,7 +53,6 @@
 
     <!-- 第五行 -->
     <row
-        left_padding="10.0"
         start_pos_x="420"
         start_pos_y="290" >
         <keys

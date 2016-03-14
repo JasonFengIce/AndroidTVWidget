@@ -81,6 +81,7 @@ public class XmlKeyboardLoader {
 
 	float mSaveKeyXPos; // 保存键值的位置.
 	float mSaveKeyYPos;
+	boolean isStartPosY = true;
 
 	Drawable d;
 
@@ -116,6 +117,7 @@ public class XmlKeyboardLoader {
 						Drawable bg = getDrawable(xrp, XMLATTR_KEYBOARD_BG, null); // 获取键盘背景.
 						softKeyboard = new SoftKeyboard();
 						softKeyboard.setKeyboardBg(bg);
+						mSaveKeyYPos = 0;
 					} else if (XMLTAG_ROW.compareTo(attr) == 0) { // row 列.
 						if (!attrRow.getAttributes(attrSkb)) {
 							return null;
@@ -124,6 +126,7 @@ public class XmlKeyboardLoader {
 							KeyRow keyRow = new KeyRow();
 							softKeyboard.addKeyRow(keyRow);
 						}
+						isStartPosY = getFloat(xrp, XMLATTR_START_POS_Y, -1.0f) != -1.0f ? true : false;
 						mSaveKeyXPos = 0;
 					} else if (XMLTAG_KEYS.compareTo(attr) == 0) { // keys.
 						if (!attrKeys.getAttributes(attrRow)) {
@@ -160,6 +163,7 @@ public class XmlKeyboardLoader {
 					// 判断是否为 </row>
 					String attr = xrp.getName();
 					if (XMLTAG_ROW.compareTo(attr) == 0) {
+						mSaveKeyYPos += attrRow.keyHeight + attrRow.mKeyTopPadding;
 					}
 				}
 				mXmlEventType = xrp.next();
@@ -189,10 +193,16 @@ public class XmlKeyboardLoader {
 		float textSize = getFloat(xrp, XMLATTR_TEXT_SIZE, attrKey.mTextSize); // 按键文本字体大小
 		int textColor = getColor(xrp, XMLATTR_TEXT_COLOR, attrKey.mTextColor); // 按键文本颜色.
 		//
-		float left, right, top, bottom;
+		float left, right, top = 0, bottom;
 		left = mSaveKeyXPos + attrKey.mKeyXPos + attrKey.mKeyLeftPadding;
 		right = left + attrKey.keyWidth;
-		top = mSaveKeyYPos + attrKey.mKeyYPos;
+		// 判断是否<key 没有设置 start_pos_y
+		if (isStartPosY) {
+			top = attrKey.mKeyYPos + attrKey.mKeyTopPadding;
+			mSaveKeyYPos = attrKey.mKeyYPos ; // 保存 top属性.
+		} else {
+			top = mSaveKeyYPos + attrKey.mKeyTopPadding;
+		}
 		bottom = top + attrKey.keyHeight;
 		// 按键.
 		SoftKey softKey = new SoftKey();
@@ -219,6 +229,7 @@ public class XmlKeyboardLoader {
 		float mKeyXPos;
 		float mKeyYPos;
 		float mKeyLeftPadding;
+		float mKeyTopPadding;
 		float mTextSize = KEY_TEXT_SIZE;
 		int mTextColor = Color.RED; // 按键文本颜色.
 
@@ -233,6 +244,7 @@ public class XmlKeyboardLoader {
 			this.mKeyBgDrawable = getDrawable(mXrp, XMLATTR_KEY_BG, defAttr.mKeyBgDrawable); // 按键背景.
 			this.mKeySelectDrawable = getDrawable(mXrp, XMLATTR_KEY_SELECT_RES, defAttr.mKeySelectDrawable); // 按键选中.
 			this.mKeyLeftPadding = getFloat(mXrp, XMLATTR_LEFT_PADDING, defAttr.mKeyLeftPadding);
+			this.mKeyTopPadding = getFloat(mXrp, XMLATTR_TOP_PADDING, defAttr.mKeyTopPadding);
 			this.mKeyXPos = getFloat(mXrp, XMLATTR_START_POS_X, defAttr.mKeyXPos);
 			this.mKeyYPos = getFloat(mXrp, XMLATTR_START_POS_Y, defAttr.mKeyYPos);
 			this.keyWidth = getFloat(mXrp, XMLATTR_KEY_WIDTH, defAttr.keyWidth);
