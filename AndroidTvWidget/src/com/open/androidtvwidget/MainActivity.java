@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 				if (newFocus instanceof ReflectItemView) {
 					mainUpView1.setVisibleWidget(false);
 				} else {
-					scale = 1.1f;
+					scale = 1.0f;
 					mainUpView1.setVisibleWidget(true);
 				}
 				mainUpView1.setFocusView(newFocus, oldFocus, scale);
