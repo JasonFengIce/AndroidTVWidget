@@ -139,6 +139,7 @@ public class SkbContainer extends RelativeLayout {
 			}
 			break;
 		default:
+			mSoftKeyboardView.setSoftKeyPress(false);
 			actionForKeyEvent(keyCode); // 按键移动.
 			break;
 		}
