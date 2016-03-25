@@ -91,6 +91,13 @@ public class MainActivity extends Activity {
 				startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
 			}
 		});
+		findViewById(R.id.top_lay).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "ViewPager demo test", Toast.LENGTH_LONG).show();
+				startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
+			}
+		});
 	}
 
 	public void testTopDemo(View newView) {
