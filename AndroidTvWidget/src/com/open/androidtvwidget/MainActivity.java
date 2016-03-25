@@ -1,8 +1,8 @@
 package com.open.androidtvwidget;
 
-import com.open.androidtvwidget.view.BaseAnimAdapter;
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.androidtvwidget.view.OpenBaseAnimAdapter;
 import com.open.androidtvwidget.view.ReflectItemView;
 
 import android.animation.Animator;
@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 
 	MainUpView mainUpView1;
 	View test_top_iv;
-	BaseAnimAdapter mBaseAnimAdapter;
+	OpenBaseAnimAdapter mBaseAnimAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 		test_top_iv = findViewById(R.id.test_top_iv);
 		// MainUpView 设置.
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-		mBaseAnimAdapter = (BaseAnimAdapter) mainUpView1.getAnimAdapter();
+		mBaseAnimAdapter = (OpenBaseAnimAdapter) mainUpView1.getAnimAdapter();
 		// mainUpView1 = new MainUpView(getApplicationContext(), gridview_lay);
 		// mainUpView1.setUpRectResource(R.drawable.item_highlight);
 		// mainUpView1.setUpRectResource(R.drawable.white_light_10);

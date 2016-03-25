@@ -72,7 +72,7 @@ public class MainUpView extends View {
 			tArray.recycle();
 		}
 		//
-		BaseAnimAdapter baseAnimAdapter = new BaseAnimAdapter();
+		IAnimAdapter baseAnimAdapter = new OpenBaseAnimAdapter();
 		baseAnimAdapter.setMainUpView(this);
 		setAnimAdapter(baseAnimAdapter);
 	}
