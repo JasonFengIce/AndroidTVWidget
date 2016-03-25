@@ -130,40 +130,7 @@ public class InputModeSwitcher {
 		} else if (MODE_SKB_ALL_EN == userKeyCode) { // 英文键盘.
 			mInputMode = INPUT_TYPE_ALL_EN;
 		}
-
-		// 回车的状态处理.
-		int action = (mEditorInfo != null)
-				? mEditorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)
-				: EditorInfo.IME_ACTION_SEND;
-		OPENLOG.D(TAG, "prepareToggleStates action:" + action);
-		switch (action) {
-		case EditorInfo.IME_ACTION_GO:
-			mKeyStates.add(TOGGLE_ENTER_GO);
-			break;
-		case EditorInfo.IME_ACTION_SEARCH:
-			mKeyStates.add(TOGGLE_ENTER_SEARCH);
-			break;
-		case EditorInfo.IME_ACTION_SEND:
-			mKeyStates.add(TOGGLE_ENTER_SEND);
-			break;
-		case EditorInfo.IME_ACTION_NEXT:
-			int f = mEditorInfo.inputType & EditorInfo.TYPE_MASK_FLAGS;
-			if (!isCenterMultiLine()) {
-				mKeyStates.add(TOGGLE_ENTER_NEXT);
-			} else {
-				mKeyStates.add(TOGGLE_ENTER_MULTI_LINE_DONE);
-			}
-			break;
-		case EditorInfo.IME_ACTION_DONE:
-			if (!isCenterMultiLine()) {
-				mKeyStates.add(TOGGLE_ENTER_DONE);
-			} else {
-				mKeyStates.add(TOGGLE_ENTER_MULTI_LINE_DONE);
-			}
-		default: // 暂时定为多行.
-			mKeyStates.add(TOGGLE_ENTER_MULTI_LINE_DONE);
-			break;
-		}
+		
 	}
 
 	private boolean isCenterMultiLine() {
