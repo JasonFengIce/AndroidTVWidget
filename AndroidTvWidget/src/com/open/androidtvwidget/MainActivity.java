@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 	MainUpView mainUpView1;
 	View test_top_iv;
 	OpenBaseAnimAdapter mBaseAnimAdapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,12 +48,12 @@ public class MainActivity extends Activity {
 			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
 				newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
 				float scale = 1.2f;
-				if (newFocus instanceof ReflectItemView) {
-					mBaseAnimAdapter.setVisibleWidget(false);
-				} else {
-					scale = 1.0f;
-					mBaseAnimAdapter.setVisibleWidget(true);
-				}
+				// if (newFocus instanceof ReflectItemView) {
+				// mBaseAnimAdapter.setVisibleWidget(false);
+				// } else {
+				// scale = 1.0f;
+				// mBaseAnimAdapter.setVisibleWidget(true);
+				// }
 				mainUpView1.setFocusView(newFocus, oldFocus, scale);
 				// 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
 				// mainUpView1.setDrawUpRectEnabled(true);
