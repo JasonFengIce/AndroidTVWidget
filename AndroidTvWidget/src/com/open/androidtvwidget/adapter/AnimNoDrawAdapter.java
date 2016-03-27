@@ -1,6 +1,5 @@
 package com.open.androidtvwidget.adapter;
 
-import com.open.androidtvwidget.view.BaseAnimAdapter;
 import com.open.androidtvwidget.view.MainUpView;
 
 import android.animation.Animator;

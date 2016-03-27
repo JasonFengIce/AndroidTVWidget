@@ -1,6 +1,8 @@
 package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.adapter.IAnimAdapter;
+import com.open.androidtvwidget.adapter.OpenBaseAnimAdapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;

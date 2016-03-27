@@ -1,4 +1,6 @@
-package com.open.androidtvwidget.view;
+package com.open.androidtvwidget.adapter;
+
+import com.open.androidtvwidget.view.MainUpView;
 
 import android.graphics.Canvas;
 import android.view.View;

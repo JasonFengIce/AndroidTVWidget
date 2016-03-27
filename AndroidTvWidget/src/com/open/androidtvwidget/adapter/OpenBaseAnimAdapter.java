@@ -1,4 +1,7 @@
-package com.open.androidtvwidget.view;
+package com.open.androidtvwidget.adapter;
+
+import com.open.androidtvwidget.adapter.BaseAnimAdapter.ScaleView;
+import com.open.androidtvwidget.view.MainUpView;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
