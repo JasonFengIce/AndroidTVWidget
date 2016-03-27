@@ -208,9 +208,11 @@ public class MainUpView extends FrameLayout {
 
 	public void setAnimAdapter(IAnimAdapter adapter) {
 		this.mAnimAdapter = adapter;
-		if (this.mAnimAdapter != null)
+		if (this.mAnimAdapter != null) {
+			this.mAnimAdapter.onInitAdapter(this);
 			this.mAnimAdapter.setMainUpView(this);
-		invalidate();
+			invalidate();
+		}
 	}
 
 	public IAnimAdapter getAnimAdapter() {
