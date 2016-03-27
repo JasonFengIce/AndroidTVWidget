@@ -26,13 +26,14 @@ public abstract class BaseAnimAdapter implements IAnimAdapter {
 	 * 需要绘制的东西.
 	 */
 	@Override
-	public void onDrawMainUpView(Canvas canvas) {
+	public boolean onDrawMainUpView(Canvas canvas) {
 		canvas.save();
 		// 绘制阴影.
 		onDrawShadow(canvas);
 		// 绘制最上层的边框.
 		onDrawUpRect(canvas);
 		canvas.restore();
+		return true;
 	}
 	
 	/**

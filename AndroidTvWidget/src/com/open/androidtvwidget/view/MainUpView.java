@@ -11,8 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 
-public class MainUpView extends View {
+public class MainUpView extends FrameLayout {
 
 	private static final String TAG = "MainUpView";
 
@@ -53,6 +54,7 @@ public class MainUpView extends View {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
+		setWillNotDraw(false);
 		mContext = context;
 		try {
 			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.white_light_10); // 移动的边框.
@@ -123,7 +125,9 @@ public class MainUpView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (this.mAnimAdapter != null)
-			this.mAnimAdapter.onDrawMainUpView(canvas);
+			if (this.mAnimAdapter.onDrawMainUpView(canvas))
+				return;
+		super.onDraw(canvas);
 	}
 
 	private Rect mUpPaddingRect = new Rect(0, 0, 0, 0);
