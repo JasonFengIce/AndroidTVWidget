@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.MeasureSpec;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
@@ -36,7 +37,6 @@ public class OpenTabHost extends TabHost {
 
 	private Context mContext;
 	private TabWidget mTabWidget; // 标题栏.
-	private final ArrayList<TabInfo> mTabInfos = new ArrayList<TabInfo>(); // 标题栏数组.
 
 	private void init(Context context, AttributeSet attrs) {
 		this.setBackgroundColor(Color.TRANSPARENT);
@@ -44,15 +44,6 @@ public class OpenTabHost extends TabHost {
 		LayoutInflater.from(context).inflate(R.layout.tabhost_title_head, this, true);
 		mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
 		setup();
-		// test
-		// new Handler().post(new Runnable() {
-		// @Override
-		// public void run() {
-		// initChildWidgetTests();
-		// requestLayout();
-		// }
-		// });
-		//
 		initViewEvents();
 	}
 
@@ -72,9 +63,7 @@ public class OpenTabHost extends TabHost {
 			View tabView = newTabIndicator(tabName, false);
 			TabSpec tabSpec = this.newTabSpec(tabName).setIndicator(tabView);
 			//
-			Bundle args = new Bundle();
-			args.putInt("index", 0);
-			this.addTabWidget(tabSpec, null, args);
+			this.addTabWidget(tabSpec);
 		}
 		requestLayout();
 	}
@@ -112,7 +101,7 @@ public class OpenTabHost extends TabHost {
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		view.setLayoutParams(lp);
 
-		mTabWidget.setPadding(getResources().getDimensionPixelSize(R.dimen.tab_left_offset), 0, 0, 0);
+//		mTabWidget.setPadding(getResources().getDimensionPixelSize(R.dimen.tab_left_offset), 0, 0, 0);
 
 		view.setText(name);
 
@@ -128,33 +117,18 @@ public class OpenTabHost extends TabHost {
 	public void addTabWidget(String title) {
 	}
 
-	public void addTabWidget(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
+	public void addTabWidget(TabHost.TabSpec tabSpec) {
 		tabSpec.setContent(new DummyTabFactory(mContext));
-		// String tag = tabSpec.getTag();
-		// TabInfo info = new TabInfo(tag, clss, args);
-		// mTabInfos.add(info);
 		this.addTab(tabSpec);
 	}
-
-	final class TabInfo {
-		private final String tag;
-		private final Class<?> clss;
-		private final Bundle args;
-
-		TabInfo(String _tag, Class<?> _class, Bundle _args) {
-			tag = _tag;
-			clss = _class;
-			args = _args;
-		}
-	}
-
+	
 	class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
 
 		public DummyTabFactory(Context context) {
 			this.mContext = context;
 		}
-
+		
 		@Override
 		public View createTabContent(String tag) {
 			View v = new View(mContext);
