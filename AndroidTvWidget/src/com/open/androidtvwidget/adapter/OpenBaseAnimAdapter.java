@@ -68,6 +68,7 @@ public class OpenBaseAnimAdapter extends BaseAnimAdapter {
 	 */
 	public void setVisibleWidget(boolean isHide) {
 		this.mIsHide = isHide;
+		getMainUpView().setVisibility(mIsHide ? View.GONE : View.VISIBLE);
 	}
 
 	public interface NewAnimatorListener {
