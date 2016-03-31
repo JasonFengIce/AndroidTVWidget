@@ -1,5 +1,8 @@
 package com.open.androidtvwidget.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.adapter.BaseTabTitleAdapter;
 
@@ -89,21 +92,28 @@ public class OpenTabHost extends TabHost {
 	}
 
 	private BaseTabTitleAdapter mAdapter;
+	private List<View> mCacheView = new ArrayList<View>();
 
 	public void setAdapter(BaseTabTitleAdapter adapter) {
-		this.mAdapter = adapter;
+		mCacheView.clear();
 		clearAllTabs();
+		this.mAdapter = adapter;
 		if (this.mAdapter != null) {
 			int count = this.mAdapter.getCount();
 			if (count > 0) {
 				for (int i = 0; i < count; i++) {
 					View titleView = this.mAdapter.getView(i, null, this);
+					mCacheView.add(titleView);
 					TabSpec tabSpec = this.newTabSpec(i + "").setIndicator(titleView);
 					this.addTabWidget(tabSpec);
 				}
 				requestLayout();
 			}
 		}
+	}
+
+	public List<View> getTitleView() {
+		return this.mCacheView;
 	}
 
 	public interface OnTabSelectListener {

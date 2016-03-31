@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 		OpenTabTitleAdapter openTabTitleAdapter = new OpenTabTitleAdapter();
 		mOpenTabHost.setOnTabSelectListener(this);
 		mOpenTabHost.setAdapter(openTabTitleAdapter);
-		// mOpenTabHost.setCurrentTab(2);
 	}
 
 	private void initAllViewPager() {
@@ -70,7 +68,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 		viewpager.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-				MainUpView mainUpView = (MainUpView) viewList.get(viewpager.getCurrentItem())
+				int pos = viewpager.getCurrentItem();
+				MainUpView mainUpView = (MainUpView) viewList.get(pos)
 						.findViewById(R.id.mainUpView1);
 				OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
 				if (!(newFocus instanceof ReflectItemView)) {
@@ -78,18 +77,27 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 					adapter.setVisibleWidget(true);
 				} else {
 					adapter.setVisibleWidget(false);
-					mainUpView.setFocusView(newFocus, oldFocus, 1.2f);
+					float scale = 1.2f;
+					// test scale.
+					if (pos == 1)
+						scale = 1.3f;
+					else if (pos == 2)
+						scale = 1.0f;
+					else if (pos == 3) 
+						scale = 1.1f;
+					mainUpView.setFocusView(newFocus, oldFocus, scale);
 				}
 			}
 		});
 		viewpager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				mOpenTabHost.setCurrentTab(position);
 			}
+
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 			}
+
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 			}
@@ -107,10 +115,15 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 	@Override
 	public void onTabSelect(OpenTabHost openTabHost, View titleWidget, int postion) {
 		switchTab(openTabHost, postion);
-		if (viewpager != null)
+		if (viewpager != null) {
 			viewpager.setCurrentItem(postion);
+		}
 	}
-	
+
+	/**
+	 * 将标题栏的文字颜色改变. <br>
+	 * 你可以写自己的东西，我这里只是DEMO.
+	 */
 	public void switchTab(OpenTabHost openTabHost, int postion) {
 		TabWidget tw = openTabHost.getTabWidget();
 		for (int i = 0; i < tw.getChildCount(); i++) {
@@ -129,8 +142,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 				}
 			}
 		}
-	}	
-	
+	}
+
 	class DemoPagerAdapter extends PagerAdapter {
 
 		@Override
