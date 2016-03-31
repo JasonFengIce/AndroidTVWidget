@@ -81,7 +81,10 @@ public class OpenTabHost extends TabHost {
 		public DummyTabFactory(Context context) {
 			this.mContext = context;
 		}
-
+		
+		/**
+		 * 创建一个空的Content.
+		 */
 		@Override
 		public View createTabContent(String tag) {
 			View v = new View(mContext);

@@ -29,7 +29,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 	private List<View> viewList;// view数组
 	private View view1, view2, view3, view4;
 	ViewPager viewpager;
-	OpenTabHost mOpenTabHost;
+	OpenTabHost mOpenTabHost; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
