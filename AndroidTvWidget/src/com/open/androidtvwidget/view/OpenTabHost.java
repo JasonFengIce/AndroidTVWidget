@@ -112,7 +112,7 @@ public class OpenTabHost extends TabHost {
 		}
 	}
 
-	public List<View> getTitleView() {
+	public List<View> getAllTitleView() {
 		return this.mCacheView;
 	}
 

@@ -76,6 +76,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 					mainUpView.setUnFocusView(oldFocus);
 					adapter.setVisibleWidget(true);
 				} else {
+					newFocus.bringToFront();
 					adapter.setVisibleWidget(false);
 					float scale = 1.2f;
 					// test scale.
