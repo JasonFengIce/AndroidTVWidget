@@ -69,8 +69,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
 				int pos = viewpager.getCurrentItem();
-				MainUpView mainUpView = (MainUpView) viewList.get(pos)
-						.findViewById(R.id.mainUpView1);
+				MainUpView mainUpView = (MainUpView) viewList.get(pos).findViewById(R.id.mainUpView1);
 				OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
 				if (!(newFocus instanceof ReflectItemView)) {
 					mainUpView.setUnFocusView(oldFocus);
@@ -84,15 +83,29 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 						scale = 1.3f;
 					else if (pos == 2)
 						scale = 1.0f;
-					else if (pos == 3) 
+					else if (pos == 3)
 						scale = 1.1f;
 					mainUpView.setFocusView(newFocus, oldFocus, scale);
 				}
 			}
 		});
+		viewpager.setOffscreenPageLimit(4);
 		viewpager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
+				switchFocusTab(mOpenTabHost, position);
+				// 这里加入是为了防止移动过去后，移动的边框还在的问题.
+				// 从标题栏翻页就能看到上次的边框.
+				if (position > 0) {
+					MainUpView mainUpView = (MainUpView) viewList.get(position - 1).findViewById(R.id.mainUpView1);
+					OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
+					adapter.setVisibleWidget(true);
+				}
+				if (position < (viewpager.getChildCount() - 1)) {
+					MainUpView mainUpView = (MainUpView) viewList.get(position + 1).findViewById(R.id.mainUpView1);
+					OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
+					adapter.setVisibleWidget(true);
+				}
 			}
 
 			@Override
@@ -118,6 +131,24 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 		switchTab(openTabHost, postion);
 		if (viewpager != null) {
 			viewpager.setCurrentItem(postion);
+		}
+	}
+
+	/**
+	 * 设置标题栏被选中，<br>
+	 * 但是没有焦点的状态.
+	 */
+	public void switchFocusTab(OpenTabHost openTabHost, int postion) {
+		List<View> viewList = mOpenTabHost.getAllTitleView();
+		if (viewList != null && viewList.size() > 0) {
+			for (int i = 0; i < viewList.size(); i++) {
+				View viewC = viewList.get(i);
+				if (i == postion) {
+					viewC.setSelected(true);
+				} else {
+					viewC.setSelected(false);
+				}
+			}
 		}
 	}
 

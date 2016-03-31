@@ -21,7 +21,7 @@
             android:paddingRight="80dp" >
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/gridview_lay"
+                android:id="@+id/page2_gridview_lay"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px840"
                 android:layout_height="@dimen/px394"
@@ -159,6 +159,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
+                android:id="@+id/page2_item5"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"

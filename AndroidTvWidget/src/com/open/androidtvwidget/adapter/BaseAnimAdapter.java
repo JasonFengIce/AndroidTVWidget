@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -104,6 +105,7 @@ public abstract class BaseAnimAdapter implements IAnimAdapter {
 	}
 	
 	public Rect findLocationWithView(View view) {
+		Log.d("", "hailongqiu findLocationWithView  view:" + view);
 		ViewGroup root = (ViewGroup) getMainUpView().getParent();
 		Rect rect = new Rect();
 		root.offsetDescendantRectToMyCoords(view, rect);
