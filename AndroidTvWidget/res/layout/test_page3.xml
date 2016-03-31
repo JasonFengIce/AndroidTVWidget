@@ -22,6 +22,7 @@
 
             <com.open.androidtvwidget.view.ReflectItemView
                 android:id="@+id/gridview_lay"
+                android:nextFocusUp="@+id/title_bar3"
                 android:layout_width="@dimen/px840"
                 android:layout_height="@dimen/px394"
                 android:layout_marginLeft="@dimen/px96"
@@ -48,6 +49,16 @@
                         android:layout_height="@dimen/px350"
                         android:scaleType="fitXY"
                         android:src="@drawable/top_test_bg" />
+                    
+                      <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="#50000000"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="页面page3"
+                        android:textColor="#FF0000" />
+                      
                 </FrameLayout>
             </com.open.androidtvwidget.view.ReflectItemView>
 
@@ -77,6 +88,7 @@
 
             <com.open.androidtvwidget.view.ReflectItemView
                 android:id="@+id/hot_lay"
+                android:nextFocusUp="@+id/title_bar3"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1412"
@@ -84,6 +96,7 @@
                 android:background="@drawable/mainview_huodong"
                 android:clickable="true"
                 android:focusable="true"
+                app:isReflect="true" 
                 android:focusableInTouchMode="true" >
 
                 <ImageView
@@ -95,6 +108,7 @@
 
             <com.open.androidtvwidget.view.ReflectItemView
                 android:id="@+id/top_lay"
+                android:nextFocusUp="@+id/title_bar3"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px968"
@@ -147,12 +161,14 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
+                android:nextFocusUp="@+id/title_bar3"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1858"
                 android:layout_marginTop="@dimen/px204"
                 android:clickable="true"
                 android:focusable="true"
+                app:isReflect="true" 
                 android:focusableInTouchMode="true"
                 android:src="@drawable/mainview_cloudlist" >
 

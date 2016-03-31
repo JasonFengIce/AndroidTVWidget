@@ -15,13 +15,14 @@
         android:scrollbars="none" >
 
         <com.open.androidtvwidget.view.MainLayout
-            android:id="@+id/main_lay"
+            android:id="@+id/page1_main_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingRight="80dp" >
 
             <com.open.androidtvwidget.view.ReflectItemView
                 android:id="@+id/gridview_lay"
+                android:nextFocusUp="@+id/title_bar1"
                 android:layout_width="@dimen/px840"
                 android:layout_height="@dimen/px394"
                 android:layout_marginLeft="@dimen/px96"
@@ -48,6 +49,15 @@
                         android:layout_height="@dimen/px350"
                         android:scaleType="fitXY"
                         android:src="@drawable/top_test_bg" />
+                    
+                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="#50000000"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="页面page1"
+                        android:textColor="#FF0000" />
                 </FrameLayout>
             </com.open.androidtvwidget.view.ReflectItemView>
 
@@ -76,7 +86,8 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/hot_lay"
+                android:id="@+id/page1_hot_lay"
+                android:nextFocusUp="@+id/title_bar1"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1412"
@@ -94,7 +105,8 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/top_lay"
+                android:id="@+id/page1_top_lay"
+                android:nextFocusUp="@+id/title_bar1"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px968"
@@ -147,6 +159,8 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
+                android:id="@+id/page1_toprlay"
+                android:nextFocusUp="@+id/title_bar1"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1858"

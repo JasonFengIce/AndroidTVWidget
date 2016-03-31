@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.open.androidtvwidget.R;
-import com.open.androidtvwidget.view.OpenTabHost;
 import com.open.androidtvwidget.view.TextViewWithTTF;
 
 import android.content.Context;
@@ -13,8 +12,12 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TabWidget;
 
+/**
+ * 这是一个标题栏的DEMO Adapter.
+ * @author hailongqiu
+ *
+ */
 public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 	
 	private List<String> titleList = new ArrayList<String>();
@@ -30,12 +33,29 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
 		return titleList.size();
 	}
 	
+	/**
+	 * 为何要设置ID标识。<br>
+	 * 因为PAGE页面中的ITEM如果向上移到标题栏， <br>
+	 * 它会查找最近的，你只需要在布局中设置 <br>
+	 *  android:nextFocusUp="@+id/title_bar1" <br>
+	 *  就可以解决焦点问题哦.
+	 */
+	private List<Integer> ids = new ArrayList<Integer>() {
+		{
+			add(R.id.title_bar1);
+			add(R.id.title_bar2);
+			add(R.id.title_bar3);
+			add(R.id.title_bar4);
+		}
+	};
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		parent.getContext();
 		String title = titleList.get(position);
 		if (convertView == null) {
 			convertView = newTabIndicator(parent.getContext(), title, false);
+			convertView.setId(ids.get(position)); // 设置ID.
 		} else {
 			// ... ..
 		}

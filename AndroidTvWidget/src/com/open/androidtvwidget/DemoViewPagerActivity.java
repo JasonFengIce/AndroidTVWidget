@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,6 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 	private List<View> viewList;// view数组
 	private View view1, view2, view3, view4;
 	ViewPager viewpager;
-	MainUpView mainUpView1;
-	MainUpView mainUpView2;
-	MainUpView mainUpView3;
-	MainUpView mainUpView4;
 	OpenTabHost mOpenTabHost;
 
 	@Override
@@ -110,9 +107,10 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 	@Override
 	public void onTabSelect(OpenTabHost openTabHost, View titleWidget, int postion) {
 		switchTab(openTabHost, postion);
-		viewpager.setCurrentItem(postion);
+		if (viewpager != null)
+			viewpager.setCurrentItem(postion);
 	}
-
+	
 	public void switchTab(OpenTabHost openTabHost, int postion) {
 		TabWidget tw = openTabHost.getTabWidget();
 		for (int i = 0; i < tw.getChildCount(); i++) {
@@ -131,8 +129,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 				}
 			}
 		}
-	}
-
+	}	
+	
 	class DemoPagerAdapter extends PagerAdapter {
 
 		@Override
