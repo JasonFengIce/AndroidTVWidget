@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 /**
- * Anim Adapter 抽象类.
+ * Anim Bridge 抽象类.
  * @author hailongqiu 356752238@qq.com
  *
  */

@@ -16,12 +16,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public class ReflectItemView extends FrameLayout {
+
 	private static final String TAG = "ReflectItemView";
+	private static final int DEFUALT_REFHEIGHT = 80;
+
 	private Paint mRefPaint = null;
 	private Bitmap mReflectBitmap;
 	private Canvas mReflectCanvas;
 	private View mContentView;
-	private static final int REFHEIGHT = 80;
+	private int mRefHeight = DEFUALT_REFHEIGHT;
 
 	public ReflectItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -40,23 +43,19 @@ public class ReflectItemView extends FrameLayout {
 
 	private void init(Context context, AttributeSet attrs) {
 		if (attrs != null) {
-			TypedArray tArray = context.obtainStyledAttributes(attrs,
-					R.styleable.reflectItemView);// 获取配置属性
-			boolean isReflect = tArray.getBoolean(
-					R.styleable.reflectItemView_isReflect, false);
+			TypedArray tArray = context.obtainStyledAttributes(attrs, R.styleable.reflectItemView);// 获取配置属性
+			boolean isReflect = tArray.getBoolean(R.styleable.reflectItemView_isReflect, false);
+			mRefHeight = (int) tArray.getDimension(R.styleable.reflectItemView_reflect_height, DEFUALT_REFHEIGHT);
 			setReflection(isReflect);
 		}
 		//
 		if (mRefPaint == null) {
 			mRefPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			// 倒影渐变.
-			mRefPaint
-					.setShader(new LinearGradient(0, 0, 0, REFHEIGHT,
-							new int[] { 0x77000000, 0x66AAAAAA, 0x0500000,
-									0x00000000 }, new float[] { 0.0f, 0.1f,
-									0.9f, 1.0f }, Shader.TileMode.CLAMP));
-			mRefPaint.setXfermode(new PorterDuffXfermode(
-					PorterDuff.Mode.MULTIPLY));
+			mRefPaint.setShader(
+					new LinearGradient(0, 0, 0, mRefHeight, new int[] { 0x77000000, 0x66AAAAAA, 0x0500000, 0x00000000 },
+							new float[] { 0.0f, 0.1f, 0.9f, 1.0f }, Shader.TileMode.CLAMP));
+			mRefPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
 		}
 		setClipChildren(false);
 		setClipToPadding(false);
@@ -73,7 +72,8 @@ public class ReflectItemView extends FrameLayout {
 
 	@Override
 	public void addView(View child) {
-		mContentView = child;
+		if (mContentView == null)
+			mContentView = child;
 		super.addView(child);
 	}
 
@@ -81,17 +81,20 @@ public class ReflectItemView extends FrameLayout {
 		return mContentView;
 	}
 
-//	@Override
-//	public boolean performClick() {
-//		if (mContentView != null) {
-//			return mContentView.performClick();
-//		} else {
-//			return super.performClick();
-//		}
-//	}
+	// @Override
+	// public boolean performClick() {
+	// if (mContentView != null) {
+	// return mContentView.performClick();
+	// } else {
+	// return super.performClick();
+	// }
+	// }
 
 	private boolean mIsReflection = true;
 
+	/**
+	 * 设置是否倒影.
+	 */
 	public void setReflection(boolean ref) {
 		mIsReflection = ref;
 		invalidate();
@@ -101,18 +104,35 @@ public class ReflectItemView extends FrameLayout {
 		return this.mIsReflection;
 	}
 
+	/**
+	 * 倒影高度.
+	 */
+	public void setRefHeight(int height) {
+		this.mRefHeight = height;
+	}
+
+	public int getRefHeight() {
+		return this.mRefHeight;
+	}
+
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
+		drawRefleBitmap(canvas);
+	}
+	
+	/**
+	 * 绘制倒影.
+	 */
+	private void drawRefleBitmap(Canvas canvas) {
 		if (mIsReflection) {
 			// 创建一个画布.
-			if (mReflectBitmap == null && mContentView != null) {
-				mReflectBitmap = Bitmap.createBitmap(mContentView.getWidth(),
-						REFHEIGHT, Bitmap.Config.ARGB_8888);
-				mReflectCanvas = new Canvas(mReflectBitmap);
-			}
-			// 绘制倒影.
 			if (mContentView != null) {
+				if (mReflectBitmap == null) {
+					mReflectBitmap = Bitmap.createBitmap(mContentView.getWidth(), mRefHeight, Bitmap.Config.ARGB_8888);
+					mReflectCanvas = new Canvas(mReflectBitmap);
+				}
+				// 绘制倒影.
 				drawReflection(mReflectCanvas);
 				canvas.save();
 				int dy = mContentView.getBottom();
@@ -133,13 +153,13 @@ public class ReflectItemView extends FrameLayout {
 	 */
 	public void drawReflection(Canvas canvas) {
 		canvas.save();
-		canvas.clipRect(0, 0, mContentView.getWidth(), REFHEIGHT);
+		canvas.clipRect(0, 0, mContentView.getWidth(), mRefHeight);
 		canvas.save();
 		canvas.scale(1, -1);
 		canvas.translate(0, -mContentView.getHeight());
 		mContentView.draw(canvas);
 		canvas.restore();
-		canvas.drawRect(0, 0, mContentView.getWidth(), REFHEIGHT, mRefPaint);
+		canvas.drawRect(0, 0, mContentView.getWidth(), mRefHeight, mRefPaint);
 		canvas.restore();
 	}
 }
