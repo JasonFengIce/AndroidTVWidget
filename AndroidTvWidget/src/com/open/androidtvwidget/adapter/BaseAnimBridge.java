@@ -22,7 +22,7 @@ public abstract class BaseAnimBridge implements IAnimBridge {
 	private MainUpView mMainUpView;
 	
 	@Override
-	public void onInitAdapter(MainUpView view) {
+	public void onInitBridge(MainUpView view) {
 	}
 	
 	/**

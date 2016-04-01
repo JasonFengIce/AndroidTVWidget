@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 		test_top_iv = findViewById(R.id.test_top_iv);
 		// MainUpView 设置.
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-		mBaseAnimAdapter = (OpenBaseAnimBridge) mainUpView1.getAnimAdapter();
+		mBaseAnimAdapter = (OpenBaseAnimBridge) mainUpView1.getAnimBridge();
 		// mainUpView1 = new MainUpView(getApplicationContext(), gridview_lay);
 		// mainUpView1.setUpRectResource(R.drawable.item_highlight);
 		// mainUpView1.setUpRectResource(R.drawable.white_light_10);

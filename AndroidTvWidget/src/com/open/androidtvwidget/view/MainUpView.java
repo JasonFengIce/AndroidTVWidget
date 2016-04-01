@@ -65,10 +65,10 @@ public class MainUpView extends FrameLayout {
 			tArray.recycle();
 		}
 		//
-		IAnimBridge baseAnimAdapter = new OpenBaseAnimBridge();
-		baseAnimAdapter.onInitAdapter(this);
-		baseAnimAdapter.setMainUpView(this);
-		setAnimAdapter(baseAnimAdapter);
+		IAnimBridge baseAnimBridge = new OpenBaseAnimBridge();
+		baseAnimBridge.onInitBridge(this);
+		baseAnimBridge.setMainUpView(this);
+		setAnimBridge(baseAnimBridge);
 	}
 
 	public void setUpRectResource(int resId) {
@@ -116,8 +116,8 @@ public class MainUpView extends FrameLayout {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if (this.mAnimAdapter != null)
-			if (this.mAnimAdapter.onDrawMainUpView(canvas))
+		if (this.mAnimBridge != null)
+			if (this.mAnimBridge.onDrawMainUpView(canvas))
 				return;
 		super.onDraw(canvas);
 	}
@@ -171,12 +171,12 @@ public class MainUpView extends FrameLayout {
 	 * 设置焦点子控件的移动和放大.
 	 */
 	public void setFocusView(View view, float scale) {
-		mAnimAdapter.onFocusView(view, scale, scale);
+		this.mAnimBridge.onFocusView(view, scale, scale);
 	}
 
 	public void setFocusView(View view, float scaleX, float scaleY) {
-		if (this.mAnimAdapter != null)
-			this.mAnimAdapter.onFocusView(view, scaleX, scaleY);
+		if (this.mAnimBridge != null)
+			this.mAnimBridge.onFocusView(view, scaleX, scaleY);
 	}
 
 	public void setFocusView(View newView, View oldView, float scale) {
@@ -185,8 +185,8 @@ public class MainUpView extends FrameLayout {
 	}
 
 	public void setUnFocusView(View view, float scaleX, float scaleY) {
-		if (this.mAnimAdapter != null)
-			this.mAnimAdapter.onOldFocusView(view, scaleX, scaleY);
+		if (this.mAnimBridge != null)
+			this.mAnimBridge.onOldFocusView(view, scaleX, scaleY);
 	}
 
 	/**
@@ -196,19 +196,19 @@ public class MainUpView extends FrameLayout {
 		setUnFocusView(view, DEFUALT_SCALE, DEFUALT_SCALE);
 	}
 
-	IAnimBridge mAnimAdapter;
+	IAnimBridge mAnimBridge;
 
-	public void setAnimAdapter(IAnimBridge adapter) {
-		this.mAnimAdapter = adapter;
-		if (this.mAnimAdapter != null) {
-			this.mAnimAdapter.onInitAdapter(this);
-			this.mAnimAdapter.setMainUpView(this);
+	public void setAnimBridge(IAnimBridge adapter) {
+		this.mAnimBridge = adapter;
+		if (this.mAnimBridge != null) {
+			this.mAnimBridge.onInitBridge(this);
+			this.mAnimBridge.setMainUpView(this);
 			invalidate();
 		}
 	}
 
-	public IAnimBridge getAnimAdapter() {
-		return this.mAnimAdapter;
+	public IAnimBridge getAnimBridge() {
+		return this.mAnimBridge;
 	}
 
 }

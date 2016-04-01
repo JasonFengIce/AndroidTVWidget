@@ -28,7 +28,7 @@ public class AnimNoDrawBridge extends BaseAnimBridge {
 	private boolean mAnimEnabled = true;
 
 	@Override
-	public void onInitAdapter(MainUpView view) {
+	public void onInitBridge(MainUpView view) {
 		view.setVisibility(View.INVISIBLE); // 防止边框第一次出现问题.
 		view.setBackgroundDrawable(view.getUpRectDrawable());
 	}

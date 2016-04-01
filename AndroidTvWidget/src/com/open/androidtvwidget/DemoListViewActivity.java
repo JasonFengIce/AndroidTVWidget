@@ -37,8 +37,8 @@ public class DemoListViewActivity extends Activity {
 		mainUpView1.setUpRectResource(R.drawable.white_light_10);
 		mainUpView1.setShadowDrawable(null);
 		mainUpView1.setDrawUpRectPadding(10);
-		OpenBaseAnimBridge baseAnimAdapter = ((OpenBaseAnimBridge)mainUpView1.getAnimAdapter());
-		baseAnimAdapter.setTranDurAnimTime(200);
+		OpenBaseAnimBridge baseAnimBridge = ((OpenBaseAnimBridge)mainUpView1.getAnimBridge());
+		baseAnimBridge.setTranDurAnimTime(200);
 		initData();
 
 		listView.setAdapter(new DemoAdapter());
