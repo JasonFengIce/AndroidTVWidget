@@ -215,6 +215,7 @@
 
     <com.open.androidtvwidget.view.MainUpView
         android:id="@+id/mainUpView1"
+        app:upImageRes="@drawable/test_rectangle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

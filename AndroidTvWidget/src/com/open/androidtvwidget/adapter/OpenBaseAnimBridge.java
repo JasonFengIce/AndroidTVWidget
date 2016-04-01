@@ -1,6 +1,6 @@
 package com.open.androidtvwidget.adapter;
 
-import com.open.androidtvwidget.adapter.BaseAnimAdapter.ScaleView;
+import com.open.androidtvwidget.adapter.BaseAnimBridge.ScaleView;
 import com.open.androidtvwidget.view.MainUpView;
 
 import android.animation.Animator;
@@ -20,7 +20,7 @@ import android.view.animation.DecelerateInterpolator;
  * @author hailongqiu 356752238@qq.com
  *
  */
-public class OpenBaseAnimAdapter extends BaseAnimAdapter {
+public class OpenBaseAnimBridge extends BaseAnimBridge {
 
 	private static final int DEFUALT_TRAN_DUR_ANIM = 300;
 	private int mTranDurAnimTime = DEFUALT_TRAN_DUR_ANIM;
@@ -32,7 +32,7 @@ public class OpenBaseAnimAdapter extends BaseAnimAdapter {
 	private View mFocusView;
 	private NewAnimatorListener mNewAnimatorListener;
 
-	public OpenBaseAnimAdapter() {
+	public OpenBaseAnimBridge() {
 	}
 	
 	@Override

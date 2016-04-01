@@ -3,7 +3,7 @@ package com.open.androidtvwidget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.open.androidtvwidget.adapter.OpenBaseAnimAdapter;
+import com.open.androidtvwidget.adapter.OpenBaseAnimBridge;
 import com.open.androidtvwidget.adapter.OpenTabTitleAdapter;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.androidtvwidget.view.OpenTabHost;
@@ -70,7 +70,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 			public void onGlobalFocusChanged(View oldFocus, View newFocus) {
 				int pos = viewpager.getCurrentItem();
 				MainUpView mainUpView = (MainUpView) viewList.get(pos).findViewById(R.id.mainUpView1);
-				OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
+				OpenBaseAnimBridge adapter = (OpenBaseAnimBridge) mainUpView.getAnimAdapter();
 				if (!(newFocus instanceof ReflectItemView)) {
 					mainUpView.setUnFocusView(oldFocus);
 					adapter.setVisibleWidget(true);
@@ -98,12 +98,12 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 				// 从标题栏翻页就能看到上次的边框.
 				if (position > 0) {
 					MainUpView mainUpView = (MainUpView) viewList.get(position - 1).findViewById(R.id.mainUpView1);
-					OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
+					OpenBaseAnimBridge adapter = (OpenBaseAnimBridge) mainUpView.getAnimAdapter();
 					adapter.setVisibleWidget(true);
 				}
 				if (position < (viewpager.getChildCount() - 1)) {
 					MainUpView mainUpView = (MainUpView) viewList.get(position + 1).findViewById(R.id.mainUpView1);
-					OpenBaseAnimAdapter adapter = (OpenBaseAnimAdapter) mainUpView.getAnimAdapter();
+					OpenBaseAnimBridge adapter = (OpenBaseAnimBridge) mainUpView.getAnimAdapter();
 					adapter.setVisibleWidget(true);
 				}
 			}

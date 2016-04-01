@@ -17,7 +17,7 @@ import android.view.animation.DecelerateInterpolator;
  * @author hailongqiu 356752238@qq.com
  *
  */
-public abstract class BaseAnimAdapter implements IAnimAdapter {
+public abstract class BaseAnimBridge implements IAnimBridge {
 	private static final int DEFUALT_TRAN_DUR_ANIM = 300;
 	private MainUpView mMainUpView;
 	

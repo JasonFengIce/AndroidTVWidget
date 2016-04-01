@@ -5,7 +5,7 @@ import com.open.androidtvwidget.view.MainUpView;
 import android.graphics.Canvas;
 import android.view.View;
 
-public interface IAnimAdapter {
+public interface IAnimBridge {
 	
 	public void onInitAdapter(MainUpView view);
 	public boolean onDrawMainUpView(Canvas canvas);

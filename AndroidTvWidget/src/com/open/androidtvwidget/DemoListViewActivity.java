@@ -3,7 +3,7 @@ package com.open.androidtvwidget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.open.androidtvwidget.adapter.OpenBaseAnimAdapter;
+import com.open.androidtvwidget.adapter.OpenBaseAnimBridge;
 import com.open.androidtvwidget.view.MainUpView;
 
 import android.app.Activity;
@@ -37,7 +37,7 @@ public class DemoListViewActivity extends Activity {
 		mainUpView1.setUpRectResource(R.drawable.white_light_10);
 		mainUpView1.setShadowDrawable(null);
 		mainUpView1.setDrawUpRectPadding(10);
-		OpenBaseAnimAdapter baseAnimAdapter = ((OpenBaseAnimAdapter)mainUpView1.getAnimAdapter());
+		OpenBaseAnimBridge baseAnimAdapter = ((OpenBaseAnimBridge)mainUpView1.getAnimAdapter());
 		baseAnimAdapter.setTranDurAnimTime(200);
 		initData();
 

@@ -1,8 +1,8 @@
 package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
-import com.open.androidtvwidget.adapter.IAnimAdapter;
-import com.open.androidtvwidget.adapter.OpenBaseAnimAdapter;
+import com.open.androidtvwidget.adapter.IAnimBridge;
+import com.open.androidtvwidget.adapter.OpenBaseAnimBridge;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -57,24 +57,15 @@ public class MainUpView extends FrameLayout {
 	private void init(Context context, AttributeSet attrs) {
 		setWillNotDraw(false);
 		mContext = context;
-		try {
-			mDrawableUpRect = mContext.getResources().getDrawable(R.drawable.white_light_10); // 移动的边框.
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		// 初始化.
 		if (attrs != null) {
 			TypedArray tArray = context.obtainStyledAttributes(attrs, R.styleable.mainUpView);// 获取配置属性
-			int upImageRes = tArray.getResourceId(R.styleable.mainUpView_upImageRes, 0); // 顶层图片.
-			if (upImageRes != 0)
-				mDrawableUpRect = context.getResources().getDrawable(upImageRes);
-			int shadowImageRes = tArray.getResourceId(R.styleable.mainUpView_shadowImageRes, 0); // 阴影图片.
-			if (shadowImageRes != 0)
-				mDrawableShadow = context.getResources().getDrawable(shadowImageRes);
+			mDrawableUpRect = tArray.getDrawable(R.styleable.mainUpView_upImageRes); // 顶层图片.
+			mDrawableShadow = tArray.getDrawable(R.styleable.mainUpView_shadowImageRes); // 阴影图片.
 			tArray.recycle();
 		}
 		//
-		IAnimAdapter baseAnimAdapter = new OpenBaseAnimAdapter();
+		IAnimBridge baseAnimAdapter = new OpenBaseAnimBridge();
 		baseAnimAdapter.onInitAdapter(this);
 		baseAnimAdapter.setMainUpView(this);
 		setAnimAdapter(baseAnimAdapter);
@@ -205,9 +196,9 @@ public class MainUpView extends FrameLayout {
 		setUnFocusView(view, DEFUALT_SCALE, DEFUALT_SCALE);
 	}
 
-	IAnimAdapter mAnimAdapter;
+	IAnimBridge mAnimAdapter;
 
-	public void setAnimAdapter(IAnimAdapter adapter) {
+	public void setAnimAdapter(IAnimBridge adapter) {
 		this.mAnimAdapter = adapter;
 		if (this.mAnimAdapter != null) {
 			this.mAnimAdapter.onInitAdapter(this);
@@ -216,7 +207,7 @@ public class MainUpView extends FrameLayout {
 		}
 	}
 
-	public IAnimAdapter getAnimAdapter() {
+	public IAnimBridge getAnimAdapter() {
 		return this.mAnimAdapter;
 	}
 

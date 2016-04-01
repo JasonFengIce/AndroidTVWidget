@@ -20,7 +20,7 @@ import android.view.animation.DecelerateInterpolator;
  * @author hailongqiu
  *
  */
-public class AnimNoDrawAdapter extends BaseAnimAdapter {
+public class AnimNoDrawBridge extends BaseAnimBridge {
 	private static final int DEFUALT_TRAN_DUR_ANIM = 300;
 	private int mTranDurAnimTime = DEFUALT_TRAN_DUR_ANIM;
 	private AnimatorSet mCurrentAnimatorSet;
