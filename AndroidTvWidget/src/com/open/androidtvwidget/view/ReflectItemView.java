@@ -31,7 +31,6 @@ public class ReflectItemView extends FrameLayout {
 
 	private static final int DEFUALT_REFHEIGHT = 80;
 	private static final int DEFUALT_RADIUS = 12;
-	private final static String CACHE_REFLECT_BITMAP_KEY = "reflectBitmap_";
 	
 	private BitmapMemoryCache mBitmapMemoryCache =BitmapMemoryCache.getInstance();
 	
