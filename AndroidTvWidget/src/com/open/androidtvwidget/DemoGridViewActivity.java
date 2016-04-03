@@ -9,9 +9,7 @@ import com.open.androidtvwidget.view.MainUpView;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -26,7 +24,6 @@ public class DemoGridViewActivity extends Activity {
 
 	private List<Map<String, Object>> data;
 	private MainUpView mainUpView1;
-	
 	private View mOldView;
 	
 	@Override
