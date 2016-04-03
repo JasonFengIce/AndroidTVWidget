@@ -19,7 +19,7 @@ import android.view.animation.DecelerateInterpolator;
  * @author hailongqiu 356752238@qq.com
  *
  */
-public class OpenBaseAnimBridge extends BaseAnimBridge {
+public class OpenBaseAnimBridge extends BaseEffectBridgeWrapper {
 
 	private static final int DEFUALT_TRAN_DUR_ANIM = 300;
 	private int mTranDurAnimTime = DEFUALT_TRAN_DUR_ANIM;
