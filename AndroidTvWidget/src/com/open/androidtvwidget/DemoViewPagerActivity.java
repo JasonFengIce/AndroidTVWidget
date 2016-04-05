@@ -108,8 +108,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 					else if (pos == 3)
 						scale = 1.1f;
 					mainUpView.setFocusView(newFocus, mOldFocus, scale);
-					mOldFocus = newFocus;
 				}
+				mOldFocus = newFocus;
 			}
 		});
 		viewpager.setOffscreenPageLimit(4);
