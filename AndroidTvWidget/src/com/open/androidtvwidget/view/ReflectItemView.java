@@ -2,6 +2,7 @@ package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.cache.BitmapMemoryCache;
+import com.open.androidtvwidget.utils.DrawUtils;
 import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.content.Context;
@@ -14,7 +15,6 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -31,10 +31,11 @@ public class ReflectItemView extends FrameLayout {
 
 	private static final int DEFUALT_REFHEIGHT = 80;
 	private static final int DEFUALT_RADIUS = 12;
-	
-	private BitmapMemoryCache mBitmapMemoryCache =BitmapMemoryCache.getInstance();
-	
+
+	private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
+
 	private Paint mClearPaint = null;
+	private Paint mShapePaint = null;
 	private Paint mRefPaint = null;
 	private int mRefHeight = DEFUALT_REFHEIGHT;
 
@@ -43,7 +44,6 @@ public class ReflectItemView extends FrameLayout {
 
 	private float mRadius = DEFUALT_RADIUS;
 	private RadiusRect mRadiusRect = new RadiusRect(mRadius, mRadius, mRadius, mRadius);
-	private static final int ROUND_90_ANGLE = 90;
 
 	public ReflectItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -73,8 +73,17 @@ public class ReflectItemView extends FrameLayout {
 			mRadius = tArray.getDimension(R.styleable.reflectItemView_radius, DEFUALT_RADIUS);
 			setRadius(mRadius);
 		}
+		// 初始化圆角矩形.
+		initShapePaint();
 		// 初始化倒影参数.
 		initRefPaint();
+	}
+
+	private void initShapePaint() {
+		mShapePaint = new Paint();
+		mShapePaint.setAntiAlias(true);
+		// 取两层绘制交集。显示下层。
+		mShapePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
 	}
 
 	private void initRefPaint() {
@@ -136,54 +145,49 @@ public class ReflectItemView extends FrameLayout {
 		super.invalidate();
 	}
 
+	private boolean isDrawShapeRadiusRect(RadiusRect radiusRect) {
+		if (radiusRect.bottomLeftRadius <= 0 && radiusRect.bottomRightRadius <= 0 && radiusRect.topLeftRadius <= 0
+				&& radiusRect.topRightRadius <= 0)
+			return false;
+		return true;
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
-		// 设置圆角.
-		canvas.save();
-		if (mIsDrawShape) {
-			canvas.clipPath(getShapePath());
+		if (mIsDrawShape && isDrawShapeRadiusRect(mRadiusRect)) {
+			drawShapePathCanvas(canvas);
+		} else {
+			super.draw(canvas);
 		}
-		super.draw(canvas);
-		canvas.restore();
-		// 绘制倒影.
 		drawRefleBitmap(canvas);
 	}
-
-	public Path getShapePath() {
-		return getRoundPath();
-	}
-
-	private Path getRoundPath() {
+	
+	/**
+	 * 绘制圆角控件.
+	 * 修复使用clippath有锯齿问题.
+	 */
+	private void drawShapePathCanvas(Canvas shapeCanvas) {
 		int width = getWidth();
 		int height = getHeight();
-		//
-		Path path = new Path();
-		path.moveTo(mRadiusRect.topLeftRadius, 0);
-		// 左上
-		RectF arcTopLeft = new RectF(0, 0, mRadiusRect.topLeftRadius * 2, mRadiusRect.topLeftRadius * 2);
-		path.arcTo(arcTopLeft, -ROUND_90_ANGLE, -ROUND_90_ANGLE);
-		path.lineTo(mRadiusRect.topLeftRadius, 0);
-		// 右上.
-		RectF arcTopRight = new RectF(width - mRadiusRect.topRightRadius * 2, 0, width, mRadiusRect.topRightRadius * 2);
-		path.arcTo(arcTopRight, -ROUND_90_ANGLE, ROUND_90_ANGLE);
-		// 右下.
-		RectF arcBottomRight = new RectF(width - mRadiusRect.bottomRightRadius * 2,
-				height - mRadiusRect.bottomRightRadius * 2, width, height);
-		path.arcTo(arcBottomRight, 0, ROUND_90_ANGLE);
-		// 左下.
-		RectF arc = new RectF(0, height - mRadiusRect.bottomLeftRadius * 2, mRadiusRect.bottomLeftRadius * 2, height);
-		path.arcTo(arc, ROUND_90_ANGLE, ROUND_90_ANGLE);
-		path.lineTo(0, mRadiusRect.topLeftRadius);
-		path.close();
-		return path;
+		int count = shapeCanvas.save();
+		int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
+		Path path = DrawUtils.addRoundPath3(width, height, mRadius);
+		super.draw(shapeCanvas);
+		shapeCanvas.drawPath(path, mShapePaint);
+		shapeCanvas.restoreToCount(count2);
+		shapeCanvas.restoreToCount(count);
 	}
 	
+	public Path getShapePath() {
+		return DrawUtils.addRoundPath(getWidth(), getHeight(), mRadiusRect);
+	}
+
 	/**
 	 * 绘制倒影.
 	 */
 	private void drawRefleBitmap(Canvas canvas) {
 		if (mIsReflection) {
-			// 创建一个画布. 
+			// 创建一个画布.
 			Bitmap reflectBitmap = mBitmapMemoryCache.getBitmapFromMemCache(getId() + "");
 			if (reflectBitmap == null) {
 				OPENLOG.D(TAG, "drawRefleBitmap cache create bitmap " + getId());
