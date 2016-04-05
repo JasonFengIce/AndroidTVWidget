@@ -1,27 +1,24 @@
 package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.cache.BitmapMemoryCache;
 import com.open.androidtvwidget.utils.DrawUtils;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.utils.Utils;
 
-import BitmapMemoryCache.BitmapMemoryCache;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -47,6 +44,10 @@ public class ReflectItemView extends FrameLayout {
 
 	private float mRadius = DEFUALT_RADIUS;
 	private RadiusRect mRadiusRect = new RadiusRect(mRadius, mRadius, mRadius, mRadius);
+
+	private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
+	private static int sViewIDNum = 0;
+	private int viewIDNum = 0;
 
 	public ReflectItemView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -151,6 +152,29 @@ public class ReflectItemView extends FrameLayout {
 		return true;
 	}
 
+	/**
+	 * 获取缓存ID.
+	 */
+	private int getViewCacheID() {
+		if (viewIDNum == 0) {
+			sViewIDNum++;
+			viewIDNum = sViewIDNum;
+		}
+		return viewIDNum;
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		if (viewIDNum != 0) {
+			mBitmapMemoryCache.removeImageCache(viewIDNum + "");
+		}
+	}
+
+	public Path getShapePath(int width, int height, float radius) {
+		return DrawUtils.addRoundPath3(getWidth(), getHeight(), radius);
+	}
+	
 	@Override
 	public void draw(Canvas canvas) {
 		if (mIsDrawShape && isDrawShapeRadiusRect(mRadiusRect)) {
@@ -166,54 +190,10 @@ public class ReflectItemView extends FrameLayout {
 			drawRefleCanvas4_3_18(canvas);
 		} else if (Utils.getSDKVersion() == 17) {
 			// 4.2 不需要倒影，绘制有问题，暂时屏蔽.
-			OPENLOG.E(TAG, "android 4.2 sdk 17 倒影有问题，暂时不绘制!!");
-		} else {
+			drawRefleCanvas(canvas);
+		} else { // 性能高速-倒影(4.3有问题).
 			drawRefleCanvas(canvas);
 		}
-	}
-
-	private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
-
-	private void drawRefleCanvas4_3_18(Canvas canvas) {
-		if (mIsReflection) {
-			// 创建一个画布.
-			Bitmap reflectBitmap = mBitmapMemoryCache.getBitmapFromMemCache(getId() + "");
-			if (reflectBitmap == null) {
-				OPENLOG.D(TAG, "drawRefleBitmap cache create bitmap " + getId());
-				reflectBitmap = Bitmap.createBitmap(getWidth(), mRefHeight, Bitmap.Config.ARGB_8888);
-				mBitmapMemoryCache.addBitmapToMemoryCache(getId() + "", reflectBitmap);
-			}
-			Canvas reflectCanvas = new Canvas(reflectBitmap);
-			reflectCanvas.drawPaint(mClearPaint); // 清空画布.
-			/**
-			 * 如果设置了圆角，倒影也需要圆角.
-			 */
-			if (mIsDrawShape) {
-				reflectCanvas.clipPath(getShapePath());
-			}
-			// 绘制倒影.
-			drawReflection4_3_18(reflectCanvas);
-			canvas.save();
-
-			int dy = getHeight();
-			int dx = 0;
-			canvas.translate(dx, dy);
-			//
-			canvas.drawBitmap(reflectBitmap, 0, 0, null);
-			canvas.restore();
-		}
-	}
-
-	public void drawReflection4_3_18(Canvas canvas) {
-		canvas.save();
-		canvas.clipRect(0, 0, getWidth(), mRefHeight);
-		canvas.save();
-		canvas.scale(1, -1);
-		canvas.translate(0, -getHeight());
-		super.draw(canvas);
-		canvas.restore();
-		canvas.drawRect(0, 0, getWidth(), mRefHeight, mRefPaint);
-		canvas.restore();
 	}
 
 	/**
@@ -225,7 +205,7 @@ public class ReflectItemView extends FrameLayout {
 		int count = shapeCanvas.save();
 		int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
 		//
-		Path path = DrawUtils.addRoundPath3(width, height, mRadius);
+		Path path = getShapePath(width, height, mRadius);
 		super.draw(shapeCanvas);
 		shapeCanvas.drawPath(path, mShapePaint);
 		//
@@ -247,10 +227,53 @@ public class ReflectItemView extends FrameLayout {
 		}
 	}
 
-	public Path getShapePath() {
-		return DrawUtils.addRoundPath(getWidth(), getHeight(), mRadiusRect);
+	private void drawRefleCanvas4_3_18(Canvas canvas) {
+		if (mIsReflection) {
+			// 创建一个画布.
+			String cacheID = getViewCacheID() + "";
+			//
+			Bitmap reflectBitmap = mBitmapMemoryCache.getBitmapFromMemCache(cacheID);
+			if (reflectBitmap == null) {
+				reflectBitmap = Bitmap.createBitmap(getWidth(), mRefHeight, Bitmap.Config.ARGB_8888);
+				mBitmapMemoryCache.addBitmapToMemoryCache(cacheID, reflectBitmap);
+			}
+			Canvas reflectCanvas = new Canvas(reflectBitmap);
+			// reflectCanvas.drawPaint(mClearPaint); // 清空画布.
+			/**
+			 * 如果设置了圆角，倒影也需要圆角.
+			 */
+			int width = reflectCanvas.getWidth();
+			int height = reflectCanvas.getHeight();
+			RectF outerRect = new RectF(0, 0, width, height);
+			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+			if (mIsDrawShape) {
+				reflectCanvas.drawPath(getShapePath(width, height + 50, mRadius), paint);
+				paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+			}
+			reflectCanvas.saveLayer(outerRect, paint, Canvas.ALL_SAVE_FLAG);
+			drawReflection4_3_18(reflectCanvas);
+			reflectCanvas.restore();
+			canvas.save();
+			int dy = getHeight();
+			int dx = 0;
+			canvas.translate(dx, dy);
+			canvas.drawBitmap(reflectBitmap, 0, 0, null);
+			canvas.restore();
+		}
 	}
 
+	public void drawReflection4_3_18(Canvas canvas) {
+		canvas.save();
+		canvas.clipRect(0, 0, getWidth(), mRefHeight);
+		canvas.save();
+		canvas.scale(1, -1);
+		canvas.translate(0, -getHeight());
+		super.draw(canvas);
+		canvas.restore();
+		canvas.drawRect(0, 0, getWidth(), mRefHeight, mRefPaint);
+		canvas.restore();
+	}
+	
 	/**
 	 * 绘制倒影.
 	 */
@@ -267,7 +290,7 @@ public class ReflectItemView extends FrameLayout {
 		reflectionCanvas.translate(0, -getHeight());
 		super.draw(reflectionCanvas);
 		if (mIsDrawShape) {
-			Path path = DrawUtils.addRoundPath3(width, height, mRadius);
+			Path path = getShapePath(width, height, mRadius);
 			reflectionCanvas.drawPath(path, mShapePaint);
 		}
 		reflectionCanvas.restore();

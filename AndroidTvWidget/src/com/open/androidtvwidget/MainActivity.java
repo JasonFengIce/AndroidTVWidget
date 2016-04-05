@@ -37,11 +37,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		mOpenEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
 		// 4.2 绘制有问题，所以不使用绘制边框.
 		// 也不支持倒影效果，绘制有问题.
-		if (Utils.getSDKVersion() == 17) {
-			mainUpView1.setEffectBridge(new EffectNoDrawBridge()); // 4.3以下版本边框移动.
+		if (Utils.getSDKVersion() == 17) { // 测试 android 4.2版本.
+			EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
+			effectNoDrawBridge.setTranDurAnimTime(200);
+			mainUpView1.setEffectBridge(effectNoDrawBridge); // 4.3以下版本边框移动.
 			mainUpView1.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
 			mainUpView1.setDrawUpRectPadding(new Rect(25, 25, 23, 23)); // 边框图片设置间距.
-		} else {
+		} else { // 其它版本（android 4.3以上）.
 			mainUpView1.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
 			mainUpView1.setShadowResource(R.drawable.item_shadow); // 设置移动边框的阴影.
 		}

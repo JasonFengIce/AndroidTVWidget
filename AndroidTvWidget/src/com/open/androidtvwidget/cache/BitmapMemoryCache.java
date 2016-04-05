@@ -1,4 +1,4 @@
-package BitmapMemoryCache;
+package com.open.androidtvwidget.cache;
 
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
@@ -46,7 +46,18 @@ public class BitmapMemoryCache {
 		return mMemoryCache.get(key);
 	}
 
-	public void clearAllCache() {
+	/**
+	 * 移除缓存
+	 */
+	public synchronized void removeImageCache(String key) {
+		if (key != null) {
+			if (mMemoryCache != null) {
+				Bitmap bm = mMemoryCache.remove(key);
+				if (bm != null) {
+					bm.recycle();
+				}
+			}
+		}
 	}
 
 }
