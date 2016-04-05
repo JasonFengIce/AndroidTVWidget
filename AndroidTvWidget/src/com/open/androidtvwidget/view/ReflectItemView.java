@@ -2,18 +2,26 @@ package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.utils.DrawUtils;
+import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.androidtvwidget.utils.Utils;
 
+import BitmapMemoryCache.BitmapMemoryCache;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -150,13 +158,66 @@ public class ReflectItemView extends FrameLayout {
 		} else {
 			super.draw(canvas);
 		}
-		// 绘制倒影.
-		drawRefleCanvas(canvas);
+		/**
+		 * 绘制倒影. 4.3 SDK-18,有问题，<br>
+		 * 在使用Canvas.translate(dx, dy)会出现BUG. <br>
+		 */
+		if (Utils.getSDKVersion() == 18) {
+			drawRefleCanvas4_3_18(canvas);
+		} else if (Utils.getSDKVersion() == 17) {
+			// 4.2 不需要倒影，绘制有问题，暂时屏蔽.
+			OPENLOG.E(TAG, "android 4.2 sdk 17 倒影有问题，暂时不绘制!!");
+		} else {
+			drawRefleCanvas(canvas);
+		}
 	}
-	
+
+	private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
+
+	private void drawRefleCanvas4_3_18(Canvas canvas) {
+		if (mIsReflection) {
+			// 创建一个画布.
+			Bitmap reflectBitmap = mBitmapMemoryCache.getBitmapFromMemCache(getId() + "");
+			if (reflectBitmap == null) {
+				OPENLOG.D(TAG, "drawRefleBitmap cache create bitmap " + getId());
+				reflectBitmap = Bitmap.createBitmap(getWidth(), mRefHeight, Bitmap.Config.ARGB_8888);
+				mBitmapMemoryCache.addBitmapToMemoryCache(getId() + "", reflectBitmap);
+			}
+			Canvas reflectCanvas = new Canvas(reflectBitmap);
+			reflectCanvas.drawPaint(mClearPaint); // 清空画布.
+			/**
+			 * 如果设置了圆角，倒影也需要圆角.
+			 */
+			if (mIsDrawShape) {
+				reflectCanvas.clipPath(getShapePath());
+			}
+			// 绘制倒影.
+			drawReflection4_3_18(reflectCanvas);
+			canvas.save();
+
+			int dy = getHeight();
+			int dx = 0;
+			canvas.translate(dx, dy);
+			//
+			canvas.drawBitmap(reflectBitmap, 0, 0, null);
+			canvas.restore();
+		}
+	}
+
+	public void drawReflection4_3_18(Canvas canvas) {
+		canvas.save();
+		canvas.clipRect(0, 0, getWidth(), mRefHeight);
+		canvas.save();
+		canvas.scale(1, -1);
+		canvas.translate(0, -getHeight());
+		super.draw(canvas);
+		canvas.restore();
+		canvas.drawRect(0, 0, getWidth(), mRefHeight, mRefPaint);
+		canvas.restore();
+	}
+
 	/**
-	 * 绘制圆角控件.
-	 * 修复使用clipPath有锯齿问题.
+	 * 绘制圆角控件. 修复使用clipPath有锯齿问题.
 	 */
 	private void drawShapePathCanvas(Canvas shapeCanvas) {
 		int width = getWidth();
@@ -171,10 +232,9 @@ public class ReflectItemView extends FrameLayout {
 		shapeCanvas.restoreToCount(count2);
 		shapeCanvas.restoreToCount(count);
 	}
-	
+
 	/**
-	 * 绘制倒影.
-	 * 修复原先使用bitmap卡顿的问题.
+	 * 绘制倒影. 修复原先使用bitmap卡顿的问题.
 	 */
 	private void drawRefleCanvas(Canvas refleCanvas) {
 		if (mIsReflection) {
@@ -186,11 +246,11 @@ public class ReflectItemView extends FrameLayout {
 			refleCanvas.restore();
 		}
 	}
-	
+
 	public Path getShapePath() {
 		return DrawUtils.addRoundPath(getWidth(), getHeight(), mRadiusRect);
 	}
-	
+
 	/**
 	 * 绘制倒影.
 	 */
