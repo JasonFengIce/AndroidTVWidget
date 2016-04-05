@@ -25,9 +25,7 @@ public class MainLayout extends FrameLayout {
 	WidgetTvViewBring mWidgetTvViewBring;
 
 	private void init(Context context) {
-		setClipChildren(false);
-		setClipToPadding(false);
-		setChildrenDrawingOrderEnabled(true);
+		this.setChildrenDrawingOrderEnabled(true);
 		mWidgetTvViewBring = new WidgetTvViewBring();
 	}
 
