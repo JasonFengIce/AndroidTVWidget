@@ -60,8 +60,13 @@ public class EffectNoDrawBridge extends OpenEffectBridge {
 		if (!isAnimEnabled())
 			return;
 		if (focusView != null) {
-			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(getTranDurAnimTime()).start();
+			/**
+			 * 我这里重写了onFocusView. <br>
+			 * 并且交换了位置. <br>
+			 * 你可以写自己的动画效果. <br>
+			 */
 			runTranslateAnimation(focusView, scaleX, scaleY);
+			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(getTranDurAnimTime()).start();
 		}
 	}
 
