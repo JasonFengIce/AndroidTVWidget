@@ -26,7 +26,7 @@ public class MainLayout extends FrameLayout {
 
 	private void init(Context context) {
 		this.setChildrenDrawingOrderEnabled(true);
-		mWidgetTvViewBring = new WidgetTvViewBring();
+		mWidgetTvViewBring = new WidgetTvViewBring(this);
 	}
 
 	@Override
