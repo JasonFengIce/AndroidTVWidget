@@ -3,7 +3,6 @@ package com.open.androidtvwidget.view;
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.cache.BitmapMemoryCache;
 import com.open.androidtvwidget.utils.DrawUtils;
-import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,8 +30,6 @@ public class ReflectItemView extends FrameLayout {
 
 	private static final int DEFUALT_REFHEIGHT = 80;
 	private static final int DEFUALT_RADIUS = 12;
-
-	private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
 
 	private Paint mClearPaint = null;
 	private Paint mShapePaint = null;
@@ -159,73 +156,72 @@ public class ReflectItemView extends FrameLayout {
 		} else {
 			super.draw(canvas);
 		}
-		drawRefleBitmap(canvas);
+		// 绘制倒影.
+		drawRefleCanvas(canvas);
 	}
 	
 	/**
 	 * 绘制圆角控件.
-	 * 修复使用clippath有锯齿问题.
+	 * 修复使用clipPath有锯齿问题.
 	 */
 	private void drawShapePathCanvas(Canvas shapeCanvas) {
 		int width = getWidth();
 		int height = getHeight();
 		int count = shapeCanvas.save();
 		int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
+		//
 		Path path = DrawUtils.addRoundPath3(width, height, mRadius);
 		super.draw(shapeCanvas);
 		shapeCanvas.drawPath(path, mShapePaint);
+		//
 		shapeCanvas.restoreToCount(count2);
 		shapeCanvas.restoreToCount(count);
+	}
+	
+	/**
+	 * 绘制倒影.
+	 * 修复原先使用bitmap卡顿的问题.
+	 */
+	private void drawRefleCanvas(Canvas refleCanvas) {
+		if (mIsReflection) {
+			refleCanvas.save();
+			int dy = getHeight();
+			int dx = 0;
+			refleCanvas.translate(dx, dy);
+			drawReflection(refleCanvas);
+			refleCanvas.restore();
+		}
 	}
 	
 	public Path getShapePath() {
 		return DrawUtils.addRoundPath(getWidth(), getHeight(), mRadiusRect);
 	}
-
+	
 	/**
 	 * 绘制倒影.
 	 */
-	private void drawRefleBitmap(Canvas canvas) {
-		if (mIsReflection) {
-			// 创建一个画布.
-			Bitmap reflectBitmap = mBitmapMemoryCache.getBitmapFromMemCache(getId() + "");
-			if (reflectBitmap == null) {
-				OPENLOG.D(TAG, "drawRefleBitmap cache create bitmap " + getId());
-				reflectBitmap = Bitmap.createBitmap(getWidth(), mRefHeight, Bitmap.Config.ARGB_8888);
-				mBitmapMemoryCache.addBitmapToMemoryCache(getId() + "", reflectBitmap);
-			}
-			Canvas reflectCanvas = new Canvas(reflectBitmap);
-			reflectCanvas.drawPaint(mClearPaint); // 清空画布.
-			/**
-			 * 如果设置了圆角，倒影也需要圆角.
-			 */
-			if (mIsDrawShape) {
-				reflectCanvas.clipPath(getShapePath());
-			}
-			// 绘制倒影.
-			drawReflection(reflectCanvas);
-			canvas.save();
-			int dy = getHeight();
-			int dx = 0;
-			canvas.translate(dx, dy);
-			canvas.drawBitmap(reflectBitmap, 0, 0, null);
-			canvas.restore();
+	public void drawReflection(Canvas reflectionCanvas) {
+		int width = getWidth();
+		int height = getHeight();
+		int count = reflectionCanvas.save();
+		int count2 = reflectionCanvas.saveLayer(0, 0, width, mRefHeight, null, Canvas.ALL_SAVE_FLAG);
+		//
+		reflectionCanvas.save();
+		reflectionCanvas.clipRect(0, 0, getWidth(), mRefHeight);
+		reflectionCanvas.save();
+		reflectionCanvas.scale(1, -1);
+		reflectionCanvas.translate(0, -getHeight());
+		super.draw(reflectionCanvas);
+		if (mIsDrawShape) {
+			Path path = DrawUtils.addRoundPath3(width, height, mRadius);
+			reflectionCanvas.drawPath(path, mShapePaint);
 		}
-	}
-
-	/**
-	 * 绘制倒影.
-	 */
-	public void drawReflection(Canvas canvas) {
-		canvas.save();
-		canvas.clipRect(0, 0, getWidth(), mRefHeight);
-		canvas.save();
-		canvas.scale(1, -1);
-		canvas.translate(0, -getHeight());
-		super.draw(canvas);
-		canvas.restore();
-		canvas.drawRect(0, 0, getWidth(), mRefHeight, mRefPaint);
-		canvas.restore();
+		reflectionCanvas.restore();
+		reflectionCanvas.drawRect(0, 0, getWidth(), mRefHeight, mRefPaint);
+		reflectionCanvas.restore();
+		//
+		reflectionCanvas.restoreToCount(count2);
+		reflectionCanvas.restoreToCount(count);
 	}
 
 	/*
