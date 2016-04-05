@@ -1,12 +1,10 @@
 package com.open.androidtvwidget.view;
 
 import com.open.androidtvwidget.R;
-import com.open.androidtvwidget.cache.BitmapMemoryCache;
 import com.open.androidtvwidget.utils.DrawUtils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -131,10 +129,6 @@ public class ReflectItemView extends FrameLayout {
 
 	public int getRefHeight() {
 		return this.mRefHeight;
-	}
-
-	public Bitmap getReflectBitmap() {
-		return BitmapMemoryCache.getInstance().getBitmapFromMemCache(getId() + "");
 	}
 
 	@Override
