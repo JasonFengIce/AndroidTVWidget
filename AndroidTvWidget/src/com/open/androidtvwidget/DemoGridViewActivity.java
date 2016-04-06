@@ -1,3 +1,22 @@
+/*
+Copyright 2016 The Open Source Project
+
+Author: hailongqiu <356752238@qq.com>
+Maintainer: hailongqiu <356752238@qq.com>
+					  pengjunkun <junkun@mgtv.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ */
 package com.open.androidtvwidget;
 
 import java.util.ArrayList;
@@ -12,6 +31,7 @@ import com.open.androidtvwidget.view.MainUpView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnLayoutChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -33,7 +53,7 @@ public class DemoGridViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_grid_view);
 
-		GridView gridView = (GridView) findViewById(R.id.gridView);
+		final GridView gridView = (GridView) findViewById(R.id.gridView);
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
 		
 		/**
@@ -76,8 +96,19 @@ public class DemoGridViewActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "position : " + position, Toast.LENGTH_LONG).show();
 			}
 		});
-		// 不知道为何设置 0 不显示.(暂时无解)
-		gridView.setSelection(1);
+		//  pengjunkun <junkun@mgtv.com> 修复.
+		// 在布局加咱完成后，设置选中第一个
+		gridView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+			@Override
+			public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+					int oldRight, int oldBottom) {
+				if (gridView.getChildCount() > 0) {
+					gridView.setSelection(0);
+					mainUpView1.setFocusView(gridView.getChildAt(0), 1.2f);
+					mOldView = gridView.getChildAt(0);
+				}
+			}
+		});
 	}
 
 	public List<Map<String, Object>> getData() {
