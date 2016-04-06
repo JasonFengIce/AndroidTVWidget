@@ -31,6 +31,10 @@
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0406/110827_505fcc9c_111902.png "在这里输入图片标题")
 
+![输入图片说明](http://git.oschina.net/uploads/images/2016/0406/110926_f3ad9f19_111902.png "在这里输入图片标题")
+
+![输入图片说明](http://git.oschina.net/uploads/images/2016/0406/110937_f5e73cf4_111902.png "在这里输入图片标题")
+
 ## 后期加入
    
    网络加载布局
