@@ -2,7 +2,7 @@
 
 API文档：
 
-    [输入链接说明](http://files.git.oschina.net/group1/M00/00/B8/ZxV3aVcEfyKAYd7pAAV5J5Ufyp8478.zip?token=264bb39d3a5680a9bc4ec6b1efe0172b&ts=1459912350&attname=android-tv-api-doc_1.2.1.zip)
+    [输入链接说明](https://git.oschina.net/hailongqiu/AndroidTVWidget/attach_files)
 
 使用说明: 
 
