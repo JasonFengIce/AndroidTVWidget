@@ -38,25 +38,29 @@ import android.widget.FrameLayout;
  * MainUpView是一个在最上层的移动边框，你可以使用它的API来完成你想要的效果.
  * <p>
  * <ul>
+ * <p>
  * 边框图片相关API:
  * <li>{@link #setUpRectResource}
  * <li>{@link #setUpRectDrawable}
  * <li>{@link #getUpRectDrawable}
  * <li>{@link #setDrawUpRectPadding(int)} 用于调整边框图片边距.
- * <li>{@link #setDrawUpRectPadding(Rect)} 用于调整边框图片边距. 阴影图片相关API:
+ * <li>{@link #setDrawUpRectPadding(Rect)} 用于调整边框图片边距.
+ * <p>
+ * 阴影图片相关API:
  * <li>{@link #setShadowResource}
  * <li>{@link #setShadowDrawable}
  * <li>{@link #getShadowDrawable}
  * <li>{@link #setDrawShadowPadding(int)} 用于调整阴影图片边距.
- * <li>{@link #setDrawShadowPadding(Rect)} 用于调整阴影图片边距. Effcet相关API:
+ * <li>{@link #setDrawShadowPadding(Rect)} 用于调整阴影图片边距.
+ * <p>
+ * Effcet相关API:
  * <li>{@link #setEffectBridge} 你可以设置自己的放大，边框移动的动画效果.
- * <li>{@link #getEffectBridge} 焦点View相关API:
+ * <li>{@link #getEffectBridge}
+ * <p>
+ * 焦点View相关API:
  * <li>{@link #setFocusView(View, float, float)}
  * <li>{@link #setFocusView(View, float)}
- * <li>{@link #getEffectBridge}
- * <li>{@link #getEffectBridge}
- * <li>{@link #getEffectBridge}
- * <li>{@link #getEffectBridge}
+ * <li>{@link #setUnFocusView}
  * </ul>
  * <p>
  * 
@@ -73,8 +77,15 @@ import android.widget.FrameLayout;
  *		... ...
  * </pre>
  * 
- * @attr ref R.styleable#MainUpView_upImageRes
- * @attr ref R.styleable#MainUpView_shadowImageRes
+ * <p>
+ * XML自定义属性:
+ * <p>
+ * xmlns:app="http://schemas.android.com/apk/res-auto"(XML布局加入这句)
+ * <p>
+ * <ul>
+ * <li>attr ref #MainUpView_upImageRes : app:MainUpView_upImageRes="@drawble..."
+ * <li>attr ref #MainUpView_shadowImageRes
+ * </ul>
  */
 public class MainUpView extends FrameLayout {
 
@@ -133,7 +144,7 @@ public class MainUpView extends FrameLayout {
 		baseEffectBridge.setMainUpView(this);
 		setEffectBridge(baseEffectBridge);
 	}
-	
+
 	/**
 	 * 设置最上层的图片资源ID.
 	 */
@@ -149,7 +160,7 @@ public class MainUpView extends FrameLayout {
 		if (mEffectBridge != null)
 			mEffectBridge.setUpRectDrawable(upRectDrawable);
 	}
-	
+
 	/**
 	 * 获取最上层图片.
 	 */
@@ -181,7 +192,7 @@ public class MainUpView extends FrameLayout {
 			invalidate();
 		}
 	}
-	
+
 	/**
 	 * 获取最上层图片 间距矩形(Rect).
 	 */
