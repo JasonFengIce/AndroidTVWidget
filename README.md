@@ -2,7 +2,7 @@
 
 API文档：
 
-    [输入链接说明](https://git.oschina.net/hailongqiu/AndroidTVWidget/attach_files)
+    https://git.oschina.net/hailongqiu/AndroidTVWidget/attach_files
 
 使用说明: 
 
