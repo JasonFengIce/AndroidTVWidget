@@ -15,21 +15,21 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 
-public class MenuLayoutInflater {
+public class OpenMenuLayoutInflater {
 
-	private static MenuLayoutInflater sInstance = null;
+	private static OpenMenuLayoutInflater sInstance = null;
 	private static final HashMap<String, Constructor<? extends View>> sConstructorMap = new HashMap<String, Constructor<? extends View>>();
 
 	private Context mContext;
 	final Object[] mConstructorArgs = new Object[2];
 
 	public static void testLoadLayout(Context context) {
-		MenuLayoutInflater.from(context).inflate(R.layout.item_listview);
+		OpenMenuLayoutInflater.from(context).inflate(R.layout.item_listview);
 	}
 
-	public static MenuLayoutInflater from(Context context) {
+	public static OpenMenuLayoutInflater from(Context context) {
 		if (sInstance == null)
-			sInstance = new MenuLayoutInflater(context);
+			sInstance = new OpenMenuLayoutInflater(context);
 		return sInstance;
 	}
 
@@ -37,7 +37,7 @@ public class MenuLayoutInflater {
 		return mContext;
 	}
 
-	protected MenuLayoutInflater(Context context) {
+	protected OpenMenuLayoutInflater(Context context) {
 		mContext = context;
 	}
 
