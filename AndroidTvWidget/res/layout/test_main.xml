@@ -96,6 +96,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
+                android:id="@+id/effect_rlay"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1412"
@@ -117,7 +118,7 @@
                     android:layout_gravity="bottom"
                     android:background="#FF0000"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="测试"
+                    android:text="Effect 切换测试"
                     android:textColor="#ffffff" />
             </com.open.androidtvwidget.view.ReflectItemView>
 

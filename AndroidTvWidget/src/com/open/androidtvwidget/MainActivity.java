@@ -38,11 +38,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		// 4.2 绘制有问题，所以不使用绘制边框.
 		// 也不支持倒影效果，绘制有问题.
 		if (Utils.getSDKVersion() == 17) { // 测试 android 4.2版本.
-			EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
-			effectNoDrawBridge.setTranDurAnimTime(200);
-			mainUpView1.setEffectBridge(effectNoDrawBridge); // 4.3以下版本边框移动.
-			mainUpView1.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
-			mainUpView1.setDrawUpRectPadding(new Rect(25, 25, 23, 23)); // 边框图片设置间距.
+			switchNoDrawBridgeVersion();
 		} else { // 其它版本（android 4.3以上）.
 			mainUpView1.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
 			mainUpView1.setShadowResource(R.drawable.item_shadow); // 设置移动边框的阴影.
@@ -71,6 +67,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.listview_lay).setOnClickListener(this);
 		findViewById(R.id.keyboard_lay).setOnClickListener(this);
 		findViewById(R.id.viewpager_lay).setOnClickListener(this);
+		findViewById(R.id.effect_rlay).setOnClickListener(this);
 	}
 
 	public void testTopDemo(View newView) {
@@ -85,24 +82,40 @@ public class MainActivity extends Activity implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.gridview_lay:
-			Toast.makeText(getApplicationContext(), "Gridview demo test", Toast.LENGTH_LONG).show();
+			showMsg("Gridview demo test");
 			startActivity(new Intent(getApplicationContext(), DemoGridViewActivity.class));
 			break;
 		case R.id.listview_lay:
-			Toast.makeText(getApplicationContext(), "Listview demo test", Toast.LENGTH_LONG).show();
+			showMsg("Listview demo test");
 			startActivity(new Intent(getApplicationContext(), DemoListViewActivity.class));
 			break;
 		case R.id.keyboard_lay:
-			Toast.makeText(getApplicationContext(), "键盘 demo test", Toast.LENGTH_LONG).show();
+			showMsg("键盘 demo test");
 			startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
 			break;
 		case R.id.viewpager_lay:
-			Toast.makeText(getApplicationContext(), "ViewPager demo test", Toast.LENGTH_LONG).show();
+			showMsg("ViewPager demo test");
 			startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
+			break;
+		case R.id.effect_rlay:
+			showMsg("Effect动画切换测试");
+			switchNoDrawBridgeVersion();
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void showMsg(String msg) {
+		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+	}
+
+	private void switchNoDrawBridgeVersion() {
+		EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
+		effectNoDrawBridge.setTranDurAnimTime(200);
+		mainUpView1.setEffectBridge(effectNoDrawBridge); // 4.3以下版本边框移动.
+		mainUpView1.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
+		mainUpView1.setDrawUpRectPadding(new Rect(25, 25, 23, 23)); // 边框图片设置间距.
 	}
 
 }
