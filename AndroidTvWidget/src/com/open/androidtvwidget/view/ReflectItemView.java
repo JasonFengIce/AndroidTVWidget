@@ -3,7 +3,6 @@ package com.open.androidtvwidget.view;
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.cache.BitmapMemoryCache;
 import com.open.androidtvwidget.utils.DrawUtils;
-import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.utils.Utils;
 
 import android.content.Context;
@@ -250,7 +249,7 @@ public class ReflectItemView extends FrameLayout {
 				mBitmapMemoryCache.addBitmapToMemoryCache(cacheID, reflectBitmap);
 			}
 			Canvas reflectCanvas = new Canvas(reflectBitmap);
-			// reflectCanvas.drawPaint(mClearPaint); // 清空画布.
+			 reflectCanvas.drawPaint(mClearPaint); // 清空画布.
 			/**
 			 * 如果设置了圆角，倒影也需要圆角.
 			 */
