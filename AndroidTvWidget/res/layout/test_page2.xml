@@ -21,7 +21,7 @@
             android:paddingRight="80dp" >
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/page2_gridview_lay"
+                android:id="@+id/page2_item1"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px840"
                 android:layout_height="@dimen/px394"
@@ -53,7 +53,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/listview_lay"
+                android:id="@+id/page2_item2"
                 android:layout_width="@dimen/px404"
                 android:layout_height="@dimen/px246"
                 android:layout_marginLeft="@dimen/px96"
@@ -77,7 +77,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/hot_lay"
+                android:id="@+id/page2_item5"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
@@ -96,7 +96,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/top_lay"
+                android:id="@+id/page2_item4"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
@@ -131,7 +131,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/class_lay"
+                android:id="@+id/page2_item3"
                 android:layout_width="@dimen/px404"
                 android:layout_height="@dimen/px246"
                 android:layout_marginLeft="@dimen/px532"
@@ -150,7 +150,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
-                android:id="@+id/page2_item5"
+                android:id="@+id/page2_item6"
                 android:nextFocusUp="@+id/title_bar2"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"

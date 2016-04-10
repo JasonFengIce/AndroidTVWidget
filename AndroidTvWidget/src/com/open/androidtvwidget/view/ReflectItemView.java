@@ -178,7 +178,12 @@ public class ReflectItemView extends FrameLayout {
 	@Override
 	public void draw(Canvas canvas) {
 		if (mIsDrawShape && isDrawShapeRadiusRect(mRadiusRect)) {
-			drawShapePathCanvas(canvas);
+			try {
+				if (canvas != null)
+					drawShapePathCanvas(canvas);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			super.draw(canvas);
 		}
@@ -192,7 +197,12 @@ public class ReflectItemView extends FrameLayout {
 			// 4.2 不需要倒影，绘制有问题，暂时屏蔽.
 			drawRefleCanvas(canvas);
 		} else { // 性能高速-倒影(4.3有问题).
-			drawRefleCanvas(canvas);
+			try {
+				if (canvas != null)
+					drawRefleCanvas(canvas);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -200,17 +210,19 @@ public class ReflectItemView extends FrameLayout {
 	 * 绘制圆角控件. 修复使用clipPath有锯齿问题.
 	 */
 	private void drawShapePathCanvas(Canvas shapeCanvas) {
-		int width = getWidth();
-		int height = getHeight();
-		int count = shapeCanvas.save();
-		int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
-		//
-		Path path = getShapePath(width, height, mRadius);
-		super.draw(shapeCanvas);
-		shapeCanvas.drawPath(path, mShapePaint);
-		//
-		shapeCanvas.restoreToCount(count2);
-		shapeCanvas.restoreToCount(count);
+		if (shapeCanvas != null) {
+			int width = getWidth();
+			int height = getHeight();
+			int count = shapeCanvas.save();
+			int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
+			//
+			Path path = getShapePath(width, height, mRadius);
+			super.draw(shapeCanvas);
+			shapeCanvas.drawPath(path, mShapePaint);
+			//
+			shapeCanvas.restoreToCount(count2);
+			shapeCanvas.restoreToCount(count);
+		}
 	}
 
 	/**

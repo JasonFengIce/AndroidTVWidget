@@ -240,11 +240,15 @@ public class BaseEffectBridgeWrapper extends BaseEffectBridge {
 	}
 
 	public void runTranslateAnimation(View toView, float scaleX, float scaleY) {
-		Rect fromRect = findLocationWithView(getMainUpView());
-		Rect toRect = findLocationWithView(toView);
-		float x = toRect.left - fromRect.left;
-		float y = toRect.top - fromRect.top;
-		flyWhiteBorder(toView, x, y, scaleX, scaleY);
+		try {
+			Rect fromRect = findLocationWithView(getMainUpView());
+			Rect toRect = findLocationWithView(toView);
+			float x = toRect.left - fromRect.left;
+			float y = toRect.top - fromRect.top;
+			flyWhiteBorder(toView, x, y, scaleX, scaleY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Rect findLocationWithView(View view) {
