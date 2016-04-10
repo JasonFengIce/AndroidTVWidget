@@ -1,5 +1,5 @@
 package com.open.androidtvwidget.menu;
 
-public class OpenSubMenu {
+public interface OpenSubMenu {
 
 }
