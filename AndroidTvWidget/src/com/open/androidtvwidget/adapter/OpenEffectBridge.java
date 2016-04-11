@@ -15,7 +15,7 @@ import android.view.animation.DecelerateInterpolator;
  * 如果你想实现自己不同风格的东西， <br>
  * 继承 BaseAnimBridge 重写几个函数吧. <br>
  * 后续将推出更多风格的 Anim Bridge. <br>
- * 
+ * 使用方法 MainUpView.setAnimBridge(new OpenEffectBridge()); <br>
  * @author hailongqiu 356752238@qq.com
  *
  */
@@ -30,9 +30,6 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 	private boolean isDrawUpRect = true;
 	private View mFocusView;
 	private NewAnimatorListener mNewAnimatorListener;
-
-	public OpenEffectBridge() {
-	}
 
 	@Override
 	public void onInitBridge(MainUpView view) {

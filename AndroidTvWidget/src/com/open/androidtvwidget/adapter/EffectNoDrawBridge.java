@@ -1,7 +1,5 @@
 package com.open.androidtvwidget.adapter;
 
-import com.open.androidtvwidget.view.MainUpView;
-
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
@@ -14,7 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 
 /**
  * 为了兼容4.3以下版本的 AnimBridge. <br>
- * 使用方法： MainUpView.setAnimBridge(newAnimNoDrawBridge()); <br>
+ * 使用方法： MainUpView.setAnimBridge(new AnimNoDrawBridge()); <br>
  * 如果边框带了阴影效果，使用这个函数自行调整: MainUpView.setDrawUpRectPadding(-12);
  * 
  * @author hailongqiu
@@ -22,16 +20,6 @@ import android.view.animation.DecelerateInterpolator;
  */
 public class EffectNoDrawBridge extends OpenEffectBridge {
 	private AnimatorSet mCurrentAnimatorSet;
-
-	@Override
-	public void onInitBridge(MainUpView view) {
-		super.onInitBridge(view);
-		/**
-		 * 防止边框第一次出现,<br>
-		 * 从另一个地方飘过来的问题.<br>
-		 */
-		view.setVisibility(View.INVISIBLE);
-	}
 
 	/**
 	 * 设置背景，边框不使用绘制.
