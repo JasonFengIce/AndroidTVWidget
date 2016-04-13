@@ -24,6 +24,7 @@ import com.open.androidtvwidget.R;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +33,13 @@ import android.widget.BaseAdapter;
 
 /**
  * 菜单.
+ * 
  * @author hailongqiu
  *
  */
 public class OpenMenuBuilder implements OpenMenu {
+
+	private static final String TAG = "OpenMenuBuilder";
 
 	private ArrayList<OpenMenuItemImpl> mItems;
 	private Context mContext;
@@ -88,46 +92,51 @@ public class OpenMenuBuilder implements OpenMenu {
 	public OpenMenuItem add(int groupId, int itemId, int order, int titleRes) {
 		return addInternal(groupId, itemId, order, this.mResources.getString(titleRes));
 	}
-	
+
 	@Override
 	public OpenMenuItem add(CharSequence title) {
 		return addInternal(0, 0, 0, title);
 	}
-	
+
 	/**
 	 * 添加子菜单.
 	 */
 	@Override
 	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu) {
 		mItems.get(pos).setSubMenu(openSubMenu);
-		 return openSubMenu;
+		return openSubMenu;
 	}
-	
+
 	/**
 	 * 菜单动画.
 	 */
 	@Override
 	public OpenMenu setLayoutAnimation(LayoutAnimationController layoutAnimationController) {
 		this.mLayoutAnimationController = layoutAnimationController;
+		if (mMenuView != null && mLayoutAnimationController != null) {
+			mMenuView.setLayoutAnimation(layoutAnimationController);
+		}
 		return this;
 	}
-	
-	
+
 	// 菜单视图(暂时测试放这里)
-	
+
 	public OpenMenuView getMenuView() {
 		// 多个listview---主菜单--子菜单（无限个)
 		if (mMenuView == null) {
 			mMenuView = new OpenListMenuView(mContext);
-			if (mAdapter == null) {
-				 mAdapter = new MenuAdapter();
+			if (mLayoutAnimationController != null) {
+				mMenuView.setLayoutAnimation(mLayoutAnimationController);
 			}
-			 mMenuView.setAdapter(mAdapter);
-//			 mMenuView.setOnItemClickListener(this);
+			if (mAdapter == null) {
+				mAdapter = new MenuAdapter();
+			}
+			mMenuView.setAdapter(mAdapter);
+			// mMenuView.setOnItemClickListener(this);
 		}
 		return mMenuView;
 	}
-	
+
 	private class MenuAdapter extends BaseAdapter {
 
 		@Override
@@ -148,7 +157,7 @@ public class OpenMenuBuilder implements OpenMenu {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.list_menu_item_layout, parent, false);
+				convertView = mInflater.inflate(mMenuItemLayoutID, parent, false);
 			}
 			OpenMenuView.ItemView itemView = (OpenMenuView.ItemView) convertView;
 			itemView.initialize(getItem(position), 0);
@@ -156,5 +165,34 @@ public class OpenMenuBuilder implements OpenMenu {
 		}
 
 	}
-	
+
+	@Override
+	public String toString() {
+		for (OpenMenuItem item : mItems) {
+			String title = item.getTitle().toString();
+			Log.e(TAG, "hailongqiu menu item:" + title);
+			OpenSubMenu submenu = item.getSubMenu();
+			if (submenu != null) {
+				Log.e(TAG, "hailongqiu =======sub menu======start start start");
+				submenu.toString();
+				Log.e(TAG, "hailongqiu =======sub menu======end end end");
+			}
+		}
+		return super.toString();
+	}
+
+	private int mMenuItemLayoutID = R.layout.list_menu_item_layout;
+
+	/**
+	 * 修改菜单item布局. <br>
+	 * 修改的布局ID必需和 <br>
+	 * list_menu_item_layout 中的名字一样.
+	 */
+	public void setMenuItemLayoutResId(int resId) {
+		mMenuItemLayoutID = resId;
+		if (this.mAdapter != null) {
+			this.mAdapter.notifyDataSetChanged();
+		}
+	}
+
 }

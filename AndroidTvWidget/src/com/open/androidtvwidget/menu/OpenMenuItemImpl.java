@@ -86,5 +86,10 @@ public class OpenMenuItemImpl implements OpenMenuItem {
 	public void setSubMenu(OpenSubMenu subMenu) {
         mSubMenu = subMenu;
     }
+
+	@Override
+	public boolean hasSubMenu() {
+		return (mSubMenu != null);
+	}
 	
 }

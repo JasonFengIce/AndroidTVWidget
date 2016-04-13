@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.keyboard_lay).setOnClickListener(this);
 		findViewById(R.id.viewpager_lay).setOnClickListener(this);
 		findViewById(R.id.effect_rlay).setOnClickListener(this);
+		findViewById(R.id.menu_rlayt).setOnClickListener(this);
 	}
 
 	public void testTopDemo(View newView) {
@@ -101,6 +102,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			showMsg("Effect动画切换测试");
 			switchNoDrawBridgeVersion();
 			break;
+		case R.id.menu_rlayt: // 菜单测试.
+			showMsg("菜单测试");
+			startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
 		default:
 			break;
 		}

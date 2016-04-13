@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.open.androidtvwidget"
-    android:versionCode="12"
+    android:versionCode="13"
     android:versionName="1.2.1" >
 
     <uses-sdk
@@ -29,6 +29,7 @@
         <activity android:name="com.open.androidtvwidget.DemoListViewActivity"/>
         <activity android:name="com.open.androidtvwidget.DemoKeyBoardActivity"/>
         <activity android:name="com.open.androidtvwidget.DemoViewPagerActivity"/>
+        <activity android:name="com.open.androidtvwidget.DemoMenuActivity"/>
         
     </application>
 

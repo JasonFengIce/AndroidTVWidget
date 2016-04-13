@@ -194,6 +194,7 @@
             </com.open.androidtvwidget.view.ReflectItemView>
 
             <com.open.androidtvwidget.view.ReflectItemView
+                android:id="@+id/menu_rlayt"
                 android:layout_width="@dimen/px412"
                 android:layout_height="@dimen/px672"
                 android:layout_marginLeft="@dimen/px1858"
@@ -211,6 +212,14 @@
                     android:clickable="false"
                     android:scaleType="fitXY"
                     android:src="@drawable/mainview_cloudlist" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:background="#FF0000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="菜单Menu测试"
+                    android:textColor="#ffffff" />
             </com.open.androidtvwidget.view.ReflectItemView>
         </com.open.androidtvwidget.view.MainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
