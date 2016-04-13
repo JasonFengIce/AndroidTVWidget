@@ -24,6 +24,7 @@ import com.open.androidtvwidget.R;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,6 +126,7 @@ public class OpenMenuBuilder implements OpenMenu {
 		// 多个listview---主菜单--子菜单（无限个)
 		if (mMenuView == null) {
 			mMenuView = new OpenListMenuView(mContext);
+			mMenuView.setBackgroundColor(Color.parseColor("#50000000"));
 			if (mLayoutAnimationController != null) {
 				mMenuView.setLayoutAnimation(mLayoutAnimationController);
 			}
