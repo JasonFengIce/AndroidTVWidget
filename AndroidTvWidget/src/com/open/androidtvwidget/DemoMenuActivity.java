@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 
 /**
  * 菜单DEMO测试.
@@ -75,11 +76,11 @@ public class DemoMenuActivity extends Activity {
 		LayoutAnimationController controller = new LayoutAnimationController(animation, 0.5f);
 		controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
 		openMenu.setLayoutAnimation(controller); // 设置菜单item显示出来的动画.
-		// test add
-		ViewGroup rootView = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-		ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(300,
-				ViewGroup.LayoutParams.MATCH_PARENT);
-		rootView.addView((View) openMenu.getMenuView(), layoutParams);
+		subMenu1.setLayoutAnimation(controller);
+		subMenu1_1.setLayoutAnimation(controller);
+		subMenu2.setLayoutAnimation(controller);
+		//
+		openMenu.showMenu();
 	}
 
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import com.open.androidtvwidget.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -29,8 +30,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
+import android.widget.Toast;
 
 /**
  * 菜单.
@@ -54,8 +62,20 @@ public class OpenMenuBuilder implements OpenMenu {
 
 	public OpenMenuBuilder(Context context) {
 		init(context);
+		//
+		ViewGroup rootView = (ViewGroup) ((Activity)context).findViewById(Window.ID_ANDROID_CONTENT);
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(300,
+				ViewGroup.LayoutParams.MATCH_PARENT);
+		View view = (View) getMenuView();
+		view.setVisibility(View.GONE);
+		rootView.addView(view, layoutParams);
 	}
-
+	
+	public void showMenu() {
+		View view = (View) getMenuView();
+		view.setVisibility(View.VISIBLE);
+	}
+	
 	private void init(Context context) {
 		this.mContext = context;
 		if (this.mContext != null) {
@@ -126,6 +146,23 @@ public class OpenMenuBuilder implements OpenMenu {
 		// 多个listview---主菜单--子菜单（无限个)
 		if (mMenuView == null) {
 			mMenuView = new OpenListMenuView(mContext);
+			mMenuView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					if (mItems.get(position).hasSubMenu()) {
+						// test.
+						FrameLayout.LayoutParams mainLayoutParams = (LayoutParams) mMenuView.getLayoutParams();
+						
+						OpenMenuBuilder subMenu = (OpenMenuBuilder) mItems.get(position).getSubMenu();
+						OpenListMenuView menuView = (OpenListMenuView) subMenu.getMenuView();
+						FrameLayout.LayoutParams layPar = (LayoutParams) menuView.getLayoutParams();
+						layPar.leftMargin = mainLayoutParams.leftMargin + mMenuView.getMeasuredWidth();
+						subMenu.showMenu();
+						//
+						Toast.makeText(mContext, "子菜单" + menuView, Toast.LENGTH_LONG).show();
+					}
+				}
+			});
 			mMenuView.setBackgroundColor(Color.parseColor("#50000000"));
 			if (mLayoutAnimationController != null) {
 				mMenuView.setLayoutAnimation(mLayoutAnimationController);
