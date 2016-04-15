@@ -92,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.keyboard_lay:
 			showMsg("键盘 demo test");
-//			startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
+			startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
 			break;
 		case R.id.viewpager_lay:
 			showMsg("ViewPager demo test");
