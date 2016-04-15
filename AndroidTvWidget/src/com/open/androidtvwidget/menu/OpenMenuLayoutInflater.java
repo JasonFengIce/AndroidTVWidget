@@ -24,7 +24,7 @@ public class OpenMenuLayoutInflater {
 	final Object[] mConstructorArgs = new Object[2];
 
 	public static void testLoadLayout(Context context) {
-		OpenMenuLayoutInflater.from(context).inflate(R.layout.item_listview);
+//		OpenMenuLayoutInflater.from(context).inflate(R.layout.item_listview);
 	}
 
 	public static OpenMenuLayoutInflater from(Context context) {

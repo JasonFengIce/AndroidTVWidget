@@ -8,8 +8,6 @@
 	<string name="nav_tab_focus_ttf">@string/fzlt_cu_hei</string>
 	
     <string name="app_name">AndroidTvWidget</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 	
       <!-- 按键状态 -->
     <string name="toggle_keycode_case">-1</string> <!-- 大小写切换 -->

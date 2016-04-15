@@ -25,7 +25,7 @@
             android:fadingEdge="horizontal"
             android:singleLine="true"
             android:textSize="24sp"
-            android:textColor="@color/white"
+            android:textColor="#FFFFFF"
             android:text="菜单一" />
 
     </RelativeLayout>
