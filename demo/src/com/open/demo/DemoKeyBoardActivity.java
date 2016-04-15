@@ -54,14 +54,27 @@ public class DemoKeyBoardActivity extends Activity {
 					}
 				}
 			}
+			
+			@Override
+			public void onBack(SoftKey key) {
+				finish();
+			}
+			
+			@Override
+			public void onDelete(SoftKey key) {
+				String text = input_tv.getText().toString();
+				input_tv.setText(text.substring(0, text.length() - 1));
+			}
+			
 		});
-		// 
+		// 英文键盘切换测试.
 		findViewById(R.id.en_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_qwerty);
 			}
 		});
+		// 数字键盘切换测试.
 		findViewById(R.id.num_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

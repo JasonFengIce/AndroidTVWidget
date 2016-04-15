@@ -110,12 +110,6 @@ public class SkbContainer extends RelativeLayout {
 		}
 	}
 
-	public void onCenter(SoftKey key) {
-		if (mSoftKeyListener != null) {
-			mSoftKeyListener.onCenter(key);
-		}
-	}
-
 	public void onDelete(SoftKey key) {
 		if (mSoftKeyListener != null) {
 			mSoftKeyListener.onDelete(key);
@@ -128,18 +122,6 @@ public class SkbContainer extends RelativeLayout {
 		}
 	}
 
-	public void onCursorLeftMove(SoftKey key) {
-		if (mSoftKeyListener != null) {
-			mSoftKeyListener.onCursorLeftMove(key);
-		}
-	}
-
-	public void onCursorRightMove(SoftKey key) {
-		if (mSoftKeyListener != null) {
-			mSoftKeyListener.onCursorRightMove(key);
-		}
-	}
-
 	/**
 	 * 处理DOWN事件.
 	 */
@@ -147,6 +129,7 @@ public class SkbContainer extends RelativeLayout {
 		if (!isFocused()) {
 			return false;
 		}
+		SoftKey tempSoftKey = new SoftKey();
 		OPENLOG.D(TAG, "onSoftKeyDown keyCode:" + keyCode);
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_ENTER:
@@ -159,6 +142,14 @@ public class SkbContainer extends RelativeLayout {
 				return false;
 			}
 			break;
+		case KeyEvent.KEYCODE_BACK:
+			tempSoftKey.setKeyCode(KeyEvent.KEYCODE_BACK);
+			onBack(tempSoftKey);
+			break;
+		case KeyEvent.KEYCODE_DEL:
+			tempSoftKey.setKeyCode(KeyEvent.KEYCODE_DEL);
+			onDelete(tempSoftKey);
+			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT: // 左
 		case KeyEvent.KEYCODE_DPAD_RIGHT: // 右
 		case KeyEvent.KEYCODE_DPAD_UP: // 上
@@ -166,8 +157,10 @@ public class SkbContainer extends RelativeLayout {
 			mSoftKeyboardView.setSoftKeyPress(false);
 			return actionForKeyEvent(keyCode); // 按键移动.
 		default:
+			OPENLOG.D(TAG, "onSoftKeyDown false keyCode:" + keyCode);
 			return false;
 		}
+		OPENLOG.D(TAG, "onSoftKeyDown true keyCode:" + keyCode);
 		return true;
 	}
 
@@ -178,9 +171,22 @@ public class SkbContainer extends RelativeLayout {
 		if (!isFocused()) {
 			return false;
 		}
+		OPENLOG.D(TAG, "onSoftKeyUp keyCode:" + keyCode);
 		if (mSoftKeyboardView != null)
 			mSoftKeyboardView.setSoftKeyPress(false);
-		return true;
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_ENTER:
+		case KeyEvent.KEYCODE_DPAD_CENTER:
+		case KeyEvent.KEYCODE_DPAD_LEFT: // 左
+		case KeyEvent.KEYCODE_DPAD_RIGHT: // 右
+		case KeyEvent.KEYCODE_DPAD_UP: // 上
+		case KeyEvent.KEYCODE_DPAD_DOWN: // 下
+		case KeyEvent.KEYCODE_BACK:
+			OPENLOG.D(TAG, "onSoftKeyUp true keyCode:" + keyCode);
+			return true;
+		}
+		OPENLOG.D(TAG, "onSoftKeyUp false keyCode:" + keyCode);
+		return false;
 	}
 
 	/**
