@@ -1,5 +1,7 @@
 # Android TV 开发框架
 
+官方论坛：http://www.srxitstudio.com/
+
 API文档：
 
     https://git.oschina.net/hailongqiu/AndroidTVWidget/attach_files
