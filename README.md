@@ -1,6 +1,6 @@
 # Android TV 开发框架
 
-官方论坛：http://www.srxitstudio.com/
+官方论坛：http://www.srxitstudio.com/ androidtvdev 正在备案中... ...
 
 API文档：
 
