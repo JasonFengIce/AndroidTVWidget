@@ -51,6 +51,9 @@ public class DemoKeyBoardActivity extends Activity {
 						finish();
 					} else if (keyCode == 66) {
 						Toast.makeText(getApplicationContext(), "回车", Toast.LENGTH_LONG).show();
+					} else if (keyCode == 250) { //切换键盘
+						// 这里只是测试，你可以写自己其它的数字键盘或者其它键盘
+						skbContainer.setSkbLayout(R.xml.sbd_number);
 					}
 				}
 			}
@@ -79,6 +82,13 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_number);
+			}
+		});
+		// 全键盘切换测试.
+		findViewById(R.id.all_key_btn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				skbContainer.setSkbLayout(R.xml.skb_all_key);
 			}
 		});
 	}
