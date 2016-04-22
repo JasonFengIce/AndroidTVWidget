@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
+ * https://git.oschina.net/hailongqiu/AndroidTVWidget/wikis/Android-TV-如何使用键盘控件%28SkbContainer%29
  * 暂时的demo.
  * top_bottom_move 是设置上下不循环.
  * left_right_move 默认为true,就像DEMO里一样，是左右循环的.
