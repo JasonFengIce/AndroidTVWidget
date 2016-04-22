@@ -8,7 +8,13 @@ import android.view.KeyEvent;
  *
  */
 public interface SoftKeyBoardable {
-
+	
+	/**
+	 * 链接键盘事件处理.
+	 * @param cb
+	 */
+	public void setOnSoftKeyBoardListener(SoftKeyBoardListener cb);
+	
 	/**
 	 * 设置键盘XML.
 	 * @param layoutID : xml目录下的键盘ID.

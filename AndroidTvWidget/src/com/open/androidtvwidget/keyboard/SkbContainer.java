@@ -22,6 +22,13 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 
 	private static final String TAG = "SkbContainer";
 
+	private static final int LOG_PRESS_DELAYMILLIS = 200;
+
+	private SoftKeyboardView mSoftKeyboardView; // 主要的子软键盘.
+	private int mSkbLayout;
+	private Context mContext;
+	private SoftKeyBoardListener mSoftKeyListener;
+
 	public SkbContainer(Context context) {
 		super(context);
 		init(context, null);
@@ -36,10 +43,6 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 		super(context, attrs, defStyle);
 		init(context, attrs);
 	}
-
-	private SoftKeyboardView mSoftKeyboardView; // 主要的子软键盘.
-	private int mSkbLayout;
-	private Context mContext;
 
 	/**
 	 * 初始化.
@@ -68,13 +71,13 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 			mSoftKeyboardView.clearCacheBitmap();
 		}
 	}
-	
+
 	@Override
 	public void setSoftKeyboard(SoftKeyboard softSkb) {
 		mSoftKeyboardView = (SoftKeyboardView) findViewById(R.id.softKeyboardView);
 		mSoftKeyboardView.setSoftKeyboard(softSkb);
 	}
-	
+
 	private void updateSkbLayout() {
 		SkbPool skbPool = SkbPool.getInstance();
 		SoftKeyboard softKeyboard = skbPool.getSoftKeyboard(mContext, mSkbLayout);
@@ -85,8 +88,7 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 		}
 	}
 
-	SoftKeyBoardListener mSoftKeyListener;
-
+	@Override
 	public void setOnSoftKeyBoardListener(SoftKeyBoardListener cb) {
 		mSoftKeyListener = cb;
 	}
@@ -99,7 +101,7 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 				softKeyboard.setOneKeySelected(row, index);
 		}
 	}
-	
+
 	@Override
 	public boolean setKeySelected(SoftKey softKey) {
 		if (mSoftKeyboardView != null) {
@@ -109,7 +111,7 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 按下按键的处理.
 	 */
@@ -218,8 +220,6 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 		}
 		return true;
 	}
-
-	private static final int LOG_PRESS_DELAYMILLIS = 200;
 
 	Handler longPressHandler = new Handler() {
 		public void handleMessage(Message msg) {
