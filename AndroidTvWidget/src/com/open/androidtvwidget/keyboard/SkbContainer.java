@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
  * @author hailong.qiu 356752238@qq.com
  *
  */
-public class SkbContainer extends RelativeLayout {
+public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 
 	private static final String TAG = "SkbContainer";
 
@@ -49,6 +49,7 @@ public class SkbContainer extends RelativeLayout {
 		View.inflate(context, R.layout.softkey_layout_view, this);
 	}
 
+	@Override
 	public void setSkbLayout(int layoutID) {
 		if (layoutID != mSkbLayout) {
 			mSkbLayout = layoutID;
@@ -67,7 +68,13 @@ public class SkbContainer extends RelativeLayout {
 			mSoftKeyboardView.clearCacheBitmap();
 		}
 	}
-
+	
+	@Override
+	public void setSoftKeyboard(SoftKeyboard softSkb) {
+		mSoftKeyboardView = (SoftKeyboardView) findViewById(R.id.softKeyboardView);
+		mSoftKeyboardView.setSoftKeyboard(softSkb);
+	}
+	
 	private void updateSkbLayout() {
 		SkbPool skbPool = SkbPool.getInstance();
 		SoftKeyboard softKeyboard = skbPool.getSoftKeyboard(mContext, mSkbLayout);
@@ -84,6 +91,7 @@ public class SkbContainer extends RelativeLayout {
 		mSoftKeyListener = cb;
 	}
 
+	@Override
 	public void setDefualtSelectKey(int row, int index) {
 		if (mSoftKeyboardView != null) {
 			SoftKeyboard softKeyboard = mSoftKeyboardView.getSoftKeyboard();
@@ -91,7 +99,17 @@ public class SkbContainer extends RelativeLayout {
 				softKeyboard.setOneKeySelected(row, index);
 		}
 	}
-
+	
+	@Override
+	public boolean setKeySelected(SoftKey softKey) {
+		if (mSoftKeyboardView != null) {
+			SoftKeyboard softKeyboard = mSoftKeyboardView.getSoftKeyboard();
+			if (softKeyboard != null)
+				return softKeyboard.setOneKeySelected(softKey);
+		}
+		return false;
+	}
+	
 	/**
 	 * 按下按键的处理.
 	 */
@@ -104,19 +122,19 @@ public class SkbContainer extends RelativeLayout {
 		return true;
 	}
 
-	public void onCommitText(SoftKey key) {
+	private void onCommitText(SoftKey key) {
 		if (mSoftKeyListener != null) {
 			mSoftKeyListener.onCommitText(key);
 		}
 	}
 
-	public void onDelete(SoftKey key) {
+	private void onDelete(SoftKey key) {
 		if (mSoftKeyListener != null) {
 			mSoftKeyListener.onDelete(key);
 		}
 	}
 
-	public void onBack(SoftKey key) {
+	private void onBack(SoftKey key) {
 		if (mSoftKeyListener != null) {
 			mSoftKeyListener.onBack(key);
 		}
@@ -125,6 +143,7 @@ public class SkbContainer extends RelativeLayout {
 	/**
 	 * 处理DOWN事件.
 	 */
+	@Override
 	public boolean onSoftKeyDown(int keyCode, KeyEvent event) {
 		if (!isFocused()) {
 			return false;
@@ -167,6 +186,7 @@ public class SkbContainer extends RelativeLayout {
 	/**
 	 * 处理UP的事件.
 	 */
+	@Override
 	public boolean onSoftKeyUp(int keyCode, KeyEvent event) {
 		if (!isFocused()) {
 			return false;
@@ -192,7 +212,7 @@ public class SkbContainer extends RelativeLayout {
 	/**
 	 * 根据 上，下，左，右 来绘制按键位置.
 	 */
-	public boolean actionForKeyEvent(int direction) {
+	private boolean actionForKeyEvent(int direction) {
 		if (mSoftKeyboardView != null) {
 			return mSoftKeyboardView.moveToNextKey(direction);
 		}
