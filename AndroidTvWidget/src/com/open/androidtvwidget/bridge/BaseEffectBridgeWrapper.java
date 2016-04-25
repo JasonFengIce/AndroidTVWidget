@@ -241,7 +241,7 @@ public class BaseEffectBridgeWrapper extends BaseEffectBridge {
 
 	public void runTranslateAnimation(View toView, float scaleX, float scaleY) {
 		try {
-			flyWhiteBorder(toView, scaleX, scaleY);
+			flyWhiteBorder(toView, getMainUpView(), scaleX, scaleY);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -260,36 +260,35 @@ public class BaseEffectBridgeWrapper extends BaseEffectBridge {
         return location;
 	}
 
-	public void flyWhiteBorder(final View focusView,  float scaleX, float scaleY) {
+	public void flyWhiteBorder(final View focusView,  View moveView, float scaleX, float scaleY) {
 		int newWidth = 0;
 		int newHeight = 0;
 		int oldWidth = 0;
 		int oldHeight = 0;
 		
-		int[] newLocation = getViewLocationScreen(focusView);
-		int newX = newLocation[0];
-		int newY = newLocation[1];
-		int[] oldLocation = getViewLocationScreen(getMainUpView());
-		int oldX = oldLocation[0];
-		int oldY = oldLocation[1];
+		int newX = 0;
+		int newY = 0;
 		
 		if (focusView != null) {
 			newWidth = (int) (focusView.getMeasuredWidth() * scaleX);
 			newHeight = (int) (focusView.getMeasuredHeight() * scaleY);
-			newX = newX + (focusView.getMeasuredWidth() - newWidth) / 2;
-			newY =newY + (focusView.getMeasuredHeight() - newHeight) / 2;
+			oldWidth = moveView.getMeasuredWidth();
+			oldHeight = moveView.getMeasuredHeight();
+			Rect fromRect = findLocationWithView(moveView);
+			Rect toRect = findLocationWithView(focusView);
+			int x = toRect.left - fromRect.left;
+			int y = toRect.top - fromRect.top;
+			newX = x - Math.abs(focusView.getMeasuredWidth() - newWidth) / 2;
+			newY = y - Math.abs(focusView.getMeasuredHeight() - newHeight) / 2;
 		}
-
-		oldWidth = getMainUpView().getMeasuredWidth();
-		oldHeight = getMainUpView().getMeasuredHeight();
-
-		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(getMainUpView(), "translationX", oldX, newX);
-		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(getMainUpView(), "translationY", oldY, newY);
+		
+		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(moveView, "translationX", newX);
+		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(moveView, "translationY", newY);
 		// BUG，因为缩放会造成图片失真(拉伸).
 		// hailong.qiu 2016.02.26 修复 :)
-		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(getMainUpView()), "width", oldWidth,
+		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(moveView), "width", oldWidth,
 				(int) newWidth);
-		ObjectAnimator scaleYAnimator = ObjectAnimator.ofInt(new ScaleView(getMainUpView()), "height", oldHeight,
+		ObjectAnimator scaleYAnimator = ObjectAnimator.ofInt(new ScaleView(moveView), "height", oldHeight,
 				(int) newHeight);
 		//
 		AnimatorSet mAnimatorSet = new AnimatorSet();
