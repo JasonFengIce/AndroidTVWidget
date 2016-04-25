@@ -124,16 +124,24 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 	 * 重寫移動的邊框函數.
 	 */
 	@Override
-	public void flyWhiteBorder(final View focusView, float x, float y, float scaleX, float scaleY) {
+	public void flyWhiteBorder(final View focusView,  float scaleX, float scaleY) {
 		int newWidth = 0;
 		int newHeight = 0;
 		int oldWidth = 0;
 		int oldHeight = 0;
+		
+		int[] newLocation = getViewLocationScreen(focusView);
+		int newX = newLocation[0];
+		int newY = newLocation[1];
+		int[] oldLocation = getViewLocationScreen(getMainUpView());
+		int oldX = oldLocation[0];
+		int oldY = oldLocation[1];
+		
 		if (focusView != null) {
 			newWidth = (int) (focusView.getMeasuredWidth() * scaleX);
 			newHeight = (int) (focusView.getMeasuredHeight() * scaleY);
-			x = x + (focusView.getMeasuredWidth() - newWidth) / 2;
-			y = y + (focusView.getMeasuredHeight() - newHeight) / 2;
+			newX = newX + (focusView.getMeasuredWidth() - newWidth) / 2;
+			newY =newY + (focusView.getMeasuredHeight() - newHeight) / 2;
 		}
 
 		// 取消之前的动画.
@@ -143,8 +151,8 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 		oldWidth = getMainUpView().getMeasuredWidth();
 		oldHeight = getMainUpView().getMeasuredHeight();
 
-		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(getMainUpView(), "translationX", x);
-		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(getMainUpView(), "translationY", y);
+		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(getMainUpView(), "translationX", oldX, newX);
+		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(getMainUpView(), "translationY", oldY, newY);
 		// BUG，因为缩放会造成图片失真(拉伸).
 		// hailong.qiu 2016.02.26 修复 :)
 		ObjectAnimator scaleXAnimator = ObjectAnimator.ofInt(new ScaleView(getMainUpView()), "width", oldWidth,
