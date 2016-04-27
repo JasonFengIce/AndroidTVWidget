@@ -116,13 +116,13 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 		if (!mAnimEnabled)
 			return;
 		if (focusView != null) {
-			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(mTranDurAnimTime).start();
-			runTranslateAnimation(focusView, scaleX, scaleY);
+			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(mTranDurAnimTime).start(); // 放大焦点VIEW的动画.
+			runTranslateAnimation(focusView, scaleX, scaleY); // 移动边框的动画。
 		}
 	}
 
 	/**
-	 * 重寫移動的邊框函數.
+	 * 移动边框的动画处理函数.
 	 */
 	@Override
 	public void flyWhiteBorder(final View focusView,  View moveView, float scaleX, float scaleY) {
@@ -139,8 +139,8 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 			newHeight = (int) (focusView.getMeasuredHeight() * scaleY);
 			oldWidth = moveView.getMeasuredWidth();
 			oldHeight = moveView.getMeasuredHeight();
-			Rect fromRect = findLocationWithView(moveView);
-			Rect toRect = findLocationWithView(focusView);
+			Rect fromRect = findLocationWithView(moveView); // 获取moveView在屏幕上的位置.
+			Rect toRect = findLocationWithView(focusView);  // 获取focusView在屏幕上的位置.
 			int x = toRect.left - fromRect.left;
 			int y = toRect.top - fromRect.top;
 			newX = x - Math.abs(focusView.getMeasuredWidth() - newWidth) / 2;

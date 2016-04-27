@@ -180,8 +180,8 @@ public class BaseEffectBridgeWrapper extends BaseEffectBridge {
 	@Override
 	public void onFocusView(View focusView, float scaleX, float scaleY) {
 		if (focusView != null) {
-			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(DEFUALT_TRAN_DUR_ANIM).start();
-			runTranslateAnimation(focusView, scaleX, scaleY);
+			focusView.animate().scaleX(scaleX).scaleY(scaleY).setDuration(DEFUALT_TRAN_DUR_ANIM).start(); // 放大焦点VIEW的动画.
+			runTranslateAnimation(focusView, scaleX, scaleY); // 移动边框的动画。
 		}
 	}
 
