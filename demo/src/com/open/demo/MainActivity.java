@@ -5,6 +5,7 @@ import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.utils.Utils;
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.androidtvwidget.view.ReflectItemView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -64,24 +65,39 @@ public class MainActivity extends Activity implements OnClickListener {
 				mOldFocus = newFocus; // 4.3以下需要自己保存.
 				// 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
 				if (newFocus != null) {
-					testTopDemo(newFocus);
+//					testTopDemo(newFocus);
 				}
 			}
 		});
 		// test demo.
-		findViewById(R.id.gridview_lay).setOnClickListener(this);
+		gridview_lay = (ReflectItemView) findViewById(R.id.gridview_lay);
+		gridview_lay.setOnClickListener(this);
 		findViewById(R.id.listview_lay).setOnClickListener(this);
 		findViewById(R.id.keyboard_lay).setOnClickListener(this);
 		findViewById(R.id.viewpager_lay).setOnClickListener(this);
 		findViewById(R.id.effect_rlay).setOnClickListener(this);
 		findViewById(R.id.menu_rlayt).setOnClickListener(this);
 	}
-
+	
+	public ReflectItemView gridview_lay;
+	
+	/**
+	 * 这是一个测试DEMO，希望对API了解下再使用.
+	 * 这种DEMO是为了实现这个效果:
+	 * https://raw.githubusercontent.com/FrozenFreeFall/ImageSaveHttp/master/chaochupingm%20.jpg
+	 */
 	public void testTopDemo(View newView) {
 		// 测试第一个小人放大的效果.
-		if (newView.getId() == R.id.gridview_lay) {
-		} else {
+		if (newView.getId() == R.id.gridview_lay) { // 小人在外面的测试.
+			gridview_lay.setDrawShape(false); // 如果设置了圆角，必须取消圆角效果，暂时有冲突.
+			mOpenEffectBridge.setDrawUpRectPadding(10); // 设置移动边框间距，不要被挡住了。
+			mOpenEffectBridge.setDrawUpRectEnabled(false); // 让移动边框绘制在小人的下面.
+		} else { // 其它的还原.
+			mOpenEffectBridge.setDrawUpRectPadding(0);
+			mOpenEffectBridge.setDrawUpRectEnabled(true);
 		}
+		test_top_iv.animate().scaleX(1.2f).scaleY(1.3f).setDuration(300).start(); // 让小人超出控件.
+		// test_top_iv.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
 	}
 
 	@Override
