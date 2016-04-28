@@ -65,3 +65,15 @@ API文档：
 <p>
 <a href="https://github.com/lf8289/BorderViewDemo">BorderViewDemo</a>
 </p>
+
+## 版本更新
+
+v1.4.0 
+
+*添加recyclerview的支持
+*修复gridviewTv 更新数据崩溃
+*修改GridViewTV demo
+*修复键盘DEMO 崩溃
+*倒影控件添加间距接口
+*整理移动动画的函数
+
