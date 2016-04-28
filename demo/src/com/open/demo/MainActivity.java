@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.viewpager_lay).setOnClickListener(this);
 		findViewById(R.id.effect_rlay).setOnClickListener(this);
 		findViewById(R.id.menu_rlayt).setOnClickListener(this);
+		findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
 	}
 	
 	public ReflectItemView gridview_lay;
@@ -116,8 +117,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			showMsg("键盘 demo test");
 			startActivity(new Intent(getApplicationContext(), DemoKeyBoardActivity.class));
 			break;
-		case R.id.viewpager_lay:
-			showMsg("ViewPager demo test");
+		case R.id.viewpager_lay: // viewpager页面切换测试.
+			showMsg("ViewPager页面切换测试");
 			startActivity(new Intent(getApplicationContext(), DemoViewPagerActivity.class));
 			break;
 		case R.id.effect_rlay:
@@ -127,6 +128,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.menu_rlayt: // 菜单测试.
 			showMsg("菜单测试");
 			startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
+		case R.id.recyclerview_rlayt:
+			showMsg("recyclerview测试");
+			startActivity(new Intent(getApplicationContext(), DemoRecyclerviewActivity.class));
 		default:
 			break;
 		}

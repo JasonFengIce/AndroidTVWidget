@@ -28,6 +28,7 @@
         <activity android:name="com.open.demo.DemoKeyBoardActivity" />
         <activity android:name="com.open.demo.DemoViewPagerActivity" />
         <activity android:name="com.open.demo.DemoMenuActivity"/>
+        <activity android:name="com.open.demo.DemoRecyclerviewActivity"/>
     </application>
 
 </manifest>
