@@ -15,6 +15,10 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 		super(context, attrs, defStyleAttr, defStyleRes);
 	}
 
+	public GridLayoutManagerTV(Context context, int spanCount) {
+		super(context, spanCount);
+	}
+
 	@Override
 	public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler,
 			RecyclerView.State state) {
@@ -26,11 +30,14 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 		int nextPos = getNextViewPos(fromPos, focusDirection); // 下一个View位置获取.
 		return findViewByPosition(nextPos); // 获取下一个位置的view.
 	}
-	
+
 	/**
 	 * 获取下一个View位置.
-	 * @param fromPos 焦点View位置
-	 * @param direction 焦点移动方向.
+	 * 
+	 * @param fromPos
+	 *            焦点View位置
+	 * @param direction
+	 *            焦点移动方向.
 	 * @return 下一个位置.
 	 */
 	protected int getNextViewPos(int fromPos, int direction) {
@@ -43,10 +50,12 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 		}
 		return fromPos + offset;
 	}
-	
+
 	/**
 	 * 根据焦点移动方向获取.
-	 * @param direction 方向(FOCUS_DOWN等等).
+	 * 
+	 * @param direction
+	 *            方向(FOCUS_DOWN等等).
 	 * @return
 	 */
 	protected int calcOffsetToNextView(int direction) {
@@ -78,7 +87,7 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * 判断下一个方向是否正确.
 	 */
