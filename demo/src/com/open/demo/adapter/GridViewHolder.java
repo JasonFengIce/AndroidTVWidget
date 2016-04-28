@@ -11,6 +11,7 @@ public class GridViewHolder extends ViewHolder {
 	
 	public ImageView iv; 
 	public TextView tv;
+	public TextView head_tv;
 	
 	public GridViewHolder(View itemView) {
 		super(itemView);

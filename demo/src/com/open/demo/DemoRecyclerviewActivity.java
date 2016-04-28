@@ -1,11 +1,13 @@
 package com.open.demo;
 
 import com.open.androidtvwidget.recycle.GridLayoutManagerTV;
+import com.open.demo.adapter.HeaderGridAdapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,10 +27,11 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.demo_recyclerview_activity);
 		mContext = DemoRecyclerviewActivity.this;
 		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 		//
-//		testHeaderGridLayout();
+		testHeaderGridLayout();
 	}
 
 	@Override
@@ -69,19 +72,30 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 	 * 测试GridLayout.
 	 */
 	private void testRecyclerViewGridLayout(int orientation) {
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 		GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
 		gridlayoutManager.setOrientation(orientation);
 		recyclerView.setLayoutManager(gridlayoutManager);
 		recyclerView.setFocusable(false);
 	}
 
+	/**
+	 * 测试带标题栏的grid.
+	 */
 	private void testHeaderGridLayout() {
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-		GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
+		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
+		//
 		gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+		recyclerView.setHasFixedSize(true); // 保持固定的大小
 		recyclerView.setLayoutManager(gridlayoutManager);
 		recyclerView.setFocusable(false);
+		final HeaderGridAdapter mHeaderGridAdapter = new HeaderGridAdapter(100);
+		recyclerView.setAdapter(mHeaderGridAdapter);
+		gridlayoutManager.setSpanSizeLookup(new SpanSizeLookup() {
+			@Override
+			public int getSpanSize(int position) {
+				return mHeaderGridAdapter.isHeader(position) ? gridlayoutManager.getSpanCount() : 1;
+			}
+		});
 	}
 
 }
