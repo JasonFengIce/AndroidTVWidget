@@ -7,6 +7,7 @@ import com.open.demo.adapter.HeaderGridAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 
 /**
  * recyclerview Demo.
@@ -27,7 +29,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 	RecyclerView recyclerView;
 	MainUpView mainUpView1;
 	OpenEffectBridge openEffectBridge;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +42,26 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		openEffectBridge.setUpRectResource(R.drawable.white_light_10);
 		//
 		testHeaderGridLayout();
+		initAllViewEvents();
+	}
+
+	private View oldView;
+
+	private void initAllViewEvents() {
+		findViewById(R.id.h_liner_btn).setOnClickListener(this);
+		findViewById(R.id.v_liner_btn).setOnClickListener(this);
+		findViewById(R.id.h_grid_btn).setOnClickListener(this);
+		findViewById(R.id.v_grid_btn).setOnClickListener(this);
+		findViewById(R.id.head_grid_btn).setOnClickListener(this);
+		//
+		recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
+			@Override
+			public void onGlobalFocusChanged(View oldFocus, View focusview) {
+				recyclerView.getLayoutManager().requestChildRectangleOnScreen(recyclerView, focusview, new Rect(0, 0, 0, 200), false);
+				mainUpView1.setFocusView(focusview, oldFocus, 1.1f);
+				oldView = focusview;
+			}
+		});
 	}
 
 	@Override
@@ -93,7 +115,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
 		//
 		gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-		recyclerView.setHasFixedSize(true); // 保持固定的大小
+		// recyclerView.setHasFixedSize(true); // 保持固定的大小
 		recyclerView.setLayoutManager(gridlayoutManager);
 		recyclerView.setFocusable(false);
 		final HeaderGridAdapter mHeaderGridAdapter = new HeaderGridAdapter(100);

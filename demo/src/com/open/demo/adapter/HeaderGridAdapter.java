@@ -52,7 +52,7 @@ public class HeaderGridAdapter extends RecyclerView.Adapter<GridViewHolder> {
 			// return new HeaderHolder(headview);
 			return new GridViewHolder(headview);
 		}
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gridview, parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recyclerview_view, parent, false);
 		return new GridViewHolder(view);
 	}
 
