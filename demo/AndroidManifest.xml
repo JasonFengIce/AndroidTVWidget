@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 测试DEMO Activity -->
+        <!-- 测试DEMO Activity  -->
         <activity android:name="com.open.demo.DemoGridViewActivity" />
         <activity android:name="com.open.demo.DemoListViewActivity" />
         <activity android:name="com.open.demo.DemoKeyBoardActivity" />
