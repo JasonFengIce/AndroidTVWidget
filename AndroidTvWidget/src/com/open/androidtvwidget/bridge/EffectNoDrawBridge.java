@@ -79,10 +79,13 @@ public class EffectNoDrawBridge extends OpenEffectBridge {
 			oldHeight = moveView.getMeasuredHeight();
 			Rect fromRect = findLocationWithView(moveView);
 			Rect toRect = findLocationWithView(focusView);
-			int x = toRect.left - fromRect.left;
-			int y = toRect.top - fromRect.top;
+			int x = toRect.left - fromRect.left - (paddingRect.left);
+			int y = toRect.top - fromRect.top - (paddingRect.top);
 			newX = x - Math.abs(focusView.getMeasuredWidth() - newWidth) / 2;
 			newY = y - Math.abs(focusView.getMeasuredHeight() - newHeight) / 2;
+			//
+			newWidth += (paddingRect.right + paddingRect.left);
+			newHeight += (paddingRect.bottom + paddingRect.top);
 		}
 
 		// 取消之前的动画.
