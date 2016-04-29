@@ -1,6 +1,8 @@
 package com.open.demo;
 
+import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.recycle.GridLayoutManagerTV;
+import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridAdapter;
 
 import android.app.Activity;
@@ -23,13 +25,19 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 
 	Context mContext;
 	RecyclerView recyclerView;
-
+	MainUpView mainUpView1;
+	OpenEffectBridge openEffectBridge;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_recyclerview_activity);
 		mContext = DemoRecyclerviewActivity.this;
 		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
+		//
+		openEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
+		openEffectBridge.setUpRectResource(R.drawable.white_light_10);
 		//
 		testHeaderGridLayout();
 	}
