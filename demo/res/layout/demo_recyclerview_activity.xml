@@ -35,31 +35,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="纵向GridLayout" />
-        
+
         <Button
             android:id="@+id/head_grid_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="带标题头GridLayout" />
-        
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:background="#000000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:clipToPadding="false"
-        android:focusable="false"
-        android:paddingBottom="80dp" />
-	
-     <!-- 最顶层边框 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:clipToPadding="false"
+            android:focusable="false" />
+    </RelativeLayout>
+    <!-- 最顶层边框 -->
 
     <com.open.androidtvwidget.view.MainUpView
         android:id="@+id/mainUpView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    
+
 </LinearLayout>
