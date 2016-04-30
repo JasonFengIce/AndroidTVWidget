@@ -39,7 +39,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
 		//
 		openEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
-		openEffectBridge.setUpRectResource(R.drawable.white_light_10);
+		openEffectBridge.setUpRectResource(R.drawable.test_rectangle);
 		//
 		testHeaderGridLayout();
 		initAllViewEvents();
@@ -58,7 +58,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View focusview) {
 				recyclerView.getLayoutManager().requestChildRectangleOnScreen(recyclerView, focusview, new Rect(0, 0, 0, 200), false);
-				mainUpView1.setFocusView(focusview, oldFocus, 1.1f);
+				mainUpView1.setFocusView(focusview, oldFocus, 1.2f);
 				oldView = focusview;
 			}
 		});
@@ -115,7 +115,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
 		//
 		gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-		// recyclerView.setHasFixedSize(true); // 保持固定的大小
+//		 recyclerView.setHasFixedSize(true); // 保持固定的大小
 		recyclerView.setLayoutManager(gridlayoutManager);
 		recyclerView.setFocusable(false);
 		final HeaderGridAdapter mHeaderGridAdapter = new HeaderGridAdapter(100);

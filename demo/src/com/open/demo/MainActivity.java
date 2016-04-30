@@ -128,6 +128,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.menu_rlayt: // 菜单测试.
 			showMsg("菜单测试");
 			startActivity(new Intent(getApplicationContext(), DemoMenuActivity.class));
+			break;
 		case R.id.recyclerview_rlayt:
 			showMsg("recyclerview测试");
 			startActivity(new Intent(getApplicationContext(), DemoRecyclerviewActivity.class));
