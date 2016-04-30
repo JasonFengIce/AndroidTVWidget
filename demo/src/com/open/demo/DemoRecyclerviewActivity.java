@@ -57,7 +57,6 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View focusview) {
-				recyclerView.getLayoutManager().requestChildRectangleOnScreen(recyclerView, focusview, new Rect(0, 0, 0, 200), false);
 				mainUpView1.setFocusView(focusview, oldFocus, 1.2f);
 				oldView = focusview;
 			}
