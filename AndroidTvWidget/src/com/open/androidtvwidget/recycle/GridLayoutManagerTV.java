@@ -1,9 +1,13 @@
 package com.open.androidtvwidget.recycle;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Recycler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -20,6 +24,11 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 	}
 
 	@Override
+	public boolean requestChildRectangleOnScreen(RecyclerView arg0, View arg1, Rect arg2, boolean arg3) {
+		return true;
+	}
+	
+	@Override
 	public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler,
 			RecyclerView.State state) {
 		View nextFocus = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
@@ -28,12 +37,13 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 		}
 		int fromPos = getPosition(focused); // 获取当焦点view位置.
 		int nextPos = getNextViewPos(fromPos, focusDirection); // 下一个View位置获取.
-		return findViewByPosition(nextPos); // 获取下一个位置的view.
+		View view = findViewByPosition(nextPos);
+		return null; // 获取下一个位置的view.
 	}
 
 	/**
 	 * 获取下一个View位置.
-	 * 
+	 *
 	 * @param fromPos
 	 *            焦点View位置
 	 * @param direction
@@ -53,7 +63,7 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 
 	/**
 	 * 根据焦点移动方向获取.
-	 * 
+	 *
 	 * @param direction
 	 *            方向(FOCUS_DOWN等等).
 	 * @return

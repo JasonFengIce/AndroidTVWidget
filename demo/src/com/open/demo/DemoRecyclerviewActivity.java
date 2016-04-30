@@ -111,7 +111,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 	 * 测试带标题栏的grid.
 	 */
 	private void testHeaderGridLayout() {
-		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 4);
+		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 5);
 		//
 		gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
 //		 recyclerView.setHasFixedSize(true); // 保持固定的大小
