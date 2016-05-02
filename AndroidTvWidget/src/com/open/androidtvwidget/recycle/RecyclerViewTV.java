@@ -3,57 +3,57 @@ package com.open.androidtvwidget.recycle;
 import com.open.androidtvwidget.view.WidgetTvViewBring;
 
 import android.content.Context;
-import android.graphics.Rect;
+import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
-public class RecyclerViewTV extends RecyclerView  {
-	
+public class RecyclerViewTV extends RecyclerView {
+
 	public RecyclerViewTV(Context context) {
 		super(context);
 		init(context);
 	}
-	
+
 	public RecyclerViewTV(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
 	}
-	
+
 	public RecyclerViewTV(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        init(context);
+		init(context);
 	}
-	
+
 	WidgetTvViewBring mWidgetTvViewBring;
 
 	private void init(Context context) {
 		setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
-        setHasFixedSize(true);
-        setWillNotDraw(true);
-        setOverScrollMode(View.OVER_SCROLL_NEVER);
-        setChildrenDrawingOrderEnabled(true);
+		setHasFixedSize(true);
+		setWillNotDraw(true);
+		setOverScrollMode(View.OVER_SCROLL_NEVER);
+		setChildrenDrawingOrderEnabled(true);
 		mWidgetTvViewBring = new WidgetTvViewBring(this);
 	}
-	
+
 	@Override
 	public void bringChildToFront(View child) {
 		mWidgetTvViewBring.bringChildToFront(this, child);
 	}
-	
+
 	@Override
 	protected int getChildDrawingOrder(int childCount, int i) {
 		return mWidgetTvViewBring.getChildDrawingOrder(childCount, i);
 	}
-	
+
 	@Override
-	protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-	}
-	
-	@Override
-	public View focusSearch(int direction) {
-		return super.focusSearch(direction);
+	protected void dispatchDraw(Canvas canvas) {
+		try {
+			super.dispatchDraw(canvas);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

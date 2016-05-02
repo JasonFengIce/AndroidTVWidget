@@ -1,22 +1,23 @@
 package com.open.demo;
 
-import com.open.androidtvwidget.bridge.OpenEffectBridge;
+import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.recycle.GridLayoutManagerTV;
+import com.open.androidtvwidget.recycle.OnChildSelectedListener;
+import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridAdapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
-import android.util.Log;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
+import android.view.View.OnFocusChangeListener;
 
 /**
  * recyclerview Demo.
@@ -24,23 +25,24 @@ import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
  * @author hailongqiu
  *
  */
-public class DemoRecyclerviewActivity extends Activity implements OnClickListener {
+public class DemoRecyclerviewActivity extends Activity implements OnClickListener, OnFocusChangeListener {
 
 	Context mContext;
-	RecyclerView recyclerView;
+	RecyclerViewTV recyclerView;
 	MainUpView mainUpView1;
-	OpenEffectBridge openEffectBridge;
+	RecyclerViewBridge mRecyclerViewBridge;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_recyclerview_activity);
 		mContext = DemoRecyclerviewActivity.this;
-		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+		recyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView);
 		mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
+		mainUpView1.setEffectBridge(new RecyclerViewBridge());
 		//
-		openEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
-		openEffectBridge.setUpRectResource(R.drawable.test_rectangle);
+		mRecyclerViewBridge = (RecyclerViewBridge) mainUpView1.getEffectBridge();
+		mRecyclerViewBridge.setUpRectResource(R.drawable.test_rectangle);
 		//
 		testHeaderGridLayout();
 		initAllViewEvents();
@@ -55,14 +57,11 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		findViewById(R.id.v_grid_btn).setOnClickListener(this);
 		findViewById(R.id.head_grid_btn).setOnClickListener(this);
 		//
-		recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
-			@Override
-			public void onGlobalFocusChanged(View oldFocus, View focusview) {
-				Log.d("hailongqiu", "hailongqiu onGlobalFocusChanged");
-				mainUpView1.setFocusView(focusview, oldFocus, 1.2f);
-				oldView = focusview;
-			}
-		});
+		findViewById(R.id.h_liner_btn).setOnFocusChangeListener(this);
+		findViewById(R.id.v_liner_btn).setOnFocusChangeListener(this);
+		findViewById(R.id.h_grid_btn).setOnFocusChangeListener(this);
+		findViewById(R.id.v_grid_btn).setOnFocusChangeListener(this);
+		findViewById(R.id.head_grid_btn).setOnFocusChangeListener(this);
 	}
 
 	@Override
@@ -113,10 +112,22 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 	 * 测试带标题栏的grid.
 	 */
 	private void testHeaderGridLayout() {
-		final GridLayoutManager gridlayoutManager = new GridLayoutManagerTV(this, 5);
+		final GridLayoutManagerTV gridlayoutManager = new GridLayoutManagerTV(this, 5);
+		gridlayoutManager.setOnChildSelectedListener(new OnChildSelectedListener() {
+			@Override
+			public void onChildSelected(RecyclerView parent, View focusview, int position, int dy) {
+				Log.d("hailongqiu", "hailongqiu onChildSelected focusview");
+				focusview.bringToFront();
+				mRecyclerViewBridge.setFocusView(focusview, oldView, 1.2f);
+				oldView = focusview;
+			}
+		});
+		// 保持一个位置（上，下头，尾的差距填补).
+		gridlayoutManager.setBottomPadding((int) getResources().getDimension(R.dimen.px250));
+		gridlayoutManager.setTopPadding((int) getResources().getDimension(R.dimen.px150));
 		//
 		gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-//		 recyclerView.setHasFixedSize(true); // 保持固定的大小
+		// recyclerView.setHasFixedSize(true); // 保持固定的大小
 		recyclerView.setLayoutManager(gridlayoutManager);
 		recyclerView.setFocusable(false);
 		final HeaderGridAdapter mHeaderGridAdapter = new HeaderGridAdapter(100);
@@ -127,6 +138,12 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 				return mHeaderGridAdapter.isHeader(position) ? gridlayoutManager.getSpanCount() : 1;
 			}
 		});
+	}
+
+	@Override
+	public void onFocusChange(View focusview, boolean hasFocus) {
+		mRecyclerViewBridge.setFocusView(focusview, oldView, 1.0f);
+		oldView = focusview;
 	}
 
 }

@@ -1,14 +1,15 @@
 package com.open.androidtvwidget.recycle;
 
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
-
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 
 /**
  * 修复 GridLayoutManager 焦点错乱问题.
@@ -17,15 +18,95 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 
 	public GridLayoutManagerTV(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
+		init(context);
 	}
 
 	public GridLayoutManagerTV(Context context, int spanCount) {
 		super(context, spanCount);
+		init(context);
 	}
 
+	private void init(Context context) {
+	}
+
+	RecyclerView mParent;
+	int mTopPadding = 0;
+	int mBottomPadding = 0;
+	int mDy = 0;
+	private OnChildSelectedListener mChildSelectedListener = null;
+	View mSelectedView;
+	SelectionNotifier mSelectionNotifier;
+	boolean isFirst = true;
+
 	@Override
-	public boolean requestChildRectangleOnScreen(RecyclerView arg0, View arg1, Rect arg2, boolean arg3) {
+	public boolean requestChildRectangleOnScreen(final RecyclerView parent, View child, Rect rect, boolean immediate) {
 		Log.d("hailongqiu", "hailongqiu requestChildRectangleOnScreen");
+		mParent = parent;
+		int topPadding = mTopPadding;
+		int bottomPadding = mBottomPadding;
+		//
+		final int parentLeft = getPaddingLeft();
+		final int parentTop = getPaddingTop();
+		final int parentRight = getWidth() - getPaddingRight();
+		final int parentBottom = getHeight() - getPaddingBottom();
+		final int childLeft = child.getLeft() + rect.left;
+		final int childTop = child.getTop() + rect.top;
+		final int childRight = childLeft + rect.width();
+		final int childBottom = childTop + rect.height();
+
+		final int offScreenLeft = Math.min(0, childLeft - parentLeft);
+		final int offScreenTop = Math.min(0, childTop - parentTop - topPadding);
+		final int offScreenRight = Math.max(0, childRight - parentRight);
+		final int offScreenBottom = Math.max(0, childBottom - parentBottom + bottomPadding);
+
+		Rect childRect = new Rect(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+		// Favor the "start" layout direction over the end when bringing one
+		// side or the other
+		// of a large rect into view. If we decide to bring in end because start
+		// is already
+		// visible, limit the scroll such that start won't go out of bounds.
+		final int dx;
+		if (getLayoutDirection() == ViewCompat.LAYOUT_DIRECTION_RTL) {
+			dx = offScreenRight != 0 ? offScreenRight : Math.max(offScreenLeft, childRight - parentRight);
+		} else {
+			dx = offScreenLeft != 0 ? offScreenLeft : Math.min(childLeft - parentLeft, offScreenRight);
+		}
+
+		// Favor bringing the top into view over the bottom. If top is already
+		// visible and
+		// we should scroll to make bottom visible, make sure top does not go
+		// out of bounds.
+		int dy = offScreenTop != 0 ? offScreenTop : Math.min(childTop - parentTop, offScreenBottom);
+		//
+		this.mDy = dy;
+		mSelectedView = child;
+		if (mSelectionNotifier == null) {
+			mSelectionNotifier = new SelectionNotifier();
+		}
+		//
+		if (dx != 0 || dy != 0) {
+			if (immediate) {
+				parent.scrollBy(dx, dy);
+			} else {
+				parent.smoothScrollBy(dx, dy);
+			}
+			//
+			if (isFirst) {
+				parent.addOnScrollListener(new OnScrollListener() {
+					@Override
+					public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+						if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+							parent.post(mSelectionNotifier);
+						} else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+						}
+					}
+				});
+				isFirst = false;
+			}
+			return true;
+		}
+		//
+		parent.post(mSelectionNotifier);
 		return false;
 	}
 
@@ -36,42 +117,38 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 	public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler,
 			RecyclerView.State state) {
 		View nextFocus = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
-		Log.d("hailongqiu", "hailongqiu onFocusSearchFailed");
 		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean onRequestChildFocus(RecyclerView parent, View child, View focused) {
-		Log.d("hailongqiu", "hailongqiu onRequestChildFocus child:" + child + " focused:" + focused);
-		if (getPositionByView(child) == NO_POSITION) {
-			// This shouldn't happen, but in case it does be sure not to attempt
-			// a
-			// scroll to a view whose item has been removed.
-			return true;
+
+	private class SelectionNotifier implements Runnable {
+		@Override
+		public void run() {
+			fireOnSelected();
 		}
-		// if (!mInLayout && !mInSelection && !mInScroll) {
-		scrollToView(child, focused, true);
-		// }
-		return true; // super.onRequestChildFocus(parent, child, focused);
 	}
 
-	@SuppressWarnings("deprecation")
-	private int getPositionByView(View view) {
-		if (view == null) {
-			return NO_POSITION;
-		}
-		LayoutParams params = (LayoutParams) view.getLayoutParams();
-		if (params == null || params.isItemRemoved()) {
-			// when item is removed, the position value can be any value.
-			return NO_POSITION;
-		}
-		return params.getViewPosition();
+	public View getSelectedView() {
+		return mSelectedView;
 	}
 
-	private void scrollToView(View view, View childView, boolean smooth) {
-		int newFocusPosition = getPositionByView(view);
-		view.requestFocus();
+	public void setTopPadding(int topPadding) {
+		this.mTopPadding = topPadding;
+	}
+
+	public void setBottomPadding(int bottomPadding) {
+		this.mBottomPadding = bottomPadding;
+	}
+
+	private void fireOnSelected() {
+		if (mChildSelectedListener != null) {
+			int pos = getPosition(getSelectedView());
+			View view = getSelectedView();
+			mChildSelectedListener.onChildSelected(mParent, getSelectedView(), pos, mDy);
+		}
+	}
+
+	public void setOnChildSelectedListener(OnChildSelectedListener listener) {
+		mChildSelectedListener = listener;
 	}
 
 }
