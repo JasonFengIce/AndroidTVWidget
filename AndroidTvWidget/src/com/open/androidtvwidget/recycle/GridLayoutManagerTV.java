@@ -1,11 +1,11 @@
 package com.open.androidtvwidget.recycle;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Recycler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -25,92 +25,53 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 
 	@Override
 	public boolean requestChildRectangleOnScreen(RecyclerView arg0, View arg1, Rect arg2, boolean arg3) {
-		return true;
+		Log.d("hailongqiu", "hailongqiu requestChildRectangleOnScreen");
+		return false;
 	}
-	
+
+	/**
+	 * 焦点搜索失败处理.
+	 */
 	@Override
 	public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler,
 			RecyclerView.State state) {
 		View nextFocus = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
-		if (nextFocus == null) {
-			return nextFocus;
+		Log.d("hailongqiu", "hailongqiu onFocusSearchFailed");
+		return null;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean onRequestChildFocus(RecyclerView parent, View child, View focused) {
+		Log.d("hailongqiu", "hailongqiu onRequestChildFocus child:" + child + " focused:" + focused);
+		if (getPositionByView(child) == NO_POSITION) {
+			// This shouldn't happen, but in case it does be sure not to attempt
+			// a
+			// scroll to a view whose item has been removed.
+			return true;
 		}
-		int fromPos = getPosition(focused); // 获取当焦点view位置.
-		int nextPos = getNextViewPos(fromPos, focusDirection); // 下一个View位置获取.
-		View view = findViewByPosition(nextPos);
-		return null; // 获取下一个位置的view.
+		// if (!mInLayout && !mInSelection && !mInScroll) {
+		scrollToView(child, focused, true);
+		// }
+		return true; // super.onRequestChildFocus(parent, child, focused);
 	}
 
-	/**
-	 * 获取下一个View位置.
-	 *
-	 * @param fromPos
-	 *            焦点View位置
-	 * @param direction
-	 *            焦点移动方向.
-	 * @return 下一个位置.
-	 */
-	protected int getNextViewPos(int fromPos, int direction) {
-		int offset = calcOffsetToNextView(direction); // 获取下一方向的位置.
-		/**
-		 * 判断下一个方向位置是否正确.
-		 */
-		if (hitBorder(fromPos, offset)) {
-			return fromPos;
+	@SuppressWarnings("deprecation")
+	private int getPositionByView(View view) {
+		if (view == null) {
+			return NO_POSITION;
 		}
-		return fromPos + offset;
+		LayoutParams params = (LayoutParams) view.getLayoutParams();
+		if (params == null || params.isItemRemoved()) {
+			// when item is removed, the position value can be any value.
+			return NO_POSITION;
+		}
+		return params.getViewPosition();
 	}
 
-	/**
-	 * 根据焦点移动方向获取.
-	 *
-	 * @param direction
-	 *            方向(FOCUS_DOWN等等).
-	 * @return
-	 */
-	protected int calcOffsetToNextView(int direction) {
-		int spanCount = getSpanCount();
-		int orientation = getOrientation();
-
-		if (orientation == VERTICAL) {
-			switch (direction) {
-			case View.FOCUS_DOWN:
-				return spanCount;
-			case View.FOCUS_UP:
-				return -spanCount;
-			case View.FOCUS_RIGHT:
-				return 1;
-			case View.FOCUS_LEFT:
-				return -1;
-			}
-		} else if (orientation == HORIZONTAL) {
-			switch (direction) {
-			case View.FOCUS_DOWN:
-				return 1;
-			case View.FOCUS_UP:
-				return -1;
-			case View.FOCUS_RIGHT:
-				return spanCount;
-			case View.FOCUS_LEFT:
-				return -spanCount;
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * 判断下一个方向是否正确.
-	 */
-	private boolean hitBorder(int from, int offset) {
-		int spanCount = getSpanCount();
-		if (Math.abs(offset) == 1) {
-			int spanIndex = from % spanCount;
-			int newSpanIndex = spanIndex + offset;
-			return newSpanIndex < 0 || newSpanIndex >= spanCount;
-		} else {
-			int newPos = from + offset;
-			return newPos < 0 && newPos >= spanCount;
-		}
+	private void scrollToView(View view, View childView, boolean smooth) {
+		int newFocusPosition = getPositionByView(view);
+		view.requestFocus();
 	}
 
 }
