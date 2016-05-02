@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
+import android.util.Log;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -57,6 +58,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 		recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(View oldFocus, View focusview) {
+				Log.d("hailongqiu", "hailongqiu onGlobalFocusChanged");
 				mainUpView1.setFocusView(focusview, oldFocus, 1.2f);
 				oldView = focusview;
 			}
