@@ -60,8 +60,10 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 		}
 
 		// 取消之前的动画.
-		if (mCurrentAnimatorSet != null)
+		if (mCurrentAnimatorSet != null) {
 			mCurrentAnimatorSet.cancel();
+			mCurrentAnimatorSet = null;
+		}
 
 		ObjectAnimator transAnimatorX = ObjectAnimator.ofFloat(moveView, "translationX", newX);
 		ObjectAnimator transAnimatorY = ObjectAnimator.ofFloat(moveView, "translationY", newY);

@@ -100,6 +100,10 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 						} else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
 						}
 					}
+					@Override
+					public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//						parent.post(mSelectionNotifier);
+					}
 				});
 				isFirst = false;
 			}
