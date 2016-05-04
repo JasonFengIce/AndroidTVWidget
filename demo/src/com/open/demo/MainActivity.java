@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 /**
@@ -69,7 +70,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		});
 		// test demo.
-		gridview_lay = (ReflectItemView) findViewById(R.id.gridview_lay);
+		gridview_lay = findViewById(R.id.gridview_lay);
 		gridview_lay.setOnClickListener(this);
 		findViewById(R.id.listview_lay).setOnClickListener(this);
 		findViewById(R.id.keyboard_lay).setOnClickListener(this);
@@ -79,7 +80,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
 	}
 
-	public ReflectItemView gridview_lay;
+	public View gridview_lay;
 
 	/**
 	 * 这是一个测试DEMO，希望对API了解下再使用. 这种DEMO是为了实现这个效果:
