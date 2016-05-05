@@ -89,6 +89,10 @@ public class OpenMenuBuilder implements OpenMenu {
 		((OpenListMenuView)getMenuView()).getMenuListView().requestFocus();
 	}
 	
+	public boolean isShowMenu() {
+		View view = (View) getMenuView();
+		return (view.getVisibility() == View.VISIBLE);
+	}
 	/**
 	 * 设置显示菜单动画.
 	 */

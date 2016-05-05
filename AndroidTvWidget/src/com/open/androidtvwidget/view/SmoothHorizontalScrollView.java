@@ -5,6 +5,9 @@ import com.open.androidtvwidget.R;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.widget.HorizontalScrollView;
 
 public class SmoothHorizontalScrollView extends HorizontalScrollView {
@@ -84,6 +87,17 @@ public class SmoothHorizontalScrollView extends HorizontalScrollView {
 			scrollXDelta = Math.max(scrollXDelta, -getScrollX());
 		}
 		return scrollXDelta;
+	}
+	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		Log.d("hailongqiu", "hailongqiu h-scroll dispatchKeyEvent");
+		return super.dispatchKeyEvent(event);
+	}
+	
+	public boolean onTouchEvent(MotionEvent ev) {
+		Log.d("hailongqiu", "hailongqiu h-scroll onTouchEvent");
+		return super.onTouchEvent(ev);
 	}
 	
 }
