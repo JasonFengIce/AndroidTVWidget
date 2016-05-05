@@ -85,6 +85,8 @@ public class OpenMenuBuilder implements OpenMenu {
 	public void showMenu() {
 		View view = (View) getMenuView();
 		view.setVisibility(View.VISIBLE);
+		((OpenListMenuView)getMenuView()).getMenuListView().setFocusable(true);
+		((OpenListMenuView)getMenuView()).getMenuListView().requestFocus();
 	}
 	
 	/**
