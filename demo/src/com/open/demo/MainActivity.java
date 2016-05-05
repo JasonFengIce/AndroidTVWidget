@@ -59,7 +59,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
 			@Override
 			public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
-				newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
+				if (newFocus != null)
+					newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
 				float scale = 1.2f;
 				mainUpView1.setFocusView(newFocus, mOldFocus, scale);
 				mOldFocus = newFocus; // 4.3以下需要自己保存.
