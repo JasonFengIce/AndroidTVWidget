@@ -21,6 +21,7 @@ package com.open.androidtvwidget.menu;
 import java.util.ArrayList;
 
 import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.app.Activity;
 import android.content.Context;
@@ -311,12 +312,12 @@ public class OpenMenuBuilder implements OpenMenu {
 	public String toString() {
 		for (OpenMenuItem item : mItems) {
 			String title = item.getTitle().toString();
-			Log.e(TAG, "hailongqiu menu item:" + title);
+			OPENLOG.E("menu item:" + title);
 			OpenSubMenu submenu = item.getSubMenu();
 			if (submenu != null) {
-				Log.e(TAG, "hailongqiu =======sub menu======start start start");
+				OPENLOG.E("=======sub menu======start start start start");
 				submenu.toString();
-				Log.e(TAG, "hailongqiu =======sub menu======end end end");
+				OPENLOG.E("=======sub menu======end end end end");
 			}
 		}
 		return super.toString();

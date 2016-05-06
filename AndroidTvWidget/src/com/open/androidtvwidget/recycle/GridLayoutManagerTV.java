@@ -1,5 +1,7 @@
 package com.open.androidtvwidget.recycle;
 
+import com.open.androidtvwidget.utils.OPENLOG;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
@@ -42,7 +44,7 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 
 	@Override
 	public boolean requestChildRectangleOnScreen(final RecyclerView parent, View child, Rect rect, boolean immediate) {
-		Log.d("hailongqiu", "hailongqiu requestChildRectangleOnScreen");
+		OPENLOG.D("requestChildRectangleOnScreen");
 		mParent = parent;
 		int topPadding = mTopPadding;
 		int bottomPadding = mBottomPadding;

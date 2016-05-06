@@ -4,6 +4,7 @@ import com.open.androidtvwidget.menu.OpenListMenuView;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuBuilder;
 import com.open.androidtvwidget.menu.OpenSubMenuBuilder;
+import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.SmoothHorizontalScrollView;
 
 import android.app.Activity;
@@ -33,6 +34,10 @@ public class DemoMenuActivity extends Activity {
 	private Context mContext;
 
 //	private SmoothHorizontalScrollView test_hscroll;
+	
+	public DemoMenuActivity() {
+		OPENLOG.initTag("hailongqiu", true);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,7 @@ public class DemoMenuActivity extends Activity {
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
+		OPENLOG.D("fsdfsdfdsf%s-%s", "AAAAAAAA", "BBBBBBB");
 		if (openMenu.isShowMenu()) {
 //			test_hscroll.setEnabled(false);
 		} else {

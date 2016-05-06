@@ -50,7 +50,6 @@ public class OpenListMenuView extends RelativeLayout implements OpenMenuView {
 	
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		int action = event.getAction();
-		Log.d("hailongqiu", "hailongqiu dispatchKeyEvent:" + (getChildAt(0) instanceof ListView));
 		if (action == KeyEvent.ACTION_DOWN) {
 			int keyCode = event.getKeyCode();
 			switch (keyCode) {

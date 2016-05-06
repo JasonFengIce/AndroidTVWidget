@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * 开启LOG输出.
  * <p>
- * setprop log.tag.xgimi.bootwizard VERBOSE
+ * setprop log.tag.$getTag() VERBOSE
  * <p>
  * 
  * @author hailongqiu
@@ -14,9 +14,8 @@ import android.util.Log;
  */
 public class OPENLOG {
 	
-	public static String sTag = "";
-	public static boolean sDebug = false;
-    public static final boolean DEBUG_DEMO_LOG = Log.isLoggable(getTag(), Log.VERBOSE);
+	private static String sTag = "";
+	private static boolean sDebug = false;
     
     public static void initTag(String tag, boolean debug) {
     	sTag = tag;
@@ -24,19 +23,19 @@ public class OPENLOG {
     }
     
     public static void D(String str, Object... args) {
-        if (sDebug || DEBUG_DEMO_LOG) {
+        if (sDebug || isDebug()) {
             Log.d(getTag(), buildLogString(str, args));
         }
     }
 
     public static void V(String str, Object... args) {
-        if (sDebug || DEBUG_DEMO_LOG) {
+        if (sDebug || isDebug()) {
             Log.v(getTag(), buildLogString(str, args));
         }
     }
     
     public static void E(String str, Object... args) {
-        if (sDebug || DEBUG_DEMO_LOG) {
+        if (sDebug || isDebug()) {
             Log.d(getTag(), buildLogString(str, args));
         }
     }
@@ -79,5 +78,9 @@ public class OPENLOG {
         }
         return stringBuilder.toString();
     }
-
+    
+	private static boolean isDebug() {
+		return Log.isLoggable(getTag(), Log.VERBOSE);
+	}
+	
 }
