@@ -89,15 +89,4 @@ public class SmoothHorizontalScrollView extends HorizontalScrollView {
 		return scrollXDelta;
 	}
 	
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		Log.d("hailongqiu", "hailongqiu h-scroll dispatchKeyEvent");
-		return super.dispatchKeyEvent(event);
-	}
-	
-	public boolean onTouchEvent(MotionEvent ev) {
-		Log.d("hailongqiu", "hailongqiu h-scroll onTouchEvent");
-		return super.onTouchEvent(ev);
-	}
-	
 }

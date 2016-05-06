@@ -4,6 +4,8 @@ import com.open.androidtvwidget.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -37,13 +39,37 @@ public class OpenListMenuView extends RelativeLayout implements OpenMenuView {
 	public ListView getMenuListView() {
 		return mMenuListView;
 	}
-	
-	public View getMainView() {
-		return findViewById(R.id.menu_rlayt);
-	}
-	
+
 	@Override
 	public void initialize(OpenMenuBuilder menu) {
+	}
+
+	public void hideListMneuView() {
+		setVisibility(View.GONE);
+	}
+	
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		int action = event.getAction();
+		Log.d("hailongqiu", "hailongqiu dispatchKeyEvent:" + (getChildAt(0) instanceof ListView));
+		if (action == KeyEvent.ACTION_DOWN) {
+			int keyCode = event.getKeyCode();
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				return true;
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				hideListMneuView();
+				return true;
+			case KeyEvent.KEYCODE_DPAD_UP:
+				getMenuListView().dispatchKeyEvent(event);
+				return true;
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				getMenuListView().dispatchKeyEvent(event);
+				return true;
+			default:
+				break;
+			}
+		}
+		return super.dispatchKeyEvent(event);
 	}
 
 }

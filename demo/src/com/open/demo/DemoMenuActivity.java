@@ -32,13 +32,13 @@ public class DemoMenuActivity extends Activity {
 
 	private Context mContext;
 
-	private SmoothHorizontalScrollView test_hscroll;
+//	private SmoothHorizontalScrollView test_hscroll;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.test_page1);
-		test_hscroll = (SmoothHorizontalScrollView) findViewById(R.id.test_hscroll);
+		setContentView(R.layout.demo_menu_activity);
+//		test_hscroll = (SmoothHorizontalScrollView) findViewById(R.id.test_hscroll);
 		findViewById(R.id.content11).setBackgroundResource(R.drawable.mainbackground);
 		mContext = DemoMenuActivity.this;
 		initAllMenu();
@@ -48,7 +48,7 @@ public class DemoMenuActivity extends Activity {
 	
 	private void initAllMenu() {
 		// 主菜单.
-		openMenu = new OpenMenuBuilder(mContext);
+		openMenu = new OpenMenuBuilder(mContext, 250).setGravity(1);
 		openMenu.setBackgroundResource(R.drawable.ic_bg_setting); // 设置背景.
 		openMenu.add("菜单1").setIcon(R.drawable.ic_launcher);
 		openMenu.add("菜单2").setIcon(R.drawable.ic_launcher);
@@ -60,14 +60,14 @@ public class DemoMenuActivity extends Activity {
 		// 菜单1的子菜单.
 		OpenSubMenuBuilder subMenu1 = new OpenSubMenuBuilder(mContext);
 		subMenu1.add("菜单1-1");
-		subMenu1.add("菜单1-2");
+		subMenu1.add("菜单1-2").setIcon(R.drawable.ic_launcher);;
 		subMenu1.add("菜单1-3");
 		// 菜单2的子菜单.
 		OpenSubMenuBuilder subMenu2 = new OpenSubMenuBuilder(mContext);
 		subMenu2.add("菜单2-1");
 		subMenu2.add("菜单2-2");
 		subMenu2.add("菜单2-3");
-		// 添加子菜单.
+		// 添加子菜单. 
 		openMenu.addSubMenu(0, subMenu1);
 		openMenu.addSubMenu(1, subMenu2);
 		// 菜单1添加子菜单.
@@ -97,9 +97,9 @@ public class DemoMenuActivity extends Activity {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (openMenu.isShowMenu()) {
-			test_hscroll.setEnabled(false);
+//			test_hscroll.setEnabled(false);
 		} else {
-			test_hscroll.setEnabled(true);
+//			test_hscroll.setEnabled(true);
 		}
 		return super.dispatchKeyEvent(event);
 	}

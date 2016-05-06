@@ -40,6 +40,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -65,19 +66,26 @@ public class OpenMenuBuilder implements OpenMenu {
 	//
 	private int mTextSize = OpenMenuItemImpl.DEFAULT_TEXT_SIZE;
 	
-	public OpenMenuBuilder(Context context) {
+	public OpenMenuBuilder(Context context, int width, int height) {
 		init(context);
 		// 将菜单添加到root布局上.
-		attach2Window(context);
+		attach2Window(context, width, height);
 	}
 	
-	public void attach2Window(Context context) {
+	public OpenMenuBuilder(Context context, int width) {
+		init(context);
+		// 将菜单添加到root布局上.
+		attach2Window(context, width, ViewGroup.LayoutParams.MATCH_PARENT);
+	}
+	
+	public OpenMenuBuilder(Context context) {
+		this(context, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+	}
+	
+	private void attach2Window(Context context, int width, int height) {
 		ViewGroup rootView = (ViewGroup) ((Activity)context).findViewById(Window.ID_ANDROID_CONTENT);
 		View view = (View) getMenuView();
-		int width = view.getMeasuredWidth();
-		width = ViewGroup.LayoutParams.WRAP_CONTENT;
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width,
-				ViewGroup.LayoutParams.MATCH_PARENT);
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 		view.setVisibility(View.GONE);
 		rootView.addView(view, layoutParams);
 	}
@@ -108,6 +116,16 @@ public class OpenMenuBuilder implements OpenMenu {
 	public void hideMenu() {
 		View view = (View) getMenuView();
 		view.setVisibility(View.GONE);
+	}
+	
+	private OpenMenuBuilder mParent;
+	
+	public void setParentMenu(OpenMenuBuilder openMenuBuilder) {
+		mParent = openMenuBuilder;
+	}
+
+	public OpenMenuBuilder getParentMenu() {
+		return this.mParent;
 	}
 	
 	private void init(Context context) {
@@ -166,6 +184,10 @@ public class OpenMenuBuilder implements OpenMenu {
 	@Override
 	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu) {
 		mItems.get(pos).setSubMenu(openSubMenu);
+		// 添加父菜单.
+		if (openSubMenu != null) {
+			((OpenSubMenuBuilder)openSubMenu).setParentMenu(OpenMenuBuilder.this);
+		}
 		return openSubMenu;
 	}
 
@@ -189,6 +211,8 @@ public class OpenMenuBuilder implements OpenMenu {
 	@Override
 	public OpenMenuBuilder setGravity(int gravity) {
 		mGravity = gravity;
+		RelativeLayout.LayoutParams layPar = (android.widget.RelativeLayout.LayoutParams) ((OpenListMenuView)getMenuView()).getMenuListView().getLayoutParams();
+		layPar.addRule(RelativeLayout.CENTER_IN_PARENT);
 		return this;
 	}
 	
@@ -217,6 +241,10 @@ public class OpenMenuBuilder implements OpenMenu {
 		mMenuView.setBackgroundResource(resID);
 	}
 	
+	private void showSubMenuView() {
+		
+	}
+	
 	public OpenMenuView getMenuView() {
 		// 多个listview---主菜单--子菜单（无限个)
 		if (mMenuView == null) {
@@ -224,6 +252,7 @@ public class OpenMenuBuilder implements OpenMenu {
 			mMenuView.getMenuListView().setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					// 是否有子菜单，则显示子菜单.
 					if (mItems.get(position).hasSubMenu()) {
 						// test.
 						FrameLayout.LayoutParams mainLayoutParams = (LayoutParams) mMenuView.getLayoutParams();
