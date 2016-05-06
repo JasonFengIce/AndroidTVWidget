@@ -11,8 +11,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.MonthDisplayHelper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -42,6 +46,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		mOpenEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
 		// 4.2 绘制有问题，所以不使用绘制边框.
 		// 也不支持倒影效果，绘制有问题.
+		// 请大家不要按照我这样写.
+		// 如果你不想放大小人超出边框(demo，张靓颖的小人)，可以不使用OpenEffectBridge.
+		// 我只是测试----DEMO.(建议大家使用 NoDrawBridge)
 		if (Utils.getSDKVersion() == 17) { // 测试 android 4.2版本.
 			switchNoDrawBridgeVersion();
 		} else { // 其它版本（android 4.3以上）.
@@ -79,8 +86,19 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.effect_rlay).setOnClickListener(this);
 		findViewById(R.id.menu_rlayt).setOnClickListener(this);
 		findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
+		/**
+		 * 尽量不要使用鼠标.
+		 * !!!! 如果使用鼠标，自己要处理好焦点问题.(警告)
+		 */
+		findViewById(R.id.hscroll_view).setOnHoverListener(new OnHoverListener() {
+			@Override
+			public boolean onHover(View v, MotionEvent event) {
+				mainUpView1.setVisibility(View.INVISIBLE);
+				return false;
+			}
+		});
 	}
-
+	
 	public View gridview_lay;
 
 	/**
