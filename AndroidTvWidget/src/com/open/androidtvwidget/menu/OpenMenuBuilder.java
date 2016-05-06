@@ -210,10 +210,13 @@ public class OpenMenuBuilder implements OpenMenu {
 	private int mLeftPadding = 0;
 	
 	@Override
-	public OpenMenuBuilder setGravity(int gravity) {
-		mGravity = gravity;
-		RelativeLayout.LayoutParams layPar = (android.widget.RelativeLayout.LayoutParams) ((OpenListMenuView)getMenuView()).getMenuListView().getLayoutParams();
-		layPar.addRule(RelativeLayout.CENTER_IN_PARENT);
+	public OpenMenuBuilder setGravity(int rule) {
+		mGravity = rule;
+		ListView listView = ((OpenListMenuView)getMenuView()).getMenuListView();
+		RelativeLayout.LayoutParams layPar = (RelativeLayout.LayoutParams) listView.getLayoutParams();
+		layPar.addRule(rule);
+		listView.requestFocus();
+		listView.setLayoutParams(layPar);
 		return this;
 	}
 	

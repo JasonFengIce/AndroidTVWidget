@@ -1,27 +1,16 @@
 package com.open.demo;
 
-import com.open.androidtvwidget.menu.OpenListMenuView;
-import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuBuilder;
 import com.open.androidtvwidget.menu.OpenSubMenuBuilder;
 import com.open.androidtvwidget.utils.OPENLOG;
-import com.open.androidtvwidget.view.SmoothHorizontalScrollView;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
+import android.widget.RelativeLayout;
 
 /**
  * 菜单DEMO测试.
@@ -53,7 +42,7 @@ public class DemoMenuActivity extends Activity {
 	
 	private void initAllMenu() {
 		// 主菜单.
-		openMenu = new OpenMenuBuilder(mContext, 250).setGravity(1);
+		openMenu = new OpenMenuBuilder(mContext, 150).setGravity(RelativeLayout.CENTER_VERTICAL);
 		openMenu.setBackgroundResource(R.drawable.ic_bg_setting); // 设置背景.
 		openMenu.add("菜单1").setIcon(R.drawable.ic_launcher);
 		openMenu.add("菜单2").setIcon(R.drawable.ic_launcher);
@@ -99,14 +88,4 @@ public class DemoMenuActivity extends Activity {
 		openMenu.showMenu();
 	}
 
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		OPENLOG.D("fsdfsdfdsf%s-%s", "AAAAAAAA", "BBBBBBB");
-		if (openMenu.isShowMenu()) {
-//			test_hscroll.setEnabled(false);
-		} else {
-//			test_hscroll.setEnabled(true);
-		}
-		return super.dispatchKeyEvent(event);
-	}
 }
