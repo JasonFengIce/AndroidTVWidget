@@ -68,7 +68,8 @@ API文档：
 
 ![天天加班加点，欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133650_1cc016cc_111902.png "天天加班加点，欢迎支持")
 
-![输入图片说明](http://git.oschina.net/uploads/images/2016/0509/155314_8e3bbe6f_111902.jpeg "在这里输入图片标题")
+![输入图片说明](http://git.oschina.net/uploads/images/2016/0509/155346_0f462db8_111902.png "在这里输入图片标题")
+
 
 ##Tab 测试DEMO图片.
     
