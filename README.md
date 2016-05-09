@@ -66,9 +66,7 @@ API文档：
 
 天天加班加点，欢迎支持(用于网站论坛维护)
 
-![天天加班加点，欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133650_1cc016cc_111902.png "天天加班加点，欢迎支持")
-
-![输入图片说明](http://git.oschina.net/uploads/images/2016/0509/155346_0f462db8_111902.png "在这里输入图片标题")
+![天天加班加点，欢迎支持](http://git.oschina.net/uploads/images/2016/0310/133650_1cc016cc_111902.png "天天加班加点，欢迎支持")![输入图片说明](http://git.oschina.net/uploads/images/2016/0509/155346_0f462db8_111902.png "在这里输入图片标题")
 
 
 ##Tab 测试DEMO图片.
