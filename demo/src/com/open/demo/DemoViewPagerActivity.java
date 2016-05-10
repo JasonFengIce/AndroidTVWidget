@@ -79,9 +79,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 				int pos = viewpager.getCurrentItem();
 				final MainUpView mainUpView = (MainUpView) viewList.get(pos).findViewById(R.id.mainUpView1);
 				final OpenEffectBridge bridge = (OpenEffectBridge) mainUpView.getEffectBridge();
-				if (!(newFocus instanceof ReflectItemView)) {
+				if (!(newFocus instanceof ReflectItemView)) { // 不是 ReflectitemView 的话.
 					mainUpView.setUnFocusView(mOldFocus);
-					bridge.setVisibleWidget(true);
+					bridge.setVisibleWidget(true); // 隐藏.
 					mSavebridge = null;
 				} else {
 					newFocus.bringToFront();
@@ -124,6 +124,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 					OpenEffectBridge bridge = (OpenEffectBridge) mainUpView.getEffectBridge();
 					bridge.setVisibleWidget(true);
 				}
+				//
 				if (position < (viewpager.getChildCount() - 1)) {
 					MainUpView mainUpView = (MainUpView) viewList.get(position + 1).findViewById(R.id.mainUpView1);
 					OpenEffectBridge bridge = (OpenEffectBridge) mainUpView.getEffectBridge();
@@ -144,19 +145,12 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 	public void initViewMove() {
 		for (View view : viewList) {
 			MainUpView mainUpView = (MainUpView) view.findViewById(R.id.mainUpView1);
-			//
-			if (Utils.getSDKVersion() == 17) {
-				mainUpView.setEffectBridge(new EffectNoDrawBridge()); // 4.3以下版本边框移动.
-				mainUpView.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
-				mainUpView.setDrawUpRectPadding(new Rect(25, 25, 23, 23)); // 边框图片设置间距.
-				EffectNoDrawBridge bridget = (EffectNoDrawBridge) mainUpView.getEffectBridge();
-				bridget.setTranDurAnimTime(200);
-			} else {
-				mainUpView.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
-				mainUpView.setShadowResource(R.drawable.item_shadow); // 设置移动边框的阴影.
-				OpenEffectBridge bridget = (OpenEffectBridge) mainUpView.getEffectBridge();
-				bridget.setTranDurAnimTime(250);
-			}
+			// 建议使用 noDrawBridge.
+			mainUpView.setEffectBridge(new EffectNoDrawBridge()); // 4.3以下版本边框移动.
+			mainUpView.setUpRectResource(R.drawable.white_light_10); // 设置移动边框的图片.
+			mainUpView.setDrawUpRectPadding(new Rect(25, 25, 23, 23)); // 边框图片设置间距.
+			EffectNoDrawBridge bridget = (EffectNoDrawBridge) mainUpView.getEffectBridge();
+			bridget.setTranDurAnimTime(200);
 		}
 	}
 
