@@ -4,11 +4,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * 开启LOG输出.
+ * 使用：
+ * OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
+ * 如果不进行初始化，那么将使用命令来开启LOG输出.
+ * 开启LOG输出:
  * <p>
  * setprop log.tag.$getTag() VERBOSE
  * <p>
- * 
+ *  
  * @author hailongqiu
  *
  */
@@ -17,10 +20,14 @@ public class OPENLOG {
 	private static String sTag = "";
 	private static boolean sDebug = false;
     
-    public static void initTag(String tag, boolean debug) {
-    	sTag = tag;
-    	sDebug = debug;
-    }
+	public static void initTag(String tag) {
+		initTag(tag, false);
+	}
+
+	public static void initTag(String tag, boolean debug) {
+		sTag = tag;
+		sDebug = debug;
+	}
     
     public static void D(String str, Object... args) {
         if (sDebug || isDebug()) {
