@@ -106,7 +106,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 					bridge.setVisibleWidget(true); // 隐藏.
 					mSavebridge = null;
 					// 处理gridview的边框.
-					if (newFocus instanceof GridView) {
+					if ((newFocus instanceof GridView) && pos == 1) {
 						View newView = null;
 						bridge.setVisibleWidget(false);
 						newView = gridView.getSelectedView();

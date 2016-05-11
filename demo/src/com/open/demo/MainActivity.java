@@ -2,23 +2,22 @@ package com.open.demo;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
+import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.utils.Utils;
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
-import com.open.androidtvwidget.view.ReflectItemView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnHoverListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 /**
@@ -34,6 +33,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		OPENLOG.initTag("hailongqiu", true); // 开启log输出.
 		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,29 +87,42 @@ public class MainActivity extends Activity implements OnClickListener {
 		findViewById(R.id.menu_rlayt).setOnClickListener(this);
 		findViewById(R.id.recyclerview_rlayt).setOnClickListener(this);
 		/**
-		 * 尽量不要使用鼠标.
-		 * !!!! 如果使用鼠标，自己要处理好焦点问题.(警告)
+		 * 尽量不要使用鼠标. !!!! 如果使用鼠标，自己要处理好焦点问题.(警告)
 		 */
-		findViewById(R.id.hscroll_view).setOnHoverListener(new OnHoverListener() {
-			@Override
-			public boolean onHover(View v, MotionEvent event) {
-				mainUpView1.setVisibility(View.INVISIBLE);
-				return false;
-			}
-		});
+//		main_lay11.setOnHoverListener(new OnHoverListener() {
+//			@Override
+//			public boolean onHover(View v, MotionEvent event) {
+//				mainUpView1.setVisibility(View.INVISIBLE);
+//				return true;
+//			}
+//		});
+		//
+		for (int i = 0; i < main_lay11.getChildCount(); i++) {
+			main_lay11.getChildAt(i).setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_UP) {
+//						v.performClick();
+						v.requestFocus();
+					}
+					return false;
+				}
+			});
+		}
 	}
-	
+
 	public View gridview_lay;
 
 	/**
 	 * 这是一个测试DEMO，希望对API了解下再使用. 这种DEMO是为了实现这个效果:
-	 * https://raw.githubusercontent.com/FrozenFreeFall/ImageSaveHttp/master/chaochupingm%20.jpg
+	 * https://raw.githubusercontent.com/FrozenFreeFall/ImageSaveHttp/master/
+	 * chaochupingm%20.jpg
 	 */
 	public void testTopDemo(View newView, float scale) {
 		// 测试第一个小人放大的效果.
 		if (newView.getId() == R.id.gridview_lay) { // 小人在外面的测试.
-			Rect rect = new Rect(getDimension(R.dimen.px7), -getDimension(R.dimen.px42),
-					getDimension(R.dimen.px7), getDimension(R.dimen.px7));
+			Rect rect = new Rect(getDimension(R.dimen.px7), -getDimension(R.dimen.px42), getDimension(R.dimen.px7),
+					getDimension(R.dimen.px7));
 			mOpenEffectBridge.setDrawUpRectPadding(rect); // 设置移动边框间距，不要被挡住了。
 			mOpenEffectBridge.setDrawShadowRectPadding(rect); // 设置阴影边框间距，不要被挡住了。
 			mOpenEffectBridge.setDrawUpRectEnabled(false); // 让移动边框绘制在小人的下面.
