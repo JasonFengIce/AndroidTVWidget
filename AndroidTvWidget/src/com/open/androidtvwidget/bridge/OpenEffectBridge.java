@@ -22,8 +22,8 @@ import android.view.animation.DecelerateInterpolator;
  */
 public class OpenEffectBridge extends BaseEffectBridgeWrapper {
 
-	private static final int DEFUALT_TRAN_DUR_ANIM = 300;
-	private int mTranDurAnimTime = DEFUALT_TRAN_DUR_ANIM;
+	private static final int DEFAULT_TRAN_DUR_ANIM = 300;
+	private int mTranDurAnimTime = DEFAULT_TRAN_DUR_ANIM;
 	private AnimatorSet mCurrentAnimatorSet;
 	private boolean isInDraw = false;
 	private boolean mIsHide = false;
