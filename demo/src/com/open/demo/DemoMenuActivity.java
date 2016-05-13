@@ -61,7 +61,6 @@ public class DemoMenuActivity extends Activity {
 		OpenSubMenu subMenu1 = new OpenSubMenu(mContext);
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(R.drawable.ic_launcher);
-		;
 		subMenu1.add("菜单1-3");
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu(mContext);

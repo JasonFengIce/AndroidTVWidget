@@ -9,6 +9,7 @@ public class OpenMenuItem implements IOpenMenuItem {
 	// private final int mCategoryOrder;
 	// private final int mOrdering;
 	private int mTextSize = DEFAULT_TEXT_SIZE;
+	private Object mData;
 	private CharSequence mTitle;
 	private OpenMenu mMenu;
 	private OpenSubMenu mSubMenu;
@@ -100,6 +101,17 @@ public class OpenMenuItem implements IOpenMenuItem {
 	@Override
 	public int getTextSize() {
 		return mTextSize;
+	}
+
+	@Override
+	public IOpenMenuItem setObjectData(Object data) {
+		this.mData = data;
+		return this;
+	}
+
+	@Override
+	public Object getObjectData() {
+		return this.mData;
 	}
 	
 }

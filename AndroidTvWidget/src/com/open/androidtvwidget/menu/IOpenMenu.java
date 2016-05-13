@@ -16,5 +16,5 @@ public interface IOpenMenu {
 	public int getGravity();
 	public OpenMenu setLeftPadding(int leftPadding);
 	public int getLeftPadding();
-	public OpenMenu setTextSize(int size);
+	public OpenMenu setTextSize(int size); // 全局设置菜单字体.
 }

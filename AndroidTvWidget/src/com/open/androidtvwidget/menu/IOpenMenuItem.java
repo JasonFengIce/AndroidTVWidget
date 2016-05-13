@@ -17,14 +17,22 @@ public interface IOpenMenuItem {
 	 */
 	public IOpenMenuItem setIcon(Drawable icon);
 	public IOpenMenuItem setIcon(int iconResId);
+	/**
+	 * 设置菜单文本内容
+	 */
 	public IOpenMenuItem setTitle(CharSequence title);
 	public IOpenMenuItem setTitle(int title);
+	public CharSequence getTitle();
+	/**
+	 * 设置字体大小.
+	 */
 	public IOpenMenuItem setTextSize(int size);
 	public int getTextSize();
 	/**
-	 * 获取菜单文字内容.
+	 * 设置数据.
 	 */
-	public CharSequence getTitle();
+	public IOpenMenuItem setObjectData(Object data);
+	public Object getObjectData();
 	public OpenSubMenu getSubMenu();
 	/**
 	 * 保存子菜单.
