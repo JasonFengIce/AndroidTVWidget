@@ -49,9 +49,9 @@ import android.widget.Toast;
  */
 public class OpenMenu implements IOpenMenu {
 
-	private static final String TAG = "OpenMenuBuilder";
+	private static final String TAG = "OpenMenu";
 
-	private ArrayList<OpenMenuItemImpl> mItems;
+	private ArrayList<IOpenMenuItem> mItems;
 	private Context mContext;
 	private Resources mResources;
 
@@ -62,7 +62,7 @@ public class OpenMenu implements IOpenMenu {
 	LayoutInflater mInflater;
 	
 	//
-	private int mTextSize = OpenMenuItemImpl.DEFAULT_TEXT_SIZE;
+	private int mTextSize = IOpenMenuItem.DEFAULT_TEXT_SIZE;
 	
 	public OpenMenu(Context context, int width, int height) {
 		init(context);
@@ -82,21 +82,21 @@ public class OpenMenu implements IOpenMenu {
 	
 	private void attach2Window(Context context, int width, int height) {
 		ViewGroup rootView = (ViewGroup) ((Activity)context).findViewById(Window.ID_ANDROID_CONTENT);
-		View view = (View) getMenuView();
+		View view = getMenuView();
 		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
 		view.setVisibility(View.GONE);
 		rootView.addView(view, layoutParams);
 	}
 	
 	public void showMenu() {
-		View view = (View) getMenuView();
+		View view = getMenuView();
 		view.setVisibility(View.VISIBLE);
-		((OpenMenuView)getMenuView()).getMenuListView().setFocusable(true);
-		((OpenMenuView)getMenuView()).getMenuListView().requestFocus();
+		getMenuView().getMenuListView().setFocusable(true);
+		getMenuView().getMenuListView().requestFocus();
 	}
 	
 	public boolean isShowMenu() {
-		View view = (View) getMenuView();
+		View view = getMenuView();
 		return (view.getVisibility() == View.VISIBLE);
 	}
 	/**
@@ -112,7 +112,7 @@ public class OpenMenu implements IOpenMenu {
 	}
 	
 	public void hideMenu() {
-		View view = (View) getMenuView();
+		View view = getMenuView();
 		view.setVisibility(View.GONE);
 	}
 	
@@ -130,7 +130,7 @@ public class OpenMenu implements IOpenMenu {
 		this.mContext = context;
 		if (this.mContext != null) {
 			this.mResources = context.getResources();
-			this.mItems = new ArrayList<OpenMenuItemImpl>();
+			this.mItems = new ArrayList<IOpenMenuItem>();
 			// 菜单视图 (暂时测试)
 			this.mInflater = LayoutInflater.from(mContext);
 		}
@@ -152,9 +152,9 @@ public class OpenMenu implements IOpenMenu {
 		return this;
 	}
 	
-	public OpenMenuItem addInternal(int groupId, int itemId, int order, CharSequence title) {
+	public IOpenMenuItem addInternal(int groupId, int itemId, int order, CharSequence title) {
 		final int ordering = order;
-		final OpenMenuItemImpl item = new OpenMenuItemImpl(this, groupId, itemId, order, ordering, title,
+		final IOpenMenuItem item = new OpenMenuItem(this, groupId, itemId, order, ordering, title,
 				mDefaultShowAsAction);
 		item.setTextSize(mTextSize);
 		mItems.add(item);
@@ -162,17 +162,17 @@ public class OpenMenu implements IOpenMenu {
 	}
 
 	@Override
-	public OpenMenuItem add(int groupId, int itemId, int order, CharSequence title) {
+	public IOpenMenuItem add(int groupId, int itemId, int order, CharSequence title) {
 		return addInternal(groupId, itemId, order, title);
 	}
 
 	@Override
-	public OpenMenuItem add(int groupId, int itemId, int order, int titleRes) {
+	public IOpenMenuItem add(int groupId, int itemId, int order, int titleRes) {
 		return addInternal(groupId, itemId, order, this.mResources.getString(titleRes));
 	}
 
 	@Override
-	public OpenMenuItem add(CharSequence title) {
+	public IOpenMenuItem add(CharSequence title) {
 		return addInternal(0, 0, 0, title);
 	}
 
@@ -243,7 +243,6 @@ public class OpenMenu implements IOpenMenu {
 	}
 	
 	private void showSubMenuView() {
-		
 	}
 	
 	public OpenMenuView getMenuView() {
@@ -258,7 +257,7 @@ public class OpenMenu implements IOpenMenu {
 						// test.
 						FrameLayout.LayoutParams mainLayoutParams = (LayoutParams) mMenuView.getLayoutParams();
 						OpenMenu subMenu = (OpenMenu) mItems.get(position).getSubMenu();
-						OpenMenuView menuView = (OpenMenuView) subMenu.getMenuView();
+						View menuView = subMenu.getMenuView();
 						FrameLayout.LayoutParams layPar = (LayoutParams) menuView.getLayoutParams();
 						layPar.leftMargin = mainLayoutParams.leftMargin + mMenuView.getMeasuredWidth() + getLeftPadding();
 						subMenu.showMenu();
@@ -287,7 +286,7 @@ public class OpenMenu implements IOpenMenu {
 		}
 
 		@Override
-		public OpenMenuItemImpl getItem(int position) {
+		public IOpenMenuItem getItem(int position) {
 			return mItems.get(position);
 		}
 
@@ -310,7 +309,7 @@ public class OpenMenu implements IOpenMenu {
 
 	@Override
 	public String toString() {
-		for (OpenMenuItem item : mItems) {
+		for (IOpenMenuItem item : mItems) {
 			String title = item.getTitle().toString();
 			OPENLOG.E("menu item:" + title);
 			OpenSubMenu submenu = item.getSubMenu();
