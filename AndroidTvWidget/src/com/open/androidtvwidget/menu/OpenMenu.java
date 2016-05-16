@@ -91,8 +91,8 @@ public class OpenMenu implements IOpenMenu {
 	public void showMenu() {
 		View view = getMenuView();
 		view.setVisibility(View.VISIBLE);
-		getMenuView().getMenuListView().setFocusable(true);
-		getMenuView().getMenuListView().requestFocus();
+		getMenuView().getMenuView().setFocusable(true);
+		getMenuView().getMenuView().requestFocus();
 	}
 	
 	public boolean isShowMenu() {
@@ -196,7 +196,7 @@ public class OpenMenu implements IOpenMenu {
 	public IOpenMenu setLayoutAnimation(LayoutAnimationController layoutAnimationController) {
 		this.mLayoutAnimationController = layoutAnimationController;
 		if (mMenuView != null && mLayoutAnimationController != null) {
-			ListView listview = mMenuView.getMenuListView();
+			ListView listview = (ListView)mMenuView.getMenuView();
 			if (listview != null)
 				listview.setLayoutAnimation(layoutAnimationController);
 		}
@@ -209,7 +209,7 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public OpenMenu setGravity(int rule) {
 		mGravity = rule;
-		ListView listView = ((OpenMenuView)getMenuView()).getMenuListView();
+		ListView listView = (ListView)getMenuView().getMenuView();
 		RelativeLayout.LayoutParams layPar = (RelativeLayout.LayoutParams) listView.getLayoutParams();
 		layPar.addRule(rule);
 		listView.requestFocus();
@@ -249,7 +249,7 @@ public class OpenMenu implements IOpenMenu {
 		// 多个listview---主菜单--子菜单（无限个)
 		if (mMenuView == null) {
 			mMenuView = new OpenMenuView(mContext);
-			mMenuView.getMenuListView().setOnItemClickListener(new OnItemClickListener() {
+			((ListView)mMenuView.getMenuView()).setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					// 是否有子菜单，则显示子菜单.
@@ -272,7 +272,7 @@ public class OpenMenu implements IOpenMenu {
 			if (mAdapter == null) {
 				mAdapter = new MenuAdapter();
 			}
-			mMenuView.getMenuListView().setAdapter(mAdapter);
+			((ListView)mMenuView.getMenuView()).setAdapter(mAdapter);
 			// mMenuView.setOnItemClickListener(this);
 		}
 		return mMenuView;
