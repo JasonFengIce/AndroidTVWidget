@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 /**
- * 如果有控件放大被挡住，可以使用 MainLayout, <p>
+ * 如果有控件放大被挡住，可以使用 LinearMainLayout, <p>
  * 它继承于 LinearLayout.<p>
  * 使用方式和LinerLayout是一样的<p>
  * @author hailongqiu
