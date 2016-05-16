@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * 将控件显示在最上层.
+ * 如果有控件放大被挡住，可以使用 MainLayout, <p>
+ * 它继承于 FrameLayout.<p>
+ * 使用方式就和FrameLayout是一样的<p>
  * @author hailongqiu
  *
  */
