@@ -14,7 +14,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 /**
- * 菜单Listview中的Item View.
+ * 菜单Menu中的Item View.
  * 
  * @author hailongqiu 356752238@qq.com
  */

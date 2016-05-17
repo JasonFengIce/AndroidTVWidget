@@ -1,7 +1,5 @@
 package com.open.androidtvwidget.menu;
 
-import android.content.Context;
-
 /**
  * 子菜单.
  * 
@@ -9,7 +7,4 @@ import android.content.Context;
  *
  */
 public class OpenSubMenu extends OpenMenu {
-	public OpenSubMenu(Context context) {
-		super(context);
-	}
 }

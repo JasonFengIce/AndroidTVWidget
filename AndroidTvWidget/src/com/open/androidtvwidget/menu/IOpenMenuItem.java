@@ -16,12 +16,10 @@ public interface IOpenMenuItem {
 	 * 设置菜单图标.
 	 */
 	public IOpenMenuItem setIcon(Drawable icon);
-	public IOpenMenuItem setIcon(int iconResId);
 	/**
 	 * 设置菜单文本内容
 	 */
 	public IOpenMenuItem setTitle(CharSequence title);
-	public IOpenMenuItem setTitle(int title);
 	public CharSequence getTitle();
 	/**
 	 * 设置字体大小.
