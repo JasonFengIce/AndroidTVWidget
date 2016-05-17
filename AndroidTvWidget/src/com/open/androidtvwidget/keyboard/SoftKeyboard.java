@@ -10,7 +10,7 @@ import android.view.KeyEvent;
  * 软键盘
  * 
  * @author hailong.qiu 356752238@qq.com
- *
+ *	@维护者 hailong.qiu, 如狼(470502943)
  */
 public class SoftKeyboard {
 
@@ -167,10 +167,12 @@ public class SoftKeyboard {
 
 	/**
 	 * 设置选中的按键.(高亮)
+	 * 如狼(470502943) 修复崩溃并添加取消按键高亮问题.
 	 */
 	public boolean setOneKeySelected(SoftKey softKey) {
-		if (mSelectSoftKey != null)
+		if (softKey == null || mSelectSoftKey != null) {
 			mSelectSoftKey.setKeySelected(false);
+		}
 		softKey.setKeySelected(true);
 		mSelectSoftKey = softKey; // 保存被选中的按键.
 		return true;

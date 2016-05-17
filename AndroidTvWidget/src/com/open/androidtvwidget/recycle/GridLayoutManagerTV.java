@@ -106,7 +106,7 @@ public class GridLayoutManagerTV extends GridLayoutManager {
 					}
 					@Override
 					public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//						parent.post(mSelectionNotifier);
+						parent.post(mSelectionNotifier);
 					}
 				});
 				isFirst = false;
