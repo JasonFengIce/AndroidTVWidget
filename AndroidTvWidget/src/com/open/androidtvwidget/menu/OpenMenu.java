@@ -102,4 +102,9 @@ public class OpenMenu implements IOpenMenu {
 		return super.toString();
 	}
 
+	@Override
+	public ArrayList<IOpenMenuItem> getMenuDatas() {
+		return mItems;
+	}
+
 }

@@ -10,6 +10,8 @@ public interface IOpenMenuItem {
 	static final int NO_ICON = 0;
 	static final int DEFAULT_TEXT_SIZE = 24;
 	
+	public IOpenMenuItem setId(int id);
+	public int getId();
 	//
 	public Drawable getIcon();
 	/**

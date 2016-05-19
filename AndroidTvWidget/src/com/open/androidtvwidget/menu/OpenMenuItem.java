@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 
 public class OpenMenuItem implements IOpenMenuItem {
 
-	private final int mId;
+	private int mId;
 	private int mTextSize = DEFAULT_TEXT_SIZE;
 	private Object mData;
 	private CharSequence mTitle;
@@ -75,6 +75,17 @@ public class OpenMenuItem implements IOpenMenuItem {
 	@Override
 	public Object getObjectData() {
 		return this.mData;
+	}
+
+	@Override
+	public IOpenMenuItem setId(int id) {
+		this.mId = id;
+		return this;
+	}
+
+	@Override
+	public int getId() {
+		return this.mId;
 	}
 	
 }

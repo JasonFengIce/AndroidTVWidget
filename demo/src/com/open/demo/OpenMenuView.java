@@ -1,17 +1,30 @@
 package com.open.demo;
 
+import java.util.ArrayList;
+
+import com.open.androidtvwidget.menu.IOpenMenuItem;
+import com.open.androidtvwidget.menu.IOpenMenuView;
+import com.open.androidtvwidget.menu.OpenMenu;
+import com.open.androidtvwidget.menu.OpenSubMenu;
+
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.RelativeLayout;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 /**
  * 菜单的显示窗口.
@@ -19,12 +32,16 @@ import android.widget.RelativeLayout;
  * @author hailongqiu
  *
  */
-public class OpenMenuView {
+public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelectedListener, OnItemClickListener {
 
+	private static final int DEFUALT_MENU_WIDTH = 200;
+	private static final int DEFUALT_MENU_ID = 0x1;
+	
 	private Context mContext;
-
+	private int mId = DEFUALT_MENU_ID;
+	
 	// 定义浮动窗口布局
-	RelativeLayout mFloatLayout;
+	LinearLayout mFloatLayout;
 	WindowManager.LayoutParams mWmParams;
 	// 创建浮动窗口设置布局参数的对象
 	WindowManager mWindowManager;
@@ -65,33 +82,62 @@ public class OpenMenuView {
 		mWmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
 
 		// 获取浮动窗口视图所在布局
-		mFloatLayout = (RelativeLayout) mInflater.inflate(R.layout.open_menu_view, null);
+		mFloatLayout = (LinearLayout) mInflater.inflate(R.layout.open_menu_view, null);
 		// 添加mFloatLayout
 		mWindowManager.addView(mFloatLayout, mWmParams);
-		mFloatLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+		// mFloatLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
+		// View.MeasureSpec.UNSPECIFIED),
+		// View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 		mFloatLayout.setFocusable(true);
 		mFloatLayout.setFocusableInTouchMode(true);
-		mFloatLayout.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
-				int action = event.getAction();
-				if (action == KeyEvent.ACTION_UP) {
-					if (keyCode == KeyEvent.KEYCODE_BACK)
-						onDestroy(); 
-				} 
-				return false;
-			}
-		});
-		mFloatLayout.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return false;
-			}
-		});
+		mFloatLayout.setOnKeyListener(this);
 	}
-	
+
+	private int mMenuItemLayoutID = R.layout.list_menu_item_layout;
+
+	/*
+	 * 
+	 * <ListView android:id="@+id/menu_listview"
+	 * android:layout_width="wrap_content" android:layout_height="wrap_content"
+	 * android:divider="#00000000" android:scrollbars="none" > </ListView>
+	 */
+	public void setMenuData(OpenMenu openMenu) {
+		setMenuDataInternal(null, openMenu);
+	}
+
+	private void setMenuDataInternal(View parentView, OpenMenu openMenu) {
+		ArrayList<IOpenMenuItem> items = openMenu.getMenuDatas();
+		if (items != null) {
+			//
+			ListView listview = new ListView(mContext);
+			listview.setId(mId++);
+			LayoutParams parm = new LayoutParams();
+			parm.width = DEFUALT_MENU_WIDTH; 
+			parm.height = LayoutParams.WRAP_CONTENT;
+			listview.setAdapter(new MenuAdpater(items));
+			listview.setFocusable(true);
+			listview.setFocusableInTouchMode(true);
+			listview.requestFocus();
+			listview.setOnKeyListener(this);
+			// mMenuListview.setOnItemSelectedListener(this);
+			listview.setOnItemClickListener(this);
+			//
+			mFloatLayout.addView(listview, parm);
+			mFloatLayout.requestLayout();
+			if (parentView != null) {
+				parentView.setNextFocusRightId(listview.getId());
+				listview.setNextFocusLeftId(parentView.getId());
+			}
+		}
+	}
+
+	private void testAddBtn() {
+		Button btn = new Button(mContext);
+		btn.setText("fjdkslfjdslkfjsdklfj");
+		mFloatLayout.addView(btn);
+		mFloatLayout.requestLayout();
+	}
+
 	/**
 	 * 移除悬浮窗口
 	 */
@@ -100,4 +146,103 @@ public class OpenMenuView {
 			mWindowManager.removeView(mFloatLayout);
 		}
 	}
+
+	/**
+	 * 菜单Menu item adpater.
+	 * 
+	 * @author hailongqiu
+	 *
+	 */
+	class MenuAdpater extends BaseAdapter {
+
+		private ArrayList<IOpenMenuItem> mItems;
+
+		public MenuAdpater(ArrayList<IOpenMenuItem> items) {
+			mItems = items;
+		}
+
+		public void setDatas(ArrayList<IOpenMenuItem> items) {
+			mItems = items;
+			notifyDataSetChanged();
+		}
+
+		public ArrayList<IOpenMenuItem> getDatas() {
+			return mItems;
+		}
+
+		@Override
+		public int getCount() {
+			return mItems.size();
+		}
+
+		@Override
+		public IOpenMenuItem getItem(int position) {
+			return mItems.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = mInflater.inflate(mMenuItemLayoutID, parent, false);
+			}
+			IOpenMenuView.ItemView itemView = (IOpenMenuView.ItemView) convertView;
+			itemView.initialize(getItem(position), 0);
+			return convertView;
+		}
+
+	}
+
+	@Override
+	public boolean onKey(View v, int keyCode, KeyEvent event) {
+		Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
+		int action = event.getAction();
+		if (action == KeyEvent.ACTION_UP) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_BACK:
+				if (mFloatLayout.getChildCount() > 1) {
+					mFloatLayout.removeView(v);
+					mFloatLayout.requestLayout();
+					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+				} else {
+					onDestroy();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
+		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
+		OpenSubMenu subMenu = menuItem.getSubMenu();
+		ListView listview = new ListView(mContext);
+		subMenu.getMenuDatas();
+		mFloatLayout.addView(listview);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Log.d("hailongqiu", "hailongqiu onItemClick");
+		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
+		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
+		OpenSubMenu subMenu = menuItem.getSubMenu();
+		if (subMenu != null) {
+			Log.d("hailongqiu", "hailongqiu onItemClick subMenu:" + subMenu);
+			setMenuData(subMenu);
+		}
+	}
+
 }

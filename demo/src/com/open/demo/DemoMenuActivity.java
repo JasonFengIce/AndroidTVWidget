@@ -74,8 +74,9 @@ public class DemoMenuActivity extends Activity {
 		final MainUpView mainUpView = new MainUpView(mContext);
 		mainUpView.setEffectBridge(new EffectNoDrawBridge());
 		mainUpView.setUpRectResource(R.drawable.white_light_10);
-		// 
+		// 菜单VIEW测试.
 		OpenMenuView openMenuView = new OpenMenuView(mContext);
+		openMenuView.setMenuData(openMenu);
 	}
 
 }

@@ -51,6 +51,7 @@ public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.Item
 		setTitle(itemData.getTitle());
 		setIcon(itemData.getIcon());
 		setTextSize(itemData.getTextSize());
+		setId(itemData.getId()); // item ID.
 	}
 
 	public void setTitle(CharSequence title) {
