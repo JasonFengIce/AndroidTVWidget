@@ -72,7 +72,7 @@ public class OpenMenuView {
 				View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 		mFloatLayout.setFocusable(true);
 		mFloatLayout.setFocusableInTouchMode(true);
-		mFlatLayout.setOnKeyListener(new OnKeyListener() {
+		mFloatLayout.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
