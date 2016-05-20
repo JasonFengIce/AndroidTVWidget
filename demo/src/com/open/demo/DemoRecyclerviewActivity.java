@@ -153,7 +153,8 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 			@Override
 			public void onChildSelected(RecyclerView parent, View focusview, int position, int dy) {
 				focusview.bringToFront();
-				mRecyclerViewBridge.setFocusView(focusview, oldView, 1.2f);
+				mRecyclerViewBridge.setFocusView(focusview, 1.4f, 1.2f);
+				mRecyclerViewBridge.setUnFocusView(oldView);
 				oldView = focusview;
 			}
 		});
