@@ -60,8 +60,8 @@ public class DemoMenuActivity extends Activity {
 		subMenu2.add("菜单2-2");
 		subMenu2.add("菜单2-3");
 		// 添加子菜单.
-		openMenu.addSubMenu(0, subMenu1);
-		openMenu.addSubMenu(1, subMenu2);
+		openMenu.addSubMenu(2, subMenu1);
+		openMenu.addSubMenu(4, subMenu2);
 		// 菜单1添加子菜单.
 		OpenSubMenu subMenu1_1 = new OpenSubMenu();
 		subMenu1_1.add("菜单1-2-1");

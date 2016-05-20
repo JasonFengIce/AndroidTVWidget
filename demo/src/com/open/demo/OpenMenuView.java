@@ -6,10 +6,10 @@ import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
+import com.open.androidtvwidget.utils.GenerateViewId;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,11 +35,9 @@ import android.widget.ListView;
 public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelectedListener, OnItemClickListener {
 
 	private static final int DEFUALT_MENU_WIDTH = 200;
-	private static final int DEFUALT_MENU_ID = 0x1;
-	
+
 	private Context mContext;
-	private int mId = DEFUALT_MENU_ID;
-	
+
 	// 定义浮动窗口布局
 	LinearLayout mFloatLayout;
 	WindowManager.LayoutParams mWmParams;
@@ -110,11 +108,11 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		if (items != null) {
 			//
 			ListView listview = new ListView(mContext);
-			listview.setId(mId++);
+			listview.setId(GenerateViewId.getSingleton().generateViewId());
 			LayoutParams parm = new LayoutParams();
-			parm.width = DEFUALT_MENU_WIDTH; 
+			parm.width = DEFUALT_MENU_WIDTH;
 			parm.height = LayoutParams.WRAP_CONTENT;
-			listview.setAdapter(new MenuAdpater(items));
+			listview.setAdapter(new MenuAdpater(null, items));
 			listview.setFocusable(true);
 			listview.setFocusableInTouchMode(true);
 			listview.requestFocus();
@@ -125,8 +123,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			mFloatLayout.addView(listview, parm);
 			mFloatLayout.requestLayout();
 			if (parentView != null) {
-				parentView.setNextFocusRightId(listview.getId());
-				listview.setNextFocusLeftId(parentView.getId());
+				Log.d("hailongqiu", "hailongqiu setMenuDataInternal listview id:" + listview.getId() + " parent id:"
+						+ parentView.getId());
+//				 parentView.setNextFocusRightId(listview.getId());
+//				 listview.setNextFocusLeftId(parentView.getId());
 			}
 		}
 	}
@@ -156,9 +156,15 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	class MenuAdpater extends BaseAdapter {
 
 		private ArrayList<IOpenMenuItem> mItems;
+		private View mParentView;
 
 		public MenuAdpater(ArrayList<IOpenMenuItem> items) {
-			mItems = items;
+			this(null, items);
+		}
+		
+		public MenuAdpater(View parentView, ArrayList<IOpenMenuItem> items) {
+			this.mItems = items;
+			this.mParentView = parentView;
 		}
 
 		public void setDatas(ArrayList<IOpenMenuItem> items) {
@@ -192,6 +198,11 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			}
 			IOpenMenuView.ItemView itemView = (IOpenMenuView.ItemView) convertView;
 			itemView.initialize(getItem(position), 0);
+			if (mParentView != null) {
+				int id = mParentView.getId();
+				Log.d("hailongqiu", "hailongqiu getView id:" + id); 
+//				convertView.setNextFocusLeftId(id);
+			}
 			return convertView;
 		}
 
@@ -201,13 +212,16 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
 		int action = event.getAction();
-		if (action == KeyEvent.ACTION_UP) {
+		if (action == KeyEvent.ACTION_DOWN) {
 			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
 			case KeyEvent.KEYCODE_BACK:
 				if (mFloatLayout.getChildCount() > 1) {
 					mFloatLayout.removeView(v);
 					mFloatLayout.requestLayout();
+//					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
 					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+					return true;
 				} else {
 					onDestroy();
 				}
@@ -239,9 +253,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
 		OpenSubMenu subMenu = menuItem.getSubMenu();
+		//
 		if (subMenu != null) {
 			Log.d("hailongqiu", "hailongqiu onItemClick subMenu:" + subMenu);
-			setMenuData(subMenu);
+			setMenuDataInternal(view, subMenu);
 		}
 	}
 

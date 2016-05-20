@@ -1,10 +1,12 @@
 package com.open.androidtvwidget.menu;
 
 import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.utils.GenerateViewId;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -51,6 +53,12 @@ public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.Item
 		setTitle(itemData.getTitle());
 		setIcon(itemData.getIcon());
 		setTextSize(itemData.getTextSize());
+		// 如果没有设置菜单ITEM ID，则默认设置ID.
+		if (itemData.getId() == 0) {
+			int id = GenerateViewId.getSingleton().generateViewId();
+			Log.d("hailongqiu", "hailongqiu initialize set id:" + id);
+			itemData.setId(id);
+		}
 		setId(itemData.getId()); // item ID.
 	}
 
