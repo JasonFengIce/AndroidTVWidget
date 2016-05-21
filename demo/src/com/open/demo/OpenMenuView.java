@@ -125,8 +125,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			if (parentView != null) {
 				Log.d("hailongqiu", "hailongqiu setMenuDataInternal listview id:" + listview.getId() + " parent id:"
 						+ parentView.getId());
-//				 parentView.setNextFocusRightId(listview.getId());
-//				 listview.setNextFocusLeftId(parentView.getId());
+				// parentView.setNextFocusRightId(listview.getId());
+				// listview.setNextFocusLeftId(parentView.getId());
 			}
 		}
 	}
@@ -161,7 +161,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		public MenuAdpater(ArrayList<IOpenMenuItem> items) {
 			this(null, items);
 		}
-		
+
 		public MenuAdpater(View parentView, ArrayList<IOpenMenuItem> items) {
 			this.mItems = items;
 			this.mParentView = parentView;
@@ -200,8 +200,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			itemView.initialize(getItem(position), 0);
 			if (mParentView != null) {
 				int id = mParentView.getId();
-				Log.d("hailongqiu", "hailongqiu getView id:" + id); 
-//				convertView.setNextFocusLeftId(id);
+				Log.d("hailongqiu", "hailongqiu getView id:" + id);
+				// convertView.setNextFocusLeftId(id);
 			}
 			return convertView;
 		}
@@ -219,7 +219,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 				if (mFloatLayout.getChildCount() > 1) {
 					mFloatLayout.removeView(v);
 					mFloatLayout.requestLayout();
-//					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
+					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
 					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
 					return true;
 				} else {
@@ -237,26 +237,58 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
-		OpenSubMenu subMenu = menuItem.getSubMenu();
-		ListView listview = new ListView(mContext);
-		subMenu.getMenuDatas();
-		mFloatLayout.addView(listview);
+		if (menuItem.hasSubMenu()) {
+
+		} else {
+			// 菜单item选中事件触发.
+			if (mOnMenuListener != null)
+				mOnMenuListener.onMenuItemSelected(parent, view, position, id);
+		}
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
+	/**
+	 * 菜单子菜单，要么就是菜单事件单击.
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Log.d("hailongqiu", "hailongqiu onItemClick");
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
-		OpenSubMenu subMenu = menuItem.getSubMenu();
-		//
-		if (subMenu != null) {
-			Log.d("hailongqiu", "hailongqiu onItemClick subMenu:" + subMenu);
-			setMenuDataInternal(view, subMenu);
+		if (menuItem.hasSubMenu()) {
+			OpenSubMenu subMenu = menuItem.getSubMenu();
+			//
+			if (subMenu != null) {
+				Log.d("hailongqiu", "hailongqiu onItemClick subMenu:" + subMenu);
+				setMenuDataInternal(view, subMenu);
+			}
+		} else {
+			// 菜单item单击事件触发.
+			if (mOnMenuListener != null) {
+				mOnMenuListener.onMenuItemClick(parent, view, position, id);
+			}
+		}
+	}
+
+	OnMenuListener mOnMenuListener;
+
+	public void setOnMenuListener(OnMenuListener cb) {
+		this.mOnMenuListener = cb;
+	}
+
+	/**
+	 * 菜单回调事件.
+	 * 
+	 * @author hailongqiu
+	 *
+	 */
+	class OnMenuListener {
+		public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
+		}
+		public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		}
 	}
 
