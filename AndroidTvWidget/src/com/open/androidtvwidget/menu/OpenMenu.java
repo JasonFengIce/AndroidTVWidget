@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 import com.open.androidtvwidget.utils.OPENLOG;
 
+import android.widget.AbsListView;
+
 /**
  * 菜单.
  * 
@@ -34,9 +36,11 @@ public class OpenMenu implements IOpenMenu {
 
 	private ArrayList<IOpenMenuItem> mItems;
 	private OpenMenu mParent;
-
+	private AbsListView mAbsListView;
+	private int mMenuWidth;
 	private int mTextSize = IOpenMenuItem.DEFAULT_TEXT_SIZE;
-
+	private int mMenuItemLayoutID = DEFAULT_LAYOUT_ID;
+	
 	public OpenMenu() {
 		init();
 	}
@@ -107,4 +111,37 @@ public class OpenMenu implements IOpenMenu {
 		return mItems;
 	}
 
+	@Override
+	public IOpenMenu setMenuView(AbsListView absListView) {
+		this.mAbsListView = absListView;
+		return this;
+	}
+
+	@Override
+	public AbsListView getMenuView() {
+		return this.mAbsListView;
+	}
+
+	@Override
+	public IOpenMenu setMenuWidth(int width) {
+		this.mMenuWidth = width;
+		return this;
+	}
+
+	@Override
+	public int getMenuWidth() {
+		return this.mMenuWidth;
+	}
+
+	@Override
+	public IOpenMenu setLayoutID(int id) {
+		this.mMenuItemLayoutID = id;
+		return this;
+	}
+
+	@Override
+	public int getLayoutID() {
+		return this.mMenuItemLayoutID;
+	}
+	
 }

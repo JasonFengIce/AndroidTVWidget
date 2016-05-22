@@ -1,6 +1,7 @@
 package com.open.androidtvwidget.menu;
 
 import android.graphics.drawable.Drawable;
+import android.widget.AbsListView;
 
 public class OpenMenuItem implements IOpenMenuItem {
 
@@ -11,7 +12,7 @@ public class OpenMenuItem implements IOpenMenuItem {
 	private OpenMenu mMenu;
 	private OpenSubMenu mSubMenu;
 	private Drawable mIconDrawable;
-
+	
 	OpenMenuItem(OpenMenu menu, int id, CharSequence title) {
 		this.mMenu = menu;
 		this.mId = id;
@@ -46,8 +47,9 @@ public class OpenMenuItem implements IOpenMenuItem {
 	}
 	
 	@Override
-	public void setSubMenu(OpenSubMenu subMenu) {
+	public IOpenMenuItem setSubMenu(OpenSubMenu subMenu) {
         mSubMenu = subMenu;
+        return this;
     }
 
 	@Override

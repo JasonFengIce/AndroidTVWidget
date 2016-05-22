@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 /**
  * 菜单DEMO测试.
@@ -42,7 +44,8 @@ public class DemoMenuActivity extends Activity {
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
-		openMenu.add("菜单1").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+		//
+		openMenu.add("菜单1").setIcon(getResources().getDrawable(R.drawable.ic_launcher)).setId(R.id.button1);
 		openMenu.add("菜单2").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
 		openMenu.add("菜单3").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
 		openMenu.add("菜单4").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
@@ -76,6 +79,20 @@ public class DemoMenuActivity extends Activity {
 		mainUpView.setUpRectResource(R.drawable.white_light_10);
 		// 菜单VIEW测试.
 		OpenMenuView openMenuView = new OpenMenuView(mContext);
+		openMenuView.setOnMenuListener(new OnMenuListener() {
+			@Override
+			public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if (view.getId() == R.id.button1) {
+					Toast.makeText(mContext, "button", Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(mContext, "测试菜单 position:" + view.getId(), Toast.LENGTH_LONG).show();
+				}
+			}
+			@Override
+			public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			}
+		});
+		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
 	}
 

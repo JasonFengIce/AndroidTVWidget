@@ -6,7 +6,6 @@ import com.open.androidtvwidget.utils.GenerateViewId;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 
 /**
  * 菜单Menu中的Item View.
- * 
+ * 如果要写自己的东西，可以在这里更新自己的需求或者模仿写.
  * @author hailongqiu 356752238@qq.com
  */
 public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.ItemView {
@@ -56,7 +55,6 @@ public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.Item
 		// 如果没有设置菜单ITEM ID，则默认设置ID.
 		if (itemData.getId() == 0) {
 			int id = GenerateViewId.getSingleton().generateViewId();
-			Log.d("hailongqiu", "hailongqiu initialize set id:" + id);
 			itemData.setId(id);
 		}
 		setId(itemData.getId()); // item ID.

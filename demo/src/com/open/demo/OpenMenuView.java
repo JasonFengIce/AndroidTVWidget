@@ -2,6 +2,7 @@ package com.open.demo;
 
 import java.util.ArrayList;
 
+import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.OpenMenu;
@@ -18,6 +19,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -25,6 +27,18 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+/**
+ * 菜单回调事件.
+ * 
+ * @author hailongqiu
+ *
+ */
+interface OnMenuListener {
+	public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
+
+	public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
+}
 
 /**
  * 菜单的显示窗口.
@@ -91,8 +105,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		mFloatLayout.setOnKeyListener(this);
 	}
 
-	private int mMenuItemLayoutID = R.layout.list_menu_item_layout;
-
 	/*
 	 * 
 	 * <ListView android:id="@+id/menu_listview"
@@ -103,31 +115,36 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		setMenuDataInternal(null, openMenu);
 	}
 
+	private AbsListView getMenuView(OpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
+		AbsListView absListView = openMenu.getMenuView();
+		if (absListView == null)
+			absListView = new ListView(mContext);
+		absListView.setId(GenerateViewId.getSingleton().generateViewId());
+		absListView.setAdapter(new MenuAdpater(openMenu, items));
+		//
+		absListView.setFocusable(true);
+		absListView.setFocusableInTouchMode(true);
+		absListView.requestFocus();
+		// 事件
+		absListView.setOnKeyListener(this);
+		absListView.setOnItemSelectedListener(this);
+		absListView.setOnItemClickListener(this);
+		return absListView;
+	}
+
 	private void setMenuDataInternal(View parentView, OpenMenu openMenu) {
 		ArrayList<IOpenMenuItem> items = openMenu.getMenuDatas();
 		if (items != null) {
-			//
-			ListView listview = new ListView(mContext);
-			listview.setId(GenerateViewId.getSingleton().generateViewId());
+			// 获取自定义的absListView.
+			AbsListView absListView = getMenuView(openMenu, items);
+			// 设置菜单宽度.
 			LayoutParams parm = new LayoutParams();
-			parm.width = DEFUALT_MENU_WIDTH;
+			int width = openMenu.getMenuWidth();
+			parm.width = ((width == 0) ? DEFUALT_MENU_WIDTH : width);
 			parm.height = LayoutParams.WRAP_CONTENT;
-			listview.setAdapter(new MenuAdpater(null, items));
-			listview.setFocusable(true);
-			listview.setFocusableInTouchMode(true);
-			listview.requestFocus();
-			listview.setOnKeyListener(this);
-			// mMenuListview.setOnItemSelectedListener(this);
-			listview.setOnItemClickListener(this);
 			//
-			mFloatLayout.addView(listview, parm);
+			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
-			if (parentView != null) {
-				Log.d("hailongqiu", "hailongqiu setMenuDataInternal listview id:" + listview.getId() + " parent id:"
-						+ parentView.getId());
-				// parentView.setNextFocusRightId(listview.getId());
-				// listview.setNextFocusLeftId(parentView.getId());
-			}
 		}
 	}
 
@@ -156,15 +173,11 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	class MenuAdpater extends BaseAdapter {
 
 		private ArrayList<IOpenMenuItem> mItems;
-		private View mParentView;
+		private IOpenMenu mOpenMenu;
 
-		public MenuAdpater(ArrayList<IOpenMenuItem> items) {
-			this(null, items);
-		}
-
-		public MenuAdpater(View parentView, ArrayList<IOpenMenuItem> items) {
+		public MenuAdpater(IOpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
+			this.mOpenMenu = openMenu;
 			this.mItems = items;
-			this.mParentView = parentView;
 		}
 
 		public void setDatas(ArrayList<IOpenMenuItem> items) {
@@ -194,15 +207,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = mInflater.inflate(mMenuItemLayoutID, parent, false);
+				convertView = mInflater.inflate(mOpenMenu.getLayoutID(), parent, false);
 			}
 			IOpenMenuView.ItemView itemView = (IOpenMenuView.ItemView) convertView;
 			itemView.initialize(getItem(position), 0);
-			if (mParentView != null) {
-				int id = mParentView.getId();
-				Log.d("hailongqiu", "hailongqiu getView id:" + id);
-				// convertView.setNextFocusLeftId(id);
-			}
 			return convertView;
 		}
 
@@ -214,7 +222,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		int action = event.getAction();
 		if (action == KeyEvent.ACTION_DOWN) {
 			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
+			// case KeyEvent.KEYCODE_DPAD_LEFT:
 			case KeyEvent.KEYCODE_BACK:
 				if (mFloatLayout.getChildCount() > 1) {
 					mFloatLayout.removeView(v);
@@ -255,14 +263,11 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Log.d("hailongqiu", "hailongqiu onItemClick");
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
 		if (menuItem.hasSubMenu()) {
 			OpenSubMenu subMenu = menuItem.getSubMenu();
-			//
 			if (subMenu != null) {
-				Log.d("hailongqiu", "hailongqiu onItemClick subMenu:" + subMenu);
 				setMenuDataInternal(view, subMenu);
 			}
 		} else {
@@ -277,19 +282,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
 	public void setOnMenuListener(OnMenuListener cb) {
 		this.mOnMenuListener = cb;
-	}
-
-	/**
-	 * 菜单回调事件.
-	 * 
-	 * @author hailongqiu
-	 *
-	 */
-	class OnMenuListener {
-		public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
-		}
-		public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		}
 	}
 
 }
