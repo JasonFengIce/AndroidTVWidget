@@ -119,13 +119,16 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		AbsListView absListView = openMenu.getMenuView();
 		if (absListView == null)
 			absListView = new ListView(mContext);
-		absListView.setId(GenerateViewId.getSingleton().generateViewId());
+		// 设置ID.
+		int id = openMenu.getId();
+		absListView.setId(id != 0 ? id : GenerateViewId.getSingleton().generateViewId());
+		// 设置 adpater.
 		absListView.setAdapter(new MenuAdpater(openMenu, items));
-		//
+		// 设置属性.
 		absListView.setFocusable(true);
 		absListView.setFocusableInTouchMode(true);
 		absListView.requestFocus();
-		// 事件
+		// 设置事件
 		absListView.setOnKeyListener(this);
 		absListView.setOnItemSelectedListener(this);
 		absListView.setOnItemClickListener(this);
@@ -142,15 +145,18 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			int width = openMenu.getMenuWidth();
 			parm.width = ((width == 0) ? DEFUALT_MENU_WIDTH : width);
 			parm.height = LayoutParams.WRAP_CONTENT;
-			//
+			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
 		}
 	}
-
+	
+	/**
+	 * 测试.
+	 */
 	private void testAddBtn() {
 		Button btn = new Button(mContext);
-		btn.setText("fjdkslfjdslkfjsdklfj");
+		btn.setText("测试ABC");
 		mFloatLayout.addView(btn);
 		mFloatLayout.requestLayout();
 	}

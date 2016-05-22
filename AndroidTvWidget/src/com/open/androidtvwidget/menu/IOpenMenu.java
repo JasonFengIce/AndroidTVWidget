@@ -27,4 +27,10 @@ public interface IOpenMenu {
 	 */
 	public IOpenMenu setLayoutID(int id);
 	public int getLayoutID();
+	/**
+	 * 设置ID. 
+	 */
+	public IOpenMenu setId(int id);
+	public int getId();
+	
 }

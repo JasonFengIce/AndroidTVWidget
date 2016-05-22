@@ -40,6 +40,7 @@ public class OpenMenu implements IOpenMenu {
 	private int mMenuWidth;
 	private int mTextSize = IOpenMenuItem.DEFAULT_TEXT_SIZE;
 	private int mMenuItemLayoutID = DEFAULT_LAYOUT_ID;
+	private int mId;
 	
 	public OpenMenu() {
 		init();
@@ -142,6 +143,17 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public int getLayoutID() {
 		return this.mMenuItemLayoutID;
+	}
+
+	@Override
+	public IOpenMenu setId(int id) {
+		this.mId = id;
+		return this;
+	}
+
+	@Override
+	public int getId() {
+		return this.mId;
 	}
 	
 }
