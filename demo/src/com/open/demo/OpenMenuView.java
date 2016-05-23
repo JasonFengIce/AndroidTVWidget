@@ -13,7 +13,6 @@ import com.open.androidtvwidget.utils.OPENLOG;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -117,7 +117,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		int id = openMenu.getId();
 		absListView.setId(id != 0 ? id : GenerateViewId.getSingleton().generateViewId());
 		// 设置菜单view动画.
-		LayoutAnimationController animController = openMenu.getMenuAnimation();
+		LayoutAnimationController animController = openMenu.getMenuLoadAnimation();
 		if (animController != null)
 			absListView.setLayoutAnimation(animController);
 		// 设置 adpater.
@@ -158,6 +158,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
+			// 设置显示动画.
+			Animation showAnimation = openMenu.getMenuShowAnimation();
+			if (showAnimation != null)
+				absListView.setAnimation(showAnimation);
 		}
 	}
 
@@ -249,7 +253,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
 		int action = event.getAction();
 		if (action == KeyEvent.ACTION_DOWN) {
 			switch (keyCode) {

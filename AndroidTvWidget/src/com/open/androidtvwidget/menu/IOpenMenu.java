@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.open.androidtvwidget.R;
 
 import android.graphics.Rect;
+import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 
@@ -40,11 +41,18 @@ public interface IOpenMenu {
 	public AbsListView getMenuView();
 
 	/**
-	 * 设置菜单动画(一般都是listview,gridview的item动画)
+	 * 设置菜单加载动画(一般都是listview,gridview的item动画)
 	 */
-	public IOpenMenu setMenuAnimation(LayoutAnimationController animation);
-	
-	public LayoutAnimationController getMenuAnimation();
+	public IOpenMenu setMenuLoadAnimation(LayoutAnimationController animation);
+
+	public LayoutAnimationController getMenuLoadAnimation();
+
+	/**
+	 * 设置菜单view的显示动画.
+	 */
+	public IOpenMenu setMenuShowAnimation(Animation animation);
+
+	public Animation getMenuShowAnimation();
 
 	/**
 	 * 设置--菜单宽度.
@@ -79,10 +87,13 @@ public interface IOpenMenu {
 	public IOpenMenu setGravity(int gravity);
 
 	public int getGravity();
+
 	/**
 	 * 增加菜单的边距.
 	 */
 	public IOpenMenu setMenuMargins(int left, int top, int right, int bottom);
+
 	public IOpenMenu setMenuMargins(Rect rect);
+
 	public Rect getMargins();
 }

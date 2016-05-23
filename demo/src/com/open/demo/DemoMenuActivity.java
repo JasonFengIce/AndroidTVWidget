@@ -65,7 +65,8 @@ public class DemoMenuActivity extends Activity {
 		// 主菜单.
 		openMenu = new OpenMenu();
 		// openMenu.setMenuView(getGridView(mContext));
-		openMenu.setMenuAnimation(loadAnimation2()); // 设置菜单动画.
+		 openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
+		openMenu.setMenuShowAnimation(showAnimation()); // 设置菜单显示动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
 		openMenu.add("菜单1").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.button1);
 		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher));
@@ -79,7 +80,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");
-		subMenu1.setMenuAnimation(loadAnimation()); // 设置菜单动画.
+		// subMenu1.setMenuAnimation(loadAnimation()); // 设置菜单动画.
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu();
 		subMenu2.add("菜单2-1");
@@ -159,6 +160,16 @@ public class DemoMenuActivity extends Activity {
 		LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
 		controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
 		return controller;
+	}
+	
+	/**
+	 * 从左到右显示菜单.
+	 */
+	private Animation showAnimation() {
+		Animation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+		animation.setDuration(800);
+		return animation;
 	}
 
 }
