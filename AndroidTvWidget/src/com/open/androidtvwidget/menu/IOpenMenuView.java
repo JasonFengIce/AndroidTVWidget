@@ -24,5 +24,4 @@ public interface IOpenMenuView {
 	 * 设置菜单view事件.
 	 */
 	public IOpenMenuView setOnMenuListener(OnMenuListener cb);
-
 }

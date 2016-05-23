@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import com.open.androidtvwidget.utils.OPENLOG;
 
+import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
@@ -48,8 +49,9 @@ public class OpenMenu implements IOpenMenu {
 	private int mMenuItemLayoutID = DEFAULT_LAYOUT_ID;
 	private int mId;
 	private int mGravity = Gravity.TOP;
+	private Rect mMarginRect; // 增加菜单距离.
 	private LayoutAnimationController mAnimation;
-	
+
 	public OpenMenu() {
 		init();
 	}
@@ -197,6 +199,23 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public LayoutAnimationController getMenuAnimation() {
 		return this.mAnimation;
+	}
+
+	@Override
+	public IOpenMenu setMenuMargins(int left, int top, int right, int bottom) {
+		setMenuMargins(new Rect(left, top, right, bottom));
+		return this;
+	}
+
+	@Override
+	public IOpenMenu setMenuMargins(Rect rect) {
+		this.mMarginRect = rect;
+		return this;
+	}
+
+	@Override
+	public Rect getMargins() {
+		return this.mMarginRect;
 	}
 
 }

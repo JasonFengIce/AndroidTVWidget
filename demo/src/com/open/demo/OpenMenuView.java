@@ -12,6 +12,7 @@ import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -149,6 +150,9 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			// 设置菜单 Gravity.
 			int gravity = openMenu.getGravity();
 			parm.gravity = gravity;
+			// 设置菜单view--Margin rect;
+			Rect rect = openMenu.getMargins();
+			parm.setMargins(rect.left, rect.top, rect.right, rect.bottom);
 			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.open.androidtvwidget.R;
 
-import android.view.animation.Animation;
+import android.graphics.Rect;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 
@@ -79,5 +79,10 @@ public interface IOpenMenu {
 	public IOpenMenu setGravity(int gravity);
 
 	public int getGravity();
-
+	/**
+	 * 增加菜单的边距.
+	 */
+	public IOpenMenu setMenuMargins(int left, int top, int right, int bottom);
+	public IOpenMenu setMenuMargins(Rect rect);
+	public Rect getMargins();
 }

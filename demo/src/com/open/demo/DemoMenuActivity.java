@@ -66,6 +66,7 @@ public class DemoMenuActivity extends Activity {
 		openMenu = new OpenMenu();
 		// openMenu.setMenuView(getGridView(mContext));
 		openMenu.setMenuAnimation(loadAnimation2()); // 设置菜单动画.
+		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
 		openMenu.add("菜单1").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.button1);
 		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher));
 		openMenu.add("菜单3").setIcon(getResources(R.drawable.ic_launcher));
