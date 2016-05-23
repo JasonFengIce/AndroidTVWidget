@@ -35,9 +35,9 @@ import android.widget.ListView;
  *
  */
 interface OnMenuListener {
-	public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
+	public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
 
-	public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
+	public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
 }
 
 /**
@@ -143,14 +143,15 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			// 设置菜单宽度.
 			LayoutParams parm = new LayoutParams();
 			int width = openMenu.getMenuWidth();
+			int height = openMenu.getMenuHeight();
 			parm.width = ((width == 0) ? DEFUALT_MENU_WIDTH : width);
-			parm.height = LayoutParams.WRAP_CONTENT;
+			parm.height = ((height == 0) ? LayoutParams.WRAP_CONTENT : height);
 			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
 		}
 	}
-	
+
 	/**
 	 * 测试.
 	 */
@@ -222,6 +223,21 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
 	}
 
+	/**
+	 * 删除菜单.
+	 */
+	public boolean removeMenu(View v) {
+		if (mFloatLayout.getChildCount() > 1) {
+			mFloatLayout.removeView(v);
+			mFloatLayout.requestLayout();
+			mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
+			mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+		} else {
+			onDestroy();
+		}
+		return true;
+	}
+
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		Log.d("hailongqiu", "hailongqiu onKey keyCode:" + keyCode);
@@ -230,16 +246,18 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			switch (keyCode) {
 			// case KeyEvent.KEYCODE_DPAD_LEFT:
 			case KeyEvent.KEYCODE_BACK:
-				if (mFloatLayout.getChildCount() > 1) {
-					mFloatLayout.removeView(v);
-					mFloatLayout.requestLayout();
-					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
-					mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+				removeMenu(v);
+				return true;
+			case KeyEvent.KEYCODE_DPAD_LEFT:// 防止菜单往左边跑到其它地方.
+				if ((v instanceof ListView)) {
+					removeMenu(v);
 					return true;
-				} else {
-					onDestroy();
 				}
-				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT: // 防止菜单往右边跑到其它地方.
+			case KeyEvent.KEYCODE_DPAD_UP: // 防止菜单往上面跑到其它地方.
+			case KeyEvent.KEYCODE_DPAD_DOWN: // 防止菜单往下面跑到其它地方.
+				v.onKeyDown(keyCode, event);
+				return true;
 			default:
 				break;
 			}
@@ -249,14 +267,19 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		// 菜单item选中事件触发.
+		if (mOnMenuListener != null) {
+			if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
+				return;
+		}
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
 		if (menuItem.hasSubMenu()) {
-
-		} else {
-			// 菜单item选中事件触发.
-			if (mOnMenuListener != null)
-				mOnMenuListener.onMenuItemSelected(parent, view, position, id);
+			// 选择显示子菜单(暂时先不支持).
+			OpenSubMenu subMenu = menuItem.getSubMenu();
+			if (subMenu != null) {
+				// setMenuDataInternal(view, subMenu);
+			}
 		}
 	}
 
@@ -269,17 +292,18 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// 菜单item单击事件触发.
+		if (mOnMenuListener != null) {
+			if (mOnMenuListener.onMenuItemClick(parent, view, position, id))
+				return;
+		}
+		//
 		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
 		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
 		if (menuItem.hasSubMenu()) {
 			OpenSubMenu subMenu = menuItem.getSubMenu();
 			if (subMenu != null) {
 				setMenuDataInternal(view, subMenu);
-			}
-		} else {
-			// 菜单item单击事件触发.
-			if (mOnMenuListener != null) {
-				mOnMenuListener.onMenuItemClick(parent, view, position, id);
 			}
 		}
 	}

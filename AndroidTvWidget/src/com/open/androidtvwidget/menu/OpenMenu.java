@@ -38,10 +38,11 @@ public class OpenMenu implements IOpenMenu {
 	private OpenMenu mParent;
 	private AbsListView mAbsListView;
 	private int mMenuWidth;
+	private int mMenuHeight;
 	private int mTextSize = IOpenMenuItem.DEFAULT_TEXT_SIZE;
 	private int mMenuItemLayoutID = DEFAULT_LAYOUT_ID;
 	private int mId;
-	
+
 	public OpenMenu() {
 		init();
 	}
@@ -135,6 +136,17 @@ public class OpenMenu implements IOpenMenu {
 	}
 
 	@Override
+	public IOpenMenu setMenuHeight(int height) {
+		this.mMenuHeight = height;
+		return this;
+	}
+
+	@Override
+	public int getMenuHeight() {
+		return this.mMenuHeight;
+	}
+
+	@Override
 	public IOpenMenu setLayoutID(int id) {
 		this.mMenuItemLayoutID = id;
 		return this;
@@ -155,5 +167,5 @@ public class OpenMenu implements IOpenMenu {
 	public int getId() {
 		return this.mId;
 	}
-	
+
 }

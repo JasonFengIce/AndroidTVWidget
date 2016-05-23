@@ -8,6 +8,7 @@ import com.open.androidtvwidget.view.MainUpView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,21 +42,26 @@ public class DemoMenuActivity extends Activity {
 		initAllMenu();
 	}
 
+	private Drawable getResources(int id) {
+		return getResources().getDrawable(id);
+	}
+
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
+		openMenu.setMenuWidth(500);
 		//
-		openMenu.add("菜单1").setIcon(getResources().getDrawable(R.drawable.ic_launcher)).setId(R.id.button1);
-		openMenu.add("菜单2").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-		openMenu.add("菜单3").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-		openMenu.add("菜单4").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-		openMenu.add("菜单5").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-		openMenu.add("菜单6").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-		openMenu.add("菜单7").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+		openMenu.add("菜单1").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.button1);
+		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher));
+		openMenu.add("菜单3").setIcon(getResources(R.drawable.ic_launcher));
+		openMenu.add("菜单4").setIcon(getResources(R.drawable.ic_launcher));
+		openMenu.add("菜单5").setIcon(getResources(R.drawable.ic_launcher));
+		openMenu.add("菜单6").setIcon(getResources(R.drawable.ic_launcher));
+		openMenu.add("菜单7").setIcon(getResources(R.drawable.ic_launcher));
 		// 菜单1的子菜单.
 		OpenSubMenu subMenu1 = new OpenSubMenu();
 		subMenu1.add("菜单1-1");
-		subMenu1.add("菜单1-2").setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu();
@@ -81,19 +87,25 @@ public class DemoMenuActivity extends Activity {
 		OpenMenuView openMenuView = new OpenMenuView(mContext);
 		openMenuView.setOnMenuListener(new OnMenuListener() {
 			@Override
-			public void onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.getId() == R.id.button1) {
 					Toast.makeText(mContext, "button", Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(mContext, "测试菜单 position:" + view.getId(), Toast.LENGTH_LONG).show();
 				}
+				return false;
 			}
+
 			@Override
-			public void onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				mainUpView.setFocusView(view, 1.0f);
+				return false;
 			}
+
 		});
 		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
+		mainUpView.bringToFront();
 	}
 
 }
