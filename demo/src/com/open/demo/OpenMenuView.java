@@ -8,6 +8,7 @@ import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.GenerateViewId;
+import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -19,6 +20,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,18 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 /**
- * 菜单回调事件.
- * 
- * @author hailongqiu
- *
- */
-interface OnMenuListener {
-	public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
-
-	public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
-}
-
-/**
+ * ListView </br>
+ * android:divider="#00000000" </br>
+ * android:scrollbars="none" </br>
+ * <p>
  * 菜单的显示窗口.
  * 
  * @author hailongqiu
@@ -59,10 +53,12 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	WindowManager mWindowManager;
 	LayoutInflater mInflater;
 
+	private OnMenuListener mOnMenuListener;
+
 	public OpenMenuView(Context context) {
 		mContext = context;
 		if (mContext == null)
-			throw new AssertionError("context not found.");
+			throw new AssertionError("你麻痹，你能将Context传正确么？都Null... ...");
 		mInflater = LayoutInflater.from(mContext);
 		//
 		initMenuWindow();
@@ -106,10 +102,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	}
 
 	/*
-	 * 
-	 * <ListView android:id="@+id/menu_listview"
-	 * android:layout_width="wrap_content" android:layout_height="wrap_content"
-	 * android:divider="#00000000" android:scrollbars="none" > </ListView>
+	 * 设置菜单数据.
 	 */
 	public void setMenuData(OpenMenu openMenu) {
 		setMenuDataInternal(null, openMenu);
@@ -122,6 +115,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		// 设置ID.
 		int id = openMenu.getId();
 		absListView.setId(id != 0 ? id : GenerateViewId.getSingleton().generateViewId());
+		// 设置菜单view动画.
+		LayoutAnimationController animController = openMenu.getMenuAnimation();
+		if (animController != null)
+			absListView.setLayoutAnimation(animController);
 		// 设置 adpater.
 		absListView.setAdapter(new MenuAdpater(openMenu, items));
 		// 设置属性.
@@ -132,6 +129,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		absListView.setOnKeyListener(this);
 		absListView.setOnItemSelectedListener(this);
 		absListView.setOnItemClickListener(this);
+		if (openMenu.getMenuView() == null) // 设置菜单动画.
+			openMenu.setMenuView(absListView);
 		return absListView;
 	}
 
@@ -141,11 +140,15 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			// 获取自定义的absListView.
 			AbsListView absListView = getMenuView(openMenu, items);
 			// 设置菜单宽度.
-			LayoutParams parm = new LayoutParams();
+			int defulat = LinearLayout.LayoutParams.WRAP_CONTENT;
+			LinearLayout.LayoutParams parm = new LinearLayout.LayoutParams(defulat, defulat);
 			int width = openMenu.getMenuWidth();
 			int height = openMenu.getMenuHeight();
 			parm.width = ((width == 0) ? DEFUALT_MENU_WIDTH : width);
 			parm.height = ((height == 0) ? LayoutParams.WRAP_CONTENT : height);
+			// 设置菜单 Gravity.
+			int gravity = openMenu.getGravity();
+			parm.gravity = gravity;
 			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
@@ -249,6 +252,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 				removeMenu(v);
 				return true;
 			case KeyEvent.KEYCODE_DPAD_LEFT:// 防止菜单往左边跑到其它地方.
+				// 如果为listview，左边.就消失.
 				if ((v instanceof ListView)) {
 					removeMenu(v);
 					return true;
@@ -265,6 +269,20 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		return false;
 	}
 
+	private ArrayList<IOpenMenuItem> getMenuItems(AdapterView<?> parent) {
+		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
+		if (menuAdapter == null) {
+			OPENLOG.E("menuAdapter is null");
+			return null;
+		}
+		ArrayList<IOpenMenuItem> items = menuAdapter.getDatas();
+		if (items == null) {
+			OPENLOG.E("items is null");
+			return null;
+		}
+		return items;
+	}
+
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		// 菜单item选中事件触发.
@@ -272,9 +290,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
 				return;
 		}
-		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
-		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
-		if (menuItem.hasSubMenu()) {
+		// 显示菜单.
+		ArrayList<IOpenMenuItem> items = getMenuItems(parent);
+		IOpenMenuItem menuItem = items.get(position);
+		if (menuItem != null && menuItem.hasSubMenu()) {
 			// 选择显示子菜单(暂时先不支持).
 			OpenSubMenu subMenu = menuItem.getSubMenu();
 			if (subMenu != null) {
@@ -297,10 +316,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			if (mOnMenuListener.onMenuItemClick(parent, view, position, id))
 				return;
 		}
-		//
-		MenuAdpater menuAdapter = (MenuAdpater) parent.getAdapter();
-		IOpenMenuItem menuItem = menuAdapter.getDatas().get(position);
-		if (menuItem.hasSubMenu()) {
+		// 显示菜单.
+		ArrayList<IOpenMenuItem> items = getMenuItems(parent);
+		IOpenMenuItem menuItem = items.get(position);
+		if (menuItem != null && menuItem.hasSubMenu()) {
 			OpenSubMenu subMenu = menuItem.getSubMenu();
 			if (subMenu != null) {
 				setMenuDataInternal(view, subMenu);
@@ -308,10 +327,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		}
 	}
 
-	OnMenuListener mOnMenuListener;
-
-	public void setOnMenuListener(OnMenuListener cb) {
+	@Override
+	public IOpenMenuView setOnMenuListener(OnMenuListener cb) {
 		this.mOnMenuListener = cb;
+		return this;
 	}
 
 }

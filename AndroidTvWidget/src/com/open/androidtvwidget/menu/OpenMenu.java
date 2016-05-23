@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 import com.open.androidtvwidget.utils.OPENLOG;
 
+import android.view.Gravity;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 
 /**
@@ -37,12 +39,17 @@ public class OpenMenu implements IOpenMenu {
 	private ArrayList<IOpenMenuItem> mItems;
 	private OpenMenu mParent;
 	private AbsListView mAbsListView;
+	/**
+	 * 菜单属性.
+	 */
 	private int mMenuWidth;
 	private int mMenuHeight;
 	private int mTextSize = IOpenMenuItem.DEFAULT_TEXT_SIZE;
 	private int mMenuItemLayoutID = DEFAULT_LAYOUT_ID;
 	private int mId;
-
+	private int mGravity = Gravity.TOP;
+	private LayoutAnimationController mAnimation;
+	
 	public OpenMenu() {
 		init();
 	}
@@ -115,6 +122,8 @@ public class OpenMenu implements IOpenMenu {
 
 	@Override
 	public IOpenMenu setMenuView(AbsListView absListView) {
+		if (!(absListView instanceof AbsListView))
+			throw new AssertionError("absListView is not AbsListView!!");
 		this.mAbsListView = absListView;
 		return this;
 	}
@@ -166,6 +175,28 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public int getId() {
 		return this.mId;
+	}
+
+	@Override
+	public IOpenMenu setGravity(int gravity) {
+		this.mGravity = gravity;
+		return this;
+	}
+
+	@Override
+	public int getGravity() {
+		return this.mGravity;
+	}
+
+	@Override
+	public IOpenMenu setMenuAnimation(LayoutAnimationController animation) {
+		this.mAnimation = animation;
+		return this;
+	}
+
+	@Override
+	public LayoutAnimationController getMenuAnimation() {
+		return this.mAnimation;
 	}
 
 }
