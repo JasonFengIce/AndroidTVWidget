@@ -152,7 +152,9 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			parm.gravity = gravity;
 			// 设置菜单view--Margin rect;
 			Rect rect = openMenu.getMargins();
-			parm.setMargins(rect.left, rect.top, rect.right, rect.bottom);
+			if (rect != null) {
+				parm.setMargins(rect.left, rect.top, rect.right, rect.bottom);
+			}
 			// 添加菜单View到FloatLayout.
 			mFloatLayout.addView(absListView, parm);
 			mFloatLayout.requestLayout();
