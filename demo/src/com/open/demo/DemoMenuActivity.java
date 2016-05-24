@@ -1,17 +1,17 @@
 package com.open.demo;
 
-import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
+import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.OPENLOG;
-import com.open.androidtvwidget.view.MainUpView;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -32,6 +32,7 @@ public class DemoMenuActivity extends Activity {
 
 	private Context mContext;
 	OpenMenu openMenu;
+	OpenMenuView openMenuView;
 	View oldView;
 	// private SmoothHorizontalScrollView test_hscroll;
 
@@ -46,6 +47,12 @@ public class DemoMenuActivity extends Activity {
 		// test_hscroll = (SmoothHorizontalScrollView)
 		// findViewById(R.id.test_hscroll);
 		findViewById(R.id.content11).setBackgroundResource(R.drawable.mainbackground);
+		findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openMenuView.setMenuData(openMenu);
+			}
+		});
 		mContext = DemoMenuActivity.this;
 		initAllMenu();
 	}
@@ -65,14 +72,16 @@ public class DemoMenuActivity extends Activity {
 		// 主菜单.
 		openMenu = new OpenMenu();
 		// openMenu.setMenuView(getGridView(mContext));
-		 openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
+		openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(showAnimation()); // 设置菜单显示动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
-		openMenu.add("菜单1").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.button1);
-		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher));
-		openMenu.add("菜单3").setIcon(getResources(R.drawable.ic_launcher));
-		openMenu.add("菜单4").setIcon(getResources(R.drawable.ic_launcher));
-		openMenu.add("菜单5").setIcon(getResources(R.drawable.ic_launcher));
+		// openMenu.setGravity(Gravity.CENTER); // 设置菜单位置(中间，默认 TOP).
+		final IOpenMenuItem menuItem1 = openMenu.add("菜单1");
+		menuItem1.setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_1);
+		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_2);
+		openMenu.add("菜单3").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_3);
+		openMenu.add("菜单4").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_4);
+		openMenu.add("菜单5").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_5);
 		openMenu.add("菜单6").setIcon(getResources(R.drawable.ic_launcher));
 		openMenu.add("菜单7").setIcon(getResources(R.drawable.ic_launcher));
 		// 菜单1的子菜单.
@@ -87,7 +96,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu2.add("菜单2-2");
 		subMenu2.add("菜单2-3");
 		// 添加子菜单.
-		openMenu.addSubMenu(2, subMenu1);
+		openMenu.addSubMenu(menuItem1, subMenu1);
 		openMenu.addSubMenu(4, subMenu2);
 		// 菜单1添加子菜单.
 		OpenSubMenu subMenu1_1 = new OpenSubMenu();
@@ -97,26 +106,37 @@ public class DemoMenuActivity extends Activity {
 		subMenu1.addSubMenu(1, subMenu1_1);
 		//
 		openMenu.toString();
-		//
-		final MainUpView mainUpView = new MainUpView(mContext);
-		mainUpView.setEffectBridge(new EffectNoDrawBridge());
-		mainUpView.setUpRectResource(R.drawable.white_light_10);
 		// 菜单VIEW测试.
-		OpenMenuView openMenuView = new OpenMenuView(mContext);
+		openMenuView = new OpenMenuView(mContext);
 		openMenuView.setOnMenuListener(new OnMenuListener() {
 			@Override
 			public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (view.getId() == R.id.button1) {
-					Toast.makeText(mContext, "button", Toast.LENGTH_LONG).show();
-				} else {
-					Toast.makeText(mContext, "测试菜单 position:" + view.getId(), Toast.LENGTH_LONG).show();
+				String title = "测试菜单 position:" + position + " id:" + view.getId();
+				switch (view.getId()) {
+				case R.id.menu_1_1:
+					title = "菜单1-1-测试";
+					break;
+				case R.id.menu_1_2:
+					title = "菜单1-2-打开";
+					break;
+				case R.id.menu_1_3:
+					title = "菜单1-3-关闭";
+					break;
+				case R.id.menu_1_4:
+					title = "菜单1-4-操作";
+					break;
+				case R.id.menu_1_5:
+					title = "菜单1-5-创新";
+					break;
+				default:
+					break;
 				}
+				Toast.makeText(mContext, title, Toast.LENGTH_LONG).show();
 				return false;
 			}
 
 			@Override
 			public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				// mainUpView.setFocusView(view, 1.0f);
 				return false;
 			}
 
@@ -125,6 +145,9 @@ public class DemoMenuActivity extends Activity {
 		openMenuView.setMenuData(openMenu);
 	}
 
+	/**
+	 * 加载动画.
+	 */
 	private LayoutAnimationController loadAnimation() {
 		/*
 		 * 创建动画的集合
@@ -144,6 +167,9 @@ public class DemoMenuActivity extends Activity {
 		return controller;
 	}
 
+	/**
+	 * 加载动画2.
+	 */
 	private LayoutAnimationController loadAnimation2() {
 		int duration = 300;
 		AnimationSet set = new AnimationSet(true);
@@ -161,14 +187,14 @@ public class DemoMenuActivity extends Activity {
 		controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
 		return controller;
 	}
-	
+
 	/**
 	 * 从左到右显示菜单.
 	 */
 	private Animation showAnimation() {
-		Animation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-		animation.setDuration(800);
+		Animation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF,
+				0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+		animation.setDuration(1000);
 		return animation;
 	}
 

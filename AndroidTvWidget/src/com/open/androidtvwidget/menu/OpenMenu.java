@@ -93,10 +93,20 @@ public class OpenMenu implements IOpenMenu {
 	 */
 	@Override
 	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu) {
-		mItems.get(pos).setSubMenu(openSubMenu);
-		// 添加父菜单.
-		if (openSubMenu != null) {
-			openSubMenu.setParentMenu(OpenMenu.this);
+		if (mItems != null && pos < mItems.size()) {
+			IOpenMenuItem menuItem = mItems.get(pos);
+			return addSubMenu(menuItem, openSubMenu);
+		}
+		return openSubMenu;
+	}
+
+	public OpenSubMenu addSubMenu(IOpenMenuItem menuItem, OpenSubMenu openSubMenu) {
+		if (menuItem != null) {
+			menuItem.setSubMenu(openSubMenu);
+			// 添加父菜单.
+			if (openSubMenu != null) {
+				openSubMenu.setParentMenu(OpenMenu.this);
+			}
 		}
 		return openSubMenu;
 	}

@@ -27,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -47,13 +46,13 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
 	private Context mContext;
 
+	private boolean isRemoveFloatLat = false;
 	// 定义浮动窗口布局
-	LinearLayout mFloatLayout;
-	WindowManager.LayoutParams mWmParams;
+	private LinearLayout mFloatLayout;
+	private WindowManager.LayoutParams mWmParams;
 	// 创建浮动窗口设置布局参数的对象
-	WindowManager mWindowManager;
-	LayoutInflater mInflater;
-
+	private WindowManager mWindowManager;
+	private LayoutInflater mInflater;
 	private OnMenuListener mOnMenuListener;
 
 	public OpenMenuView(Context context) {
@@ -61,7 +60,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		if (mContext == null)
 			throw new AssertionError("你麻痹，你能将Context传正确么？都Null... ...");
 		mInflater = LayoutInflater.from(mContext);
-		//
 		initMenuWindow();
 	}
 
@@ -84,35 +82,32 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		mWmParams.x = 0;
 		mWmParams.y = 0;
 		// 设置悬浮窗口长宽数据
-		// wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-		// wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
 		mWmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
 		mWmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-
 		// 获取浮动窗口视图所在布局
 		mFloatLayout = (LinearLayout) mInflater.inflate(R.layout.open_menu_view, null);
 		// 添加mFloatLayout
 		mWindowManager.addView(mFloatLayout, mWmParams);
-		// mFloatLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
-		// View.MeasureSpec.UNSPECIFIED),
-		// View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-		mFloatLayout.setFocusable(true);
-		mFloatLayout.setFocusableInTouchMode(true);
-		mFloatLayout.setOnKeyListener(this);
 	}
 
 	/*
 	 * 设置菜单数据.
 	 */
-	public void setMenuData(OpenMenu openMenu) {
-		setMenuDataInternal(null, openMenu);
+	@Override
+	public IOpenMenuView setMenuData(OpenMenu openMenu) {
+		if (isRemoveFloatLat) {
+			mWindowManager.addView(mFloatLayout, mWmParams);
+			isRemoveFloatLat = false;
+		}
+		setMenuDataInternal(openMenu);
+		return this;
 	}
 
 	private AbsListView getMenuView(OpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
 		AbsListView absListView = openMenu.getMenuView();
-		if (absListView == null)
+		if (absListView == null) {
 			absListView = new ListView(mContext);
+		}
 		// 设置ID.
 		int id = openMenu.getId();
 		absListView.setId(id != 0 ? id : GenerateViewId.getSingleton().generateViewId());
@@ -122,20 +117,21 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			absListView.setLayoutAnimation(animController);
 		// 设置 adpater.
 		absListView.setAdapter(new MenuAdpater(openMenu, items));
-		// 设置属性.
-		absListView.setFocusable(true);
-		absListView.setFocusableInTouchMode(true);
-		absListView.requestFocus();
 		// 设置事件
 		absListView.setOnKeyListener(this);
 		absListView.setOnItemSelectedListener(this);
 		absListView.setOnItemClickListener(this);
-		if (openMenu.getMenuView() == null) // 设置菜单动画.
+		// 保持菜单view.
+		if (openMenu.getMenuView() == null)
 			openMenu.setMenuView(absListView);
+		// 设置属性.
+		absListView.setFocusable(true);
+		absListView.setFocusableInTouchMode(true);
+		absListView.requestFocus();
 		return absListView;
 	}
 
-	private void setMenuDataInternal(View parentView, OpenMenu openMenu) {
+	private void setMenuDataInternal(OpenMenu openMenu) {
 		ArrayList<IOpenMenuItem> items = openMenu.getMenuDatas();
 		if (items != null) {
 			// 获取自定义的absListView.
@@ -166,21 +162,13 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	}
 
 	/**
-	 * 测试.
+	 * 移除悬浮窗口的布局.
 	 */
-	private void testAddBtn() {
-		Button btn = new Button(mContext);
-		btn.setText("测试ABC");
-		mFloatLayout.addView(btn);
-		mFloatLayout.requestLayout();
-	}
-
-	/**
-	 * 移除悬浮窗口
-	 */
-	public void onDestroy() {
+	private void removeFloatLyaout() {
 		if (mFloatLayout != null) {
+			mFloatLayout.removeAllViews();
 			mWindowManager.removeView(mFloatLayout);
+			isRemoveFloatLat = true;
 		}
 	}
 
@@ -239,14 +227,14 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 	/**
 	 * 删除菜单.
 	 */
-	public boolean removeMenu(View v) {
+	private boolean removeMenu(View v) {
 		if (mFloatLayout.getChildCount() > 1) {
 			mFloatLayout.removeView(v);
 			mFloatLayout.requestLayout();
 			mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
 			mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
 		} else {
-			onDestroy();
+			removeFloatLyaout();
 		}
 		return true;
 	}
@@ -325,13 +313,47 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			if (mOnMenuListener.onMenuItemClick(parent, view, position, id))
 				return;
 		}
+		// 移除之前的菜单.(bug:修复鼠标单击)
+		if (removeMenuView(parent, position))
+			return;
 		// 显示菜单.
+		initMenuView(parent, position);
+	}
+
+	/**
+	 * 在显示菜单之前，先移除前面的菜单，为了不显示多个菜单. (bug:修复鼠标单击)
+	 */
+	private boolean removeMenuView(AdapterView<?> parent, int position) {
+		int count = mFloatLayout.getChildCount();
+		boolean isRemove = false;
+		int currentPos = 0;
+		// 查找控件位置.
+		for (int i = 0; i < count; i++) {
+			View v = mFloatLayout.getChildAt(i);
+			if (v.equals(parent)) {
+				isRemove = true;
+				currentPos = i;
+				break;
+			}
+		}
+		for (int i = currentPos + 1; i < count; i++) {
+			if (isRemove) {
+				mFloatLayout.removeViewAt(currentPos + 1);
+			}
+		}
+		if (currentPos == (count - 1)) {
+			isRemove = false;
+		}
+		return isRemove;
+	}
+
+	private void initMenuView(AdapterView<?> parent, int position) {
 		ArrayList<IOpenMenuItem> items = getMenuItems(parent);
 		IOpenMenuItem menuItem = items.get(position);
 		if (menuItem != null && menuItem.hasSubMenu()) {
 			OpenSubMenu subMenu = menuItem.getSubMenu();
 			if (subMenu != null) {
-				setMenuDataInternal(view, subMenu);
+				setMenuData(subMenu);
 			}
 		}
 	}

@@ -25,8 +25,12 @@ public interface IOpenMenu {
 	 */
 	public IOpenMenuItem add(CharSequence title);
 
+	/**
+	 * 添加子菜单.
+	 */
 	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu); // 添加子菜单到某个位置的菜单上.
-
+	public OpenSubMenu addSubMenu(IOpenMenuItem menuItem, OpenSubMenu openSubMenu);
+	
 	public OpenMenu setTextSize(int size); // 全局设置菜单字体.
 
 	public ArrayList<IOpenMenuItem> getMenuDatas(); // 获取菜单数据.

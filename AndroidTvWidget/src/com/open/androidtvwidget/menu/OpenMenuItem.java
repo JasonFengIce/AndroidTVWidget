@@ -1,7 +1,6 @@
 package com.open.androidtvwidget.menu;
 
 import android.graphics.drawable.Drawable;
-import android.widget.AbsListView;
 
 public class OpenMenuItem implements IOpenMenuItem {
 
