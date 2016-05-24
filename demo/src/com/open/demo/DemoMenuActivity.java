@@ -71,7 +71,7 @@ public class DemoMenuActivity extends Activity {
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
-		// openMenu.setMenuView(getGridView(mContext));
+//		openMenu.setMenuView(getGridView(mContext)); 
 		openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(showAnimation()); // 设置菜单显示动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
@@ -89,7 +89,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");
-		 subMenu1.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
+		subMenu1.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu();
 		subMenu2.add("菜单2-1");

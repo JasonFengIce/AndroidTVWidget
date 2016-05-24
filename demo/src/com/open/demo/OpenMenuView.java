@@ -244,7 +244,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 		int action = event.getAction();
 		if (action == KeyEvent.ACTION_DOWN) {
 			switch (keyCode) {
-			// case KeyEvent.KEYCODE_DPAD_LEFT:
 			case KeyEvent.KEYCODE_BACK:
 				removeMenu(v);
 				return true;
