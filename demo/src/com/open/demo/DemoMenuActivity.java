@@ -89,7 +89,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");
-		// subMenu1.setMenuAnimation(loadAnimation()); // 设置菜单动画.
+		 subMenu1.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu();
 		subMenu2.add("菜单2-1");
@@ -137,7 +137,7 @@ public class DemoMenuActivity extends Activity {
 
 			@Override
 			public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				return false;
+				return true;
 			}
 
 		});

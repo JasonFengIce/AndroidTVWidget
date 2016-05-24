@@ -157,7 +157,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			// 设置显示动画.
 			Animation showAnimation = openMenu.getMenuShowAnimation();
 			if (showAnimation != null)
-				absListView.setAnimation(showAnimation);
+				absListView.startAnimation(showAnimation);
 		}
 	}
 
@@ -287,16 +287,11 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 			if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
 				return;
 		}
+		// 移除之前的菜单.(bug:修复鼠标单击)
+		if (removeMenuView(parent, position))
+			return;
 		// 显示菜单.
-		ArrayList<IOpenMenuItem> items = getMenuItems(parent);
-		IOpenMenuItem menuItem = items.get(position);
-		if (menuItem != null && menuItem.hasSubMenu()) {
-			// 选择显示子菜单(暂时先不支持).
-			OpenSubMenu subMenu = menuItem.getSubMenu();
-			if (subMenu != null) {
-				// setMenuDataInternal(view, subMenu);
-			}
-		}
+		initMenuView(parent, position);
 	}
 
 	@Override
