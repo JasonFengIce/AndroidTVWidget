@@ -5,6 +5,7 @@ import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.androidtvwidget.view.MainUpView;
 
 import android.app.Activity;
 import android.content.Context;

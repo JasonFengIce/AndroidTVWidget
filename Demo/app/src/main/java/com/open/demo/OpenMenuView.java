@@ -1,6 +1,7 @@
 package com.open.demo;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.view.KeyEvent;
@@ -20,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
@@ -27,6 +29,7 @@ import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.GenerateViewId;
 import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.androidtvwidget.view.MainUpView;
 
 import java.util.ArrayList;
 
@@ -42,17 +45,23 @@ import java.util.ArrayList;
 public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelectedListener, OnItemClickListener {
 
     private static final int DEFUALT_MENU_WIDTH = 200;
-
+    private static final float DEFAULT_SCALE = 1.0f;
+    //
     private Context mContext;
-
     private boolean isRemoveFloatLat = false;
+    private float mScaleX = DEFAULT_SCALE;
+    private float mScaleY = DEFAULT_SCALE;
     // 定义浮动窗口布局
+    private View mMainMenuView;
     private LinearLayout mFloatLayout;
     private LayoutParams mWmParams;
     // 创建浮动窗口设置布局参数的对象
     private WindowManager mWindowManager;
     private LayoutInflater mInflater;
     private OnMenuListener mOnMenuListener;
+    // 移动边框.
+    private MainUpView mMainUpView;
+    private View mOldView;
 
     public OpenMenuView(Context context) {
         mContext = context;
@@ -84,9 +93,21 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         mWmParams.width = LayoutParams.MATCH_PARENT;
         mWmParams.height = LayoutParams.MATCH_PARENT;
         // 获取浮动窗口视图所在布局
-        mFloatLayout = (LinearLayout) mInflater.inflate(R.layout.open_menu_view, null);
+        initMenuChildView();
+    }
+
+    private void initMenuChildView() {
+        mMainMenuView = mInflater.inflate(R.layout.open_menu_view, null);
+        //
+        mFloatLayout = (LinearLayout) mMainMenuView.findViewById(R.id.main_menu_lay);
+        mMainUpView = (MainUpView) mMainMenuView.findViewById(R.id.main_up_view);
         // 添加mFloatLayout
-        mWindowManager.addView(mFloatLayout, mWmParams);
+        mWindowManager.addView(mMainMenuView, mWmParams);
+        //
+        EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
+        effectNoDrawBridge.setTranDurAnimTime(200);
+        mMainUpView.setEffectBridge(effectNoDrawBridge); // 4.3以下版本边框移动.
+        mMainUpView.setUpRectResource(R.drawable.white_light_10);
     }
 
     /*
@@ -95,7 +116,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     @Override
     public IOpenMenuView setMenuData(OpenMenu openMenu) {
         if (isRemoveFloatLat) {
-            mWindowManager.addView(mFloatLayout, mWmParams);
+            initMenuChildView();
             isRemoveFloatLat = false;
         }
         setMenuDataInternal(openMenu);
@@ -108,6 +129,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         if (absListView == null) {
             absListView = new ListView(mContext);
         }
+        final AbsListView tempAbsListView = absListView;
         // 设置ID.
         int id = openMenu.getId();
         absListView.setId(id != 0 ? id : GenerateViewId.getSingleton().generateViewId());
@@ -115,11 +137,28 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         LayoutAnimationController animController = openMenu.getMenuLoadAnimation();
         if (animController != null)
             absListView.setLayoutAnimation(animController);
+        // 设置属性
+        if (absListView instanceof ListView) {
+            ListView lv = (ListView) absListView;
+            lv.setDividerHeight(0);
+            lv.setCacheColorHint(0);
+            lv.setDivider(null);
+//            lv.setSelector(null);
+        }
         // 设置 adpater.
         absListView.setAdapter(new MenuAdpater(openMenu, items));
         // 设置事件
         absListView.setOnKeyListener(this);
         absListView.setOnItemSelectedListener(this);
+        absListView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                View view = tempAbsListView.getSelectedView();
+                mMainUpView.setFocusView(view, mScaleX, mScaleY);
+                mMainUpView.setUnFocusView(mOldView);
+                mOldView = view;
+            }
+        });
         absListView.setOnItemClickListener(this);
         // 保持菜单view.
         if (openMenu.getMenuView() == null)
@@ -168,7 +207,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     private void removeFloatLyaout() {
         if (mFloatLayout != null) {
             mFloatLayout.removeAllViews();
-            mWindowManager.removeView(mFloatLayout);
+            mWindowManager.removeView(mMainMenuView);
             isRemoveFloatLat = true;
         }
     }
@@ -279,8 +318,25 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         return items;
     }
 
+    /**
+     * 获取菜单的最顶层的移动边框.
+     */
+    public MainUpView getMainUpView() {
+        return this.mMainUpView;
+    }
+
+    public OpenMenuView setScale(float scaleX, float scaleY) {
+        this.mScaleX = scaleX;
+        this.mScaleY = scaleY;
+        return this;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // 移动边框.
+        mMainUpView.setFocusView(view, this.mScaleX, this.mScaleY);
+        mMainUpView.setUnFocusView(mOldView);
+        mOldView = view;
         // 菜单item选中事件触发.
         if (mOnMenuListener != null) {
             if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
