@@ -38,9 +38,12 @@ public class DemoKeyBoardActivity extends Activity {
 		skbContainer.setSkbLayout(R.xml.sbd_qwerty);
 		skbContainer.setFocusable(true);
 		skbContainer.setFocusableInTouchMode(true);
-		skbContainer.setSoftKeySelectPadding(15); // 设置移动边框相差的间距.
-		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
+		// 设置属性(默认是不移动的选中边框)
 		skbContainer.setMoveSoftKey(true); // 设置是否移动按键边框.
+		skbContainer.setSoftKeySelectPadding((int)getResources().getDimension(R.dimen.px25)); // 设置移动边框相差的间距.
+		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
+		//
+		skbContainer.setSelectSofkKeyFront(true); // 设置选中边框最前面.
 		// 监听键盘事件.
 		skbContainer.setOnSoftKeyBoardListener(new SoftKeyBoardListener() {
 			@Override
@@ -103,29 +106,45 @@ public class DemoKeyBoardActivity extends Activity {
 		findViewById(R.id.en_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setSkbContainerMove();
 				skbContainer.setSkbLayout(R.xml.sbd_qwerty);
-				skbContainer.setSoftKeySelectPadding(15);
-				mOldSoftKey = null;
 			}
 		});
 		// 数字键盘切换测试.
 		findViewById(R.id.num_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setSkbContainerOther();
 				skbContainer.setSkbLayout(R.xml.sbd_number);
-				skbContainer.setSoftKeySelectPadding(0);
-				mOldSoftKey = null;
 			}
 		});
 		// 全键盘切换测试.
 		findViewById(R.id.all_key_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mOldSoftKey = null;
-				skbContainer.setSoftKeySelectPadding(0);
+				setSkbContainerOther();
 				skbContainer.setSkbLayout(R.xml.skb_all_key);
 			}
 		});
+	}
+
+	private void setSkbContainerMove() {
+		mOldSoftKey = null;
+		skbContainer.setMoveSoftKey(true);
+		skbContainer.setSoftKeySelectPadding(15);
+		skbContainer.setSelectSofkKeyFront(true);
+	}
+
+	/**
+	 * 切换布局测试.
+	 * 因为布局不相同，所以属性不一样，
+	 * 需要重新设置(不用参考我的,只是DEMO)
+	 */
+	private void setSkbContainerOther() {
+		mOldSoftKey = null;
+		skbContainer.setMoveSoftKey(false);
+		skbContainer.setSoftKeySelectPadding(0);
+		skbContainer.setSelectSofkKeyFront(false);
 	}
 
 	SoftKey mOldSoftKey;

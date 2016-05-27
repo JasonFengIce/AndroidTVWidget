@@ -10,6 +10,12 @@ import android.view.KeyEvent;
 public interface SoftKeyBoardable {
 
 	/**
+	 * 设置选中的按键边框在最前面还是最后面
+	 * @param isFront true 最前面, false 反之 (默认为 false).
+	 */
+	public void setSelectSofkKeyFront(boolean isFront);
+
+	/**
 	 * 设置移动边框和按键背景相差的间距.
      */
 	public void setSoftKeySelectPadding(int padding);

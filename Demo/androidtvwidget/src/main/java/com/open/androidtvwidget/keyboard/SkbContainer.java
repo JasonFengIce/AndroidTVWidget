@@ -54,6 +54,11 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 	}
 
 	@Override
+	public void setSelectSofkKeyFront(boolean isFront) {
+		mSoftKeyboardView.setSelectSofkKeyFront(isFront);
+	}
+
+	@Override
 	public void setSoftKeySelectPadding(int padding) {
 		mSoftKeyboardView.setSoftKeySelectPadding(padding);
 	}

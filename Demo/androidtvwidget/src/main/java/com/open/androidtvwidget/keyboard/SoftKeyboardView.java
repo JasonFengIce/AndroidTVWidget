@@ -152,6 +152,12 @@ public class SoftKeyboardView extends View {
 				drawSoftKeyPressState(canvas, softKey);
 			}
 		}
+		// 绘制选中状态 and 选中边框最前面.
+		// BUG(避免重复绘制) 主要用于挡住文字的，在绘制一次而已.
+		// 如果是透明的选中背景，那就不需要再重复绘制一次文字或者图标了.
+		if (isDrawState && mIsFront) {
+			return;
+		}
 		// 绘制按键内容.
 		String keyLabel = softKey.getKeyLabel();
 		Drawable keyIcon = softKey.getKeyIcon();
@@ -507,6 +513,7 @@ public class SoftKeyboardView extends View {
 	private static final int DEFAULT_MOVE_DURATION = 300;
 	private boolean mIsMoveRect = false;
 	private int mMoveDuration = DEFAULT_MOVE_DURATION;
+	private boolean mIsFront = false;
 
 	/**
 	 * 设置按键边框的移动时间.
@@ -520,6 +527,15 @@ public class SoftKeyboardView extends View {
      */
 	public void setMoveSoftKey(boolean isMoveRect) {
 		this.mIsMoveRect = isMoveRect;
+	}
+
+	/**
+	 * 设置选中的按键边框在最前面还是最后面
+	 * @param isFront true 最前面, false 反之 (默认为 false).
+     */
+	public void setSelectSofkKeyFront(boolean isFront) {
+		this.mIsFront = isFront;
+		postInvalidate();
 	}
 
 }
