@@ -39,9 +39,7 @@ public class DemoKeyBoardActivity extends Activity {
 		skbContainer.setFocusable(true);
 		skbContainer.setFocusableInTouchMode(true);
 		// 设置属性(默认是不移动的选中边框)
-		skbContainer.setMoveSoftKey(true); // 设置是否移动按键边框.
-		skbContainer.setSoftKeySelectPadding((int)getResources().getDimension(R.dimen.px25)); // 设置移动边框相差的间距.
-		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
+		setSkbContainerMove();
 		//
 		skbContainer.setSelectSofkKeyFront(true); // 设置选中边框最前面.
 		// 监听键盘事件.
@@ -130,9 +128,10 @@ public class DemoKeyBoardActivity extends Activity {
 
 	private void setSkbContainerMove() {
 		mOldSoftKey = null;
-		skbContainer.setMoveSoftKey(true);
-		skbContainer.setSoftKeySelectPadding(15);
-		skbContainer.setSelectSofkKeyFront(true);
+		skbContainer.setMoveSoftKey(true); // 设置是否移动按键边框.
+		skbContainer.setSoftKeySelectPadding((int)getResources().getDimension(R.dimen.px25)); // 设置移动边框相差的间距.
+		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
+		skbContainer.setSelectSofkKeyFront(true); // 设置选中边框在最前面.
 	}
 
 	/**
