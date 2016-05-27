@@ -133,6 +133,10 @@ public class SoftKeyboardView extends View {
 	 * 绘制键值.
 	 */
 	private void drawSoftKey(Canvas canvas, SoftKey softKey, boolean isDrawState) {
+		if (softKey == null) {
+			OPENLOG.E("softKey is null...");
+			return;
+		}
 		// 绘制按键背景.
 		drawSoftKeyBg(canvas, softKey);
 		// 绘制选中状态.

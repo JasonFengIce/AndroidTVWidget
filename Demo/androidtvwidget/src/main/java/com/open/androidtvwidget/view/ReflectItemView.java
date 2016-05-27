@@ -222,6 +222,8 @@ public class ReflectItemView extends FrameLayout {
         if (shapeCanvas != null) {
             int width = getWidth();
             int height = getHeight();
+            if (width == 0 || height == 0)
+                return;
             int count = shapeCanvas.save();
             int count2 = shapeCanvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
             //

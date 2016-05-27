@@ -3,6 +3,7 @@ package com.open.demo;
 import com.open.androidtvwidget.keyboard.SkbContainer;
 import com.open.androidtvwidget.keyboard.SoftKey;
 import com.open.androidtvwidget.keyboard.SoftKeyBoardListener;
+import com.open.androidtvwidget.utils.OPENLOG;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class DemoKeyBoardActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		OPENLOG.initTag("hailongqiu", true);
 		setContentView(R.layout.demo_keyboard_activity);
 		input_tv = (TextView) findViewById(R.id.input_tv);
 		skbContainer = (SkbContainer) findViewById(R.id.skbContainer);
@@ -76,6 +78,22 @@ public class DemoKeyBoardActivity extends Activity {
 			}
 			
 		});
+		// DEMO（测试键盘失去焦点和获取焦点)
+		skbContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				OPENLOG.D("hasFocus:"+hasFocus);
+				if (hasFocus) {
+					if (mOldSoftKey != null)
+						skbContainer.setKeySelected(mOldSoftKey);
+					else
+						skbContainer.setDefualtSelectKey(0, 0);
+				} else {
+					mOldSoftKey = skbContainer.getSelectKey();
+					skbContainer.setKeySelected(null);
+				}
+			}
+		});
 		// 英文键盘切换测试.
 		findViewById(R.id.en_btn).setOnClickListener(new OnClickListener() {
 			@Override
@@ -98,6 +116,8 @@ public class DemoKeyBoardActivity extends Activity {
 			}
 		});
 	}
+
+	SoftKey mOldSoftKey;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

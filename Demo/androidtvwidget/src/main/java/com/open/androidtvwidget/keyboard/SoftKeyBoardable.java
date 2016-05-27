@@ -8,7 +8,9 @@ import android.view.KeyEvent;
  *
  */
 public interface SoftKeyBoardable {
-	
+
+	public SoftKeyboardView getSoftKeyboardView();
+
 	/**
 	 * 链接键盘事件处理.
 	 * @param cb
@@ -34,7 +36,8 @@ public interface SoftKeyBoardable {
 	 */
 	public boolean setKeySelected(SoftKey softKey);
 	public void setDefualtSelectKey(int row, int index);
-	
+	public SoftKey getSelectKey();
+
 	/**
 	 * 外部处理按键事件.
 	 * @param keyCode
