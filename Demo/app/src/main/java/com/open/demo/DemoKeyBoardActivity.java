@@ -65,6 +65,7 @@ public class DemoKeyBoardActivity extends Activity {
 					} else if (keyCode == 250) { //切换键盘
 						// 这里只是测试，你可以写自己其它的数字键盘或者其它键盘
 						skbContainer.setSkbLayout(R.xml.sbd_number);
+						skbContainer.setSoftKeySelectPadding(0);
 						mOldSoftKey = null;
 					}
 				}
@@ -103,6 +104,7 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_qwerty);
+				skbContainer.setSoftKeySelectPadding(15);
 				mOldSoftKey = null;
 			}
 		});
@@ -111,6 +113,7 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_number);
+				skbContainer.setSoftKeySelectPadding(0);
 				mOldSoftKey = null;
 			}
 		});
@@ -119,6 +122,7 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				mOldSoftKey = null;
+				skbContainer.setSoftKeySelectPadding(0);
 				skbContainer.setSkbLayout(R.xml.skb_all_key);
 			}
 		});
