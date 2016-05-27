@@ -40,7 +40,6 @@ public class ReflectItemView extends FrameLayout {
     private boolean mIsReflection = false;
 
     private float mRadius = DEFUALT_RADIUS;
-    private RadiusRect mRadiusRect = new RadiusRect(mRadius, mRadius, mRadius, mRadius);
     private int mRefleSpacing = 0;
     private BitmapMemoryCache mBitmapMemoryCache = BitmapMemoryCache.getInstance();
     private static int sViewIDNum = 0;
@@ -71,7 +70,7 @@ public class ReflectItemView extends FrameLayout {
             mIsReflection = tArray.getBoolean(R.styleable.reflectItemView_isReflect, false);
             mRefHeight = (int) tArray.getDimension(R.styleable.reflectItemView_reflect_height, DEFUALT_REFHEIGHT);
             mIsDrawShape = tArray.getBoolean(R.styleable.reflectItemView_isShape, false);
-            mRadius = tArray.getDimension(R.styleable.reflectItemView_radius, DEFUALT_RADIUS);
+            mRadius = tArray.getDimension(R.styleable.reflectItemView_radius, DEFUALT_RADIUS); // 圆角半径.
             mRefleSpacing = (int) tArray.getDimension(R.styleable.reflectItemView_refle_spacing, 0);
             setRadius(mRadius);
         }
@@ -158,13 +157,6 @@ public class ReflectItemView extends FrameLayout {
         super.invalidate();
     }
 
-    private boolean isDrawShapeRadiusRect(RadiusRect radiusRect) {
-        if (radiusRect.bottomLeftRadius <= 0 && radiusRect.bottomRightRadius <= 0 && radiusRect.topLeftRadius <= 0
-                && radiusRect.topRightRadius <= 0)
-            return false;
-        return true;
-    }
-
     /**
      * 获取缓存ID.
      */
@@ -192,7 +184,7 @@ public class ReflectItemView extends FrameLayout {
     public void draw(Canvas canvas) {
         try {
             if (canvas != null) {
-                if (mIsDrawShape && isDrawShapeRadiusRect(mRadiusRect)) {
+                if (mIsDrawShape && (mRadius > 0)) {
                     drawShapePathCanvas(canvas);
                 } else {
                     super.draw(canvas);
@@ -333,48 +325,8 @@ public class ReflectItemView extends FrameLayout {
 	 */
 
     public void setRadius(float radius) {
-        setRadius(radius, radius, radius, radius);
-    }
-
-    public void setRadius(float tlRadius, float trRaius, float blRadius, float brRaius) {
-        setRadiusRect(new RadiusRect(tlRadius, trRaius, blRadius, brRaius));
-    }
-
-    public void setRadiusRect(RadiusRect rect) {
-        mRadiusRect = rect;
+        this.mRadius = radius;
         invalidate();
-    }
-
-    public RadiusRect getRadiusRect() {
-        return this.mRadiusRect;
-    }
-
-    public class RadiusRect {
-        public float topLeftRadius;
-        public float topRightRadius;
-        public float bottomLeftRadius;
-        public float bottomRightRadius;
-
-        public RadiusRect() {
-        }
-
-        public RadiusRect(float tlRadius, float trRaius, float blRadius, float brRaius) {
-            topLeftRadius = tlRadius;
-            topRightRadius = trRaius;
-            bottomLeftRadius = blRadius;
-            bottomRightRadius = brRaius;
-        }
-
-        public void set(float tlRadius, float trRaius, float blRadius, float brRaius) {
-            topLeftRadius = tlRadius;
-            topRightRadius = trRaius;
-            bottomLeftRadius = blRadius;
-            bottomRightRadius = brRaius;
-        }
-
-        public RadiusRect get() {
-            return new RadiusRect(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius);
-        }
     }
 
 }
