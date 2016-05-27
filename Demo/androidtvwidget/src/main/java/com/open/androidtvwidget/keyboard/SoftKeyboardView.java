@@ -216,6 +216,8 @@ public class SoftKeyboardView extends View {
 		Drawable selectDrawable = softKey.getKeySelectDrawable();
 		if (selectDrawable != null) {
 			Rect rect = mIsMoveRect ? softKey.getMoveRect() : softKey.getRect();
+			int padding = this.mSelectBgPadding;
+			rect = new Rect(rect.left - padding, rect.top - padding, rect.right + padding, rect.bottom + padding);
 			selectDrawable.setBounds(rect);
 			selectDrawable.draw(canvas);
 		}
@@ -236,6 +238,13 @@ public class SoftKeyboardView extends View {
 		return mSoftKeyboard;
 	}
 
+	private int mSelectBgPadding = 0;
+	/**
+	 * 设置移动边框的相差的间距.
+	 */
+	public void setSoftKeySelectPadding(int padding) {
+		this.mSelectBgPadding = padding;
+	}
 	public void setSoftKeyPress(boolean isPress) {
 		if (mSoftKeyboard == null) {
 			OPENLOG.E("setSoftKeyPress isPress:" + isPress);

@@ -10,6 +10,11 @@ import android.view.KeyEvent;
 public interface SoftKeyBoardable {
 
 	/**
+	 * 设置移动边框和按键背景相差的间距.
+     */
+	public void setSoftKeySelectPadding(int padding);
+
+	/**
 	 * 设置移动边框的时间.
      */
 	public void setMoveDuration(int moveDuration);

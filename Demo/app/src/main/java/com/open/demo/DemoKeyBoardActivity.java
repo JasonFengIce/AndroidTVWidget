@@ -38,6 +38,7 @@ public class DemoKeyBoardActivity extends Activity {
 		skbContainer.setSkbLayout(R.xml.sbd_qwerty);
 		skbContainer.setFocusable(true);
 		skbContainer.setFocusableInTouchMode(true);
+		skbContainer.setSoftKeySelectPadding(15); // 设置移动边框相差的间距.
 		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
 		skbContainer.setMoveSoftKey(true); // 设置是否移动按键边框.
 		// 监听键盘事件.
@@ -64,6 +65,7 @@ public class DemoKeyBoardActivity extends Activity {
 					} else if (keyCode == 250) { //切换键盘
 						// 这里只是测试，你可以写自己其它的数字键盘或者其它键盘
 						skbContainer.setSkbLayout(R.xml.sbd_number);
+						mOldSoftKey = null;
 					}
 				}
 			}
@@ -101,6 +103,7 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_qwerty);
+				mOldSoftKey = null;
 			}
 		});
 		// 数字键盘切换测试.
@@ -108,12 +111,14 @@ public class DemoKeyBoardActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				skbContainer.setSkbLayout(R.xml.sbd_number);
+				mOldSoftKey = null;
 			}
 		});
 		// 全键盘切换测试.
 		findViewById(R.id.all_key_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mOldSoftKey = null;
 				skbContainer.setSkbLayout(R.xml.skb_all_key);
 			}
 		});
