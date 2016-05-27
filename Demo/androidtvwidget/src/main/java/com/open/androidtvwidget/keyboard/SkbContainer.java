@@ -54,6 +54,16 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 	}
 
 	@Override
+	public void setMoveDuration(int moveDuration) {
+		mSoftKeyboardView.setMoveDuration(moveDuration);
+	}
+
+	@Override
+	public void setMoveSoftKey(boolean isMoveRect) {
+		mSoftKeyboardView.setMoveSoftKey(isMoveRect);
+	}
+
+	@Override
 	public SoftKeyboardView getSoftKeyboardView() {
 		return this.mSoftKeyboardView;
 	}

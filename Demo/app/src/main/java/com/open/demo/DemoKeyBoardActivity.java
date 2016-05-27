@@ -38,6 +38,8 @@ public class DemoKeyBoardActivity extends Activity {
 		skbContainer.setSkbLayout(R.xml.sbd_qwerty);
 		skbContainer.setFocusable(true);
 		skbContainer.setFocusableInTouchMode(true);
+		skbContainer.setMoveDuration(200); // 设置移动边框的时间(默认:300)
+		skbContainer.setMoveSoftKey(true); // 设置是否移动按键边框.
 		// 监听键盘事件.
 		skbContainer.setOnSoftKeyBoardListener(new SoftKeyBoardListener() {
 			@Override

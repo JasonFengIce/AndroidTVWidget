@@ -9,6 +9,17 @@ import android.view.KeyEvent;
  */
 public interface SoftKeyBoardable {
 
+	/**
+	 * 设置移动边框的时间.
+     */
+	public void setMoveDuration(int moveDuration);
+
+	/**
+	 * 设置移动边框的标志位.
+	 * @param isMoveRect  true : 移动 false ： 反之.
+     */
+	public void setMoveSoftKey(boolean isMoveRect);
+
 	public SoftKeyboardView getSoftKeyboardView();
 
 	/**
