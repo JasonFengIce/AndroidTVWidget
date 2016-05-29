@@ -28,10 +28,10 @@ public interface IOpenMenu {
 	/**
 	 * 添加子菜单.
 	 */
-	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu); // 添加子菜单到某个位置的菜单上.
-	public OpenSubMenu addSubMenu(IOpenMenuItem menuItem, OpenSubMenu openSubMenu);
+	public IOpenMenu addSubMenu(int pos, IOpenMenu openSubMenu); // 添加子菜单到某个位置的菜单上.
+	public IOpenMenu addSubMenu(IOpenMenuItem menuItem, IOpenMenu openSubMenu);
 	
-	public OpenMenu setTextSize(int size); // 全局设置菜单字体.
+	public IOpenMenu setTextSize(int size); // 全局设置菜单字体.
 
 	public ArrayList<IOpenMenuItem> getMenuDatas(); // 获取菜单数据.
 
@@ -100,4 +100,8 @@ public interface IOpenMenu {
 	public IOpenMenu setMenuMargins(Rect rect);
 
 	public Rect getMargins();
+
+	public void setParentMenu(IOpenMenu openMenu);
+	public IOpenMenu getParentMenu();
+
 }

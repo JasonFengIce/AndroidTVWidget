@@ -114,7 +114,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
      * 设置菜单数据.
      */
     @Override
-    public IOpenMenuView setMenuData(OpenMenu openMenu) {
+    public IOpenMenuView setMenuData(IOpenMenu openMenu) {
         if (isRemoveFloatLat) {
             initMenuChildView();
             isRemoveFloatLat = false;
@@ -124,7 +124,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     }
 
     @SuppressWarnings("ResourceType")
-    private AbsListView getMenuView(OpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
+    private AbsListView getMenuView(IOpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
         AbsListView absListView = openMenu.getMenuView();
         if (absListView == null) {
             absListView = new ListView(mContext);
@@ -171,7 +171,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     }
 
     @SuppressWarnings("WrongConstant")
-    private void setMenuDataInternal(OpenMenu openMenu) {
+    private void setMenuDataInternal(IOpenMenu openMenu) {
         ArrayList<IOpenMenuItem> items = openMenu.getMenuDatas();
         if (items != null) {
             // 获取自定义的absListView.
@@ -401,7 +401,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         ArrayList<IOpenMenuItem> items = getMenuItems(parent);
         IOpenMenuItem menuItem = items.get(position);
         if (menuItem != null && menuItem.hasSubMenu()) {
-            OpenSubMenu subMenu = menuItem.getSubMenu();
+            IOpenMenu subMenu = menuItem.getSubMenu();
             if (subMenu != null) {
                 setMenuData(subMenu);
             }

@@ -1,6 +1,8 @@
 package com.open.demo;
 
+import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
+import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenSubMenu;
@@ -32,8 +34,8 @@ import android.widget.Toast;
 public class DemoMenuActivity extends Activity {
 
 	private Context mContext;
-	OpenMenu openMenu;
-	OpenMenuView openMenuView;
+	IOpenMenu openMenu;
+	IOpenMenuView openMenuView;
 	View oldView;
 	// private SmoothHorizontalScrollView test_hscroll;
 
@@ -86,7 +88,7 @@ public class DemoMenuActivity extends Activity {
 		openMenu.add("菜单6").setIcon(getResources(R.drawable.ic_launcher));
 		openMenu.add("菜单7").setIcon(getResources(R.drawable.ic_launcher));
 		// 菜单1的子菜单.
-		OpenSubMenu subMenu1 = new OpenSubMenu();
+		IOpenMenu subMenu1 = new OpenSubMenu();
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");

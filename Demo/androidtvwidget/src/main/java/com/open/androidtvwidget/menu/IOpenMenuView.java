@@ -20,7 +20,7 @@ public interface IOpenMenuView {
 		public void initialize(IOpenMenuItem itemData, int menuType);
 	}
 
-	public IOpenMenuView setMenuData(OpenMenu openMenu);
+	public IOpenMenuView setMenuData(IOpenMenu openMenu);
 	/**
 	 * 设置菜单view事件.
 	 */

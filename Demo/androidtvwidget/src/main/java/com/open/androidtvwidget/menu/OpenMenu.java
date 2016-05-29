@@ -39,7 +39,7 @@ public class OpenMenu implements IOpenMenu {
 	private static final String TAG = "OpenMenu";
 
 	private ArrayList<IOpenMenuItem> mItems;
-	private OpenMenu mParent;
+	private IOpenMenu mParent;
 	private AbsListView mAbsListView;
 	/**
 	 * 菜单属性.
@@ -58,11 +58,13 @@ public class OpenMenu implements IOpenMenu {
 		init();
 	}
 
-	public void setParentMenu(OpenMenu openMenu) {
+	@Override
+	public void setParentMenu(IOpenMenu openMenu) {
 		mParent = openMenu;
 	}
 
-	public OpenMenu getParentMenu() {
+	@Override
+	public IOpenMenu getParentMenu() {
 		return this.mParent;
 	}
 
@@ -71,12 +73,12 @@ public class OpenMenu implements IOpenMenu {
 	}
 
 	@Override
-	public OpenMenu setTextSize(int size) {
+	public IOpenMenu setTextSize(int size) {
 		this.mTextSize = size;
 		return this;
 	}
 
-	public IOpenMenuItem addInternal(int itemId, CharSequence title) {
+	private IOpenMenuItem addInternal(int itemId, CharSequence title) {
 		final IOpenMenuItem item = new OpenMenuItem(this, itemId, title);
 		item.setTextSize(mTextSize);
 		mItems.add(item);
@@ -92,7 +94,7 @@ public class OpenMenu implements IOpenMenu {
 	 * 添加子菜单.
 	 */
 	@Override
-	public OpenSubMenu addSubMenu(int pos, OpenSubMenu openSubMenu) {
+	public IOpenMenu addSubMenu(int pos, IOpenMenu openSubMenu) {
 		if (mItems != null && pos < mItems.size()) {
 			IOpenMenuItem menuItem = mItems.get(pos);
 			return addSubMenu(menuItem, openSubMenu);
@@ -100,7 +102,7 @@ public class OpenMenu implements IOpenMenu {
 		return openSubMenu;
 	}
 
-	public OpenSubMenu addSubMenu(IOpenMenuItem menuItem, OpenSubMenu openSubMenu) {
+	public IOpenMenu addSubMenu(IOpenMenuItem menuItem, IOpenMenu openSubMenu) {
 		if (menuItem != null) {
 			menuItem.setSubMenu(openSubMenu);
 			// 添加父菜单.
@@ -119,7 +121,7 @@ public class OpenMenu implements IOpenMenu {
 		for (IOpenMenuItem item : mItems) {
 			String title = item.getTitle().toString();
 			OPENLOG.E("menu item:" + title);
-			OpenSubMenu submenu = item.getSubMenu();
+			IOpenMenu submenu = item.getSubMenu();
 			if (submenu != null) {
 				OPENLOG.E("=======sub menu======start start start start");
 				submenu.toString();
