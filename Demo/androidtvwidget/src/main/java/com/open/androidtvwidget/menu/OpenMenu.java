@@ -38,6 +38,8 @@ public class OpenMenu implements IOpenMenu {
 
 	private static final String TAG = "OpenMenu";
 
+	private final MenuDataObservable mMenuDataObservable = new MenuDataObservable(); // 观察者.
+
 	private ArrayList<IOpenMenuItem> mItems;
 	private IOpenMenu mParent;
 	private AbsListView mAbsListView;
@@ -66,6 +68,20 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public IOpenMenu getParentMenu() {
 		return this.mParent;
+	}
+
+	@Override
+	public void registerDataSetObserver(MenuSetObserver observer) {
+		mMenuDataObservable.registerObserver(observer);
+	}
+
+	@Override
+	public void unregisterDataSetObserver(MenuSetObserver observer) {
+		mMenuDataObservable.unregisterObserver(observer);
+	}
+
+	public void notifyDataSetChanged() {
+		mMenuDataObservable.notifyChanged();
 	}
 
 	private void init() {

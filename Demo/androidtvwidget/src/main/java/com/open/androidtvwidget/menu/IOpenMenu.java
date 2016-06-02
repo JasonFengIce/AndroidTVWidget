@@ -1,13 +1,13 @@
 package com.open.androidtvwidget.menu;
 
-import java.util.ArrayList;
-
-import com.open.androidtvwidget.R;
-
 import android.graphics.Rect;
 import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
+
+import com.open.androidtvwidget.R;
+
+import java.util.ArrayList;
 
 /**
  * 菜单接口.
@@ -104,4 +104,9 @@ public interface IOpenMenu {
 	public void setParentMenu(IOpenMenu openMenu);
 	public IOpenMenu getParentMenu();
 
+	/**
+	 * 注册/注销----观察者
+     */
+	void registerDataSetObserver(MenuSetObserver observer);
+	void unregisterDataSetObserver(MenuSetObserver observer);
 }
