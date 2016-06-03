@@ -17,7 +17,7 @@ public interface IOpenMenuView {
 	 * 菜单item接口函数.
 	 */
 	public interface ItemView {
-		public void initialize(IOpenMenuItem itemData, int menuType);
+		public void initialize(IOpenMenuItem itemData);
 	}
 
 	public IOpenMenuView setMenuData(IOpenMenu openMenu);

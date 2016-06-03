@@ -32,7 +32,7 @@ public class DemoMenuActivity extends Activity {
 	View oldView;
 
 	public DemoMenuActivity() {
-		OPENLOG.initTag(true); // 测试LOG输出.
+		OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class DemoMenuActivity extends Activity {
 		// openMenu.setMenuView(getGridView(mContext));
 		openMenu.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(MenuAnimationUtils.showAnimation()); // 设置菜单显示动画.
-//		openMenu.setMenuHideAnimation(MenuAnimationUtils.hideAnimation()); // 设置菜单隐藏动画.
+		openMenu.setMenuHideAnimation(MenuAnimationUtils.hideAnimation()); // 设置菜单隐藏动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
 		// openMenu.setGravity(Gravity.CENTER); // 设置菜单位置(中间，默认 TOP).
 		final IOpenMenuItem menuItem1 = openMenu.add("菜单1");
@@ -112,6 +112,7 @@ public class DemoMenuActivity extends Activity {
 					break;
 				case R.id.menu_1_2:
 					title = "菜单1-2-打开";
+					openMenu.hideMenu();
 					break;
 				case R.id.menu_1_3:
 					title = "菜单1-3-关闭";

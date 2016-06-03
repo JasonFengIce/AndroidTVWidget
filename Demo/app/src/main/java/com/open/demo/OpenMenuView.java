@@ -3,6 +3,7 @@ package com.open.demo;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -170,6 +171,14 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
             OPENLOG.D("====onShow====");
             setMenuDataInternal(openMenu);
         }
+
+        @Override
+        public void onHide(IOpenMenu openMenu) {
+            OPENLOG.D("====onHide====");
+            // 这里需要更改代码. 无法删除前面的菜单.
+            // 需要重构.
+            removeMenu(openMenu.getMenuView());
+        }
     };
 
     @SuppressWarnings("WrongConstant")
@@ -205,46 +214,6 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
             if (showAnimation != null)
                 absListView.startAnimation(showAnimation);
         }
-    }
-
-    /**
-     * 移除悬浮窗口的布局.
-     */
-    private void removeFloatLyaout() {
-        if (mFloatLayout != null) {
-            if (mFloatLayout.getChildCount() > 0) {
-                AbsListView absListView = (AbsListView) mFloatLayout.getChildAt(0);
-                MenuAdpater adpater = (MenuAdpater) absListView.getAdapter();
-                IOpenMenu openMenu =adpater.getOpenMenu();
-                Animation hideAnimation = openMenu.getMenuHideAnimation();
-                if (hideAnimation != null) {
-                    absListView.clearAnimation(); // 清除动画.
-                    hideAnimation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            removeWindowManager();
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                    absListView.startAnimation(hideAnimation);
-                    return;
-                }
-            }
-            removeWindowManager();
-        }
-    }
-
-    private void removeWindowManager() {
-        mFloatLayout.removeAllViews();
-        mWindowManager.removeView(mMainMenuView);
-        isRemoveFloatLat = true;
     }
 
     /**
@@ -296,7 +265,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
                 convertView = mInflater.inflate(mOpenMenu.getLayoutID(), parent, false);
             }
             ItemView itemView = (ItemView) convertView;
-            itemView.initialize(getItem(position), 0);
+            itemView.initialize(getItem(position));
             return convertView;
         }
 
@@ -305,16 +274,86 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     /**
      * 删除菜单.
      */
-    private boolean removeMenu(View v) {
+    private boolean removeMenu(final View v) {
         if (mFloatLayout.getChildCount() > 1) {
-            mFloatLayout.removeView(v);
-            mFloatLayout.requestLayout();
-            mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
-            mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+            AbsListView absListView = (AbsListView) v;
+            //
+            if (setAbsListViewHideAnimation(absListView, new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    removeMenuView(v);
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            })) {
+                return true;
+            }
+            removeMenuView(v);
         } else {
             removeFloatLyaout();
         }
         return true;
+    }
+
+    private void removeMenuView(View v) {
+        mFloatLayout.removeView(v);
+        mFloatLayout.requestLayout();
+        mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).setFocusable(true);
+        mFloatLayout.getChildAt(mFloatLayout.getChildCount() - 1).requestFocus();
+    }
+
+    /**
+     * 移除悬浮窗口的布局.
+     */
+    private void removeFloatLyaout() {
+        if (mFloatLayout != null) {
+            if (mFloatLayout.getChildCount() > 0) {
+                AbsListView absListView = (AbsListView) mFloatLayout.getChildAt(0);
+                if (setAbsListViewHideAnimation(absListView, new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        removeWindowManager();
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                })) {
+                    return;
+                }
+            }
+            removeWindowManager();
+        }
+    }
+
+    private boolean setAbsListViewHideAnimation(AbsListView absListView, final Animation.AnimationListener cb) {
+        MenuAdpater adpater = (MenuAdpater) absListView.getAdapter();
+        IOpenMenu openMenu =adpater.getOpenMenu();
+        Animation hideAnimation = openMenu.getMenuHideAnimation();
+        if (hideAnimation != null) {
+            absListView.clearAnimation(); // 清除动画.
+            hideAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    cb.onAnimationEnd(animation);
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+            absListView.startAnimation(hideAnimation);
+            return true;
+        }
+        return false;
+    }
+
+    private void removeWindowManager() {
+        mFloatLayout.removeAllViews();
+        mWindowManager.removeView(mMainMenuView);
+        isRemoveFloatLat = true;
     }
 
     @Override

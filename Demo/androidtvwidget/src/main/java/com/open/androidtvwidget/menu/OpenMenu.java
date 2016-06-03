@@ -132,8 +132,14 @@ public class OpenMenu implements IOpenMenu {
 			openSubMenu.registerDataSetObserver(new MenuSetObserver() {
 				@Override
 				public void onShow(IOpenMenu openMenu) {
-					OPENLOG.D("===addSubMenu registerDataSetObserver====");
+					OPENLOG.D("===addSubMenu registerDataSetObserver onShow====");
 					mMenuDataObservable.nofityShow(openMenu);
+				}
+
+				@Override
+				public void onHide(IOpenMenu openMenu) {
+					OPENLOG.D("===addSubMenu registerDataSetObserver onHide====");
+					mMenuDataObservable.notifyHide(openMenu);
 				}
 			});
 			//
