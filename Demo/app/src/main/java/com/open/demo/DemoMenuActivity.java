@@ -73,7 +73,7 @@ public class DemoMenuActivity extends Activity {
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
-//		openMenu.setMenuView(getGridView(mContext)); 
+		// openMenu.setMenuView(getGridView(mContext));
 		openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(showAnimation()); // 设置菜单显示动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
