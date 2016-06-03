@@ -55,8 +55,13 @@ public interface IOpenMenu {
 	 * 设置菜单view的显示动画.
 	 */
 	public IOpenMenu setMenuShowAnimation(Animation animation);
-
 	public Animation getMenuShowAnimation();
+
+	/**
+	 * 设置菜单view的隐藏动画.
+     */
+	public IOpenMenu setMenuHideAnimation(Animation animation);
+	public Animation getMenuHideAnimation();
 
 	/**
 	 * 设置--菜单宽度.

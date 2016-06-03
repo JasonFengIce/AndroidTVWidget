@@ -212,10 +212,39 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
      */
     private void removeFloatLyaout() {
         if (mFloatLayout != null) {
-            mFloatLayout.removeAllViews();
-            mWindowManager.removeView(mMainMenuView);
-            isRemoveFloatLat = true;
+            if (mFloatLayout.getChildCount() > 0) {
+                AbsListView absListView = (AbsListView) mFloatLayout.getChildAt(0);
+                MenuAdpater adpater = (MenuAdpater) absListView.getAdapter();
+                IOpenMenu openMenu =adpater.getOpenMenu();
+                Animation hideAnimation = openMenu.getMenuHideAnimation();
+                if (hideAnimation != null) {
+                    absListView.clearAnimation(); // 清除动画.
+                    hideAnimation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            removeWindowManager();
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                    absListView.startAnimation(hideAnimation);
+                    return;
+                }
+            }
+            removeWindowManager();
         }
+    }
+
+    private void removeWindowManager() {
+        mFloatLayout.removeAllViews();
+        mWindowManager.removeView(mMainMenuView);
+        isRemoveFloatLat = true;
     }
 
     /**
@@ -231,6 +260,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         public MenuAdpater(IOpenMenu openMenu, ArrayList<IOpenMenuItem> items) {
             this.mOpenMenu = openMenu;
             this.mItems = items;
+        }
+
+        public IOpenMenu getOpenMenu() {
+            return this.mOpenMenu;
         }
 
         public void setDatas(ArrayList<IOpenMenuItem> items) {

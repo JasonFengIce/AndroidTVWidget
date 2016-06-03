@@ -54,8 +54,9 @@ public class OpenMenu implements IOpenMenu {
 	private int mId;
 	private int mGravity = Gravity.TOP;
 	private Rect mMarginRect; // 增加菜单距离.
-	private LayoutAnimationController mLoadAnimation;
-	private Animation mShowAnimation;
+	private LayoutAnimationController mLoadAnimation; // 菜单item加载动画.
+	private Animation mShowAnimation; // 显示菜单动画.
+	private Animation mHideAnimation; // 隐藏菜单动画.
 
 	public OpenMenu() {
 		init();
@@ -273,6 +274,17 @@ public class OpenMenu implements IOpenMenu {
 	@Override
 	public Animation getMenuShowAnimation() {
 		return this.mShowAnimation;
+	}
+
+	@Override
+	public IOpenMenu setMenuHideAnimation(Animation animation) {
+		this.mHideAnimation = animation;
+		return this;
+	}
+
+	@Override
+	public Animation getMenuHideAnimation() {
+		return this.mHideAnimation;
 	}
 
 }

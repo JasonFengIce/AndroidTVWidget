@@ -6,12 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -36,18 +30,15 @@ public class DemoMenuActivity extends Activity {
 	IOpenMenu openMenu;
 	IOpenMenuView openMenuView;
 	View oldView;
-	// private SmoothHorizontalScrollView test_hscroll;
 
 	public DemoMenuActivity() {
-		OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
+		OPENLOG.initTag(true); // 测试LOG输出.
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_menu_activity);
-		// test_hscroll = (SmoothHorizontalScrollView)
-		// findViewById(R.id.test_hscroll);
 		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
 		findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
 			@Override
@@ -74,8 +65,9 @@ public class DemoMenuActivity extends Activity {
 		// 主菜单.
 		openMenu = new OpenMenu();
 		// openMenu.setMenuView(getGridView(mContext));
-		openMenu.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
-		openMenu.setMenuShowAnimation(showAnimation()); // 设置菜单显示动画.
+		openMenu.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
+		openMenu.setMenuShowAnimation(MenuAnimationUtils.showAnimation()); // 设置菜单显示动画.
+//		openMenu.setMenuHideAnimation(MenuAnimationUtils.hideAnimation()); // 设置菜单隐藏动画.
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
 		// openMenu.setGravity(Gravity.CENTER); // 设置菜单位置(中间，默认 TOP).
 		final IOpenMenuItem menuItem1 = openMenu.add("菜单1");
@@ -91,7 +83,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu1.add("菜单1-1");
 		subMenu1.add("菜单1-2").setIcon(getResources(R.drawable.ic_launcher));
 		subMenu1.add("菜单1-3");
-		subMenu1.setMenuLoadAnimation(loadAnimation2()); // 设置菜单动画.
+		subMenu1.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
 		// 菜单2的子菜单.
 		OpenSubMenu subMenu2 = new OpenSubMenu();
 		subMenu2.add("菜单2-1");
@@ -146,60 +138,6 @@ public class DemoMenuActivity extends Activity {
 		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
 		openMenu.showMenu();
-	}
-
-	/**
-	 * 加载动画.
-	 */
-	@SuppressWarnings("ResourceType")
-	private LayoutAnimationController loadAnimation() {
-		/*
-		 * 创建动画的集合
-		 */
-		AnimationSet set = new AnimationSet(false);
-		Animation animation;
-		/*
-		 * 创建旋转动画
-		 */
-		animation = new RotateAnimation(180, 10);
-		animation.setDuration(1000);
-		set.addAnimation(animation);
-
-		LayoutAnimationController controller = new LayoutAnimationController(set, 1);
-		controller.setInterpolator(this, android.R.anim.accelerate_interpolator);
-		controller.setAnimation(set);
-		return controller;
-	}
-
-	/**
-	 * 加载动画2.
-	 */
-	private LayoutAnimationController loadAnimation2() {
-		int duration = 300;
-		AnimationSet set = new AnimationSet(true);
-
-		Animation animation = new AlphaAnimation(0.0f, 1.0f);
-		animation.setDuration(duration);
-		set.addAnimation(animation);
-
-		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-				Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-		animation.setDuration(duration);
-		set.addAnimation(animation);
-
-		LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
-		controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-		return controller;
-	}
-
-	/**
-	 * 从左到右显示菜单.
-	 */
-	private Animation showAnimation() {
-		Animation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF,
-				0.0f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-		animation.setDuration(1000);
-		return animation;
 	}
 
 }
