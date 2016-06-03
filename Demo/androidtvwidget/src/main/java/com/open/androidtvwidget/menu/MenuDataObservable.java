@@ -11,10 +11,10 @@ public class MenuDataObservable extends Observable<MenuSetObserver> {
     /**
      * 显示菜单改变.
      */
-    public void nofityShow() {
+    public void nofityShow(IOpenMenu openMenu) {
         synchronized (mObservers) {
             for (int i = mObservers.size() - 1; i >= 0; i--) {
-                mObservers.get(i).onShow();
+                mObservers.get(i).onShow(openMenu);
             }
         }
     }
@@ -22,10 +22,10 @@ public class MenuDataObservable extends Observable<MenuSetObserver> {
     /**
      * 隐藏菜单的改变.
      */
-    public void notifyHide() {
+    public void notifyHide(IOpenMenu openMenu) {
         synchronized (mObservers) {
             for (int i = mObservers.size() - 1; i >= 0; i--) {
-                mObservers.get(i).onHide();
+                mObservers.get(i).onHide(openMenu);
             }
         }
     }

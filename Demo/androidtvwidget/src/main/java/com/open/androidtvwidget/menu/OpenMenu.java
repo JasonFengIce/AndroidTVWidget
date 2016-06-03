@@ -18,15 +18,16 @@ limitations under the License.
  */
 package com.open.androidtvwidget.menu;
 
-import java.util.ArrayList;
-
-import com.open.androidtvwidget.utils.OPENLOG;
-
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
+
+import com.open.androidtvwidget.utils.OPENLOG;
+
+import java.util.ArrayList;
 
 /**
  * 菜单.
@@ -80,8 +81,14 @@ public class OpenMenu implements IOpenMenu {
 		mMenuDataObservable.unregisterObserver(observer);
 	}
 
-	public void notifyDataSetChanged() {
-		mMenuDataObservable.notifyChanged();
+	@Override
+	public void showMenu() {
+		mMenuDataObservable.nofityShow(this);
+	}
+
+	@Override
+	public void hideMenu() {
+		mMenuDataObservable.notifyHide(this);
 	}
 
 	private void init() {
@@ -120,6 +127,15 @@ public class OpenMenu implements IOpenMenu {
 
 	public IOpenMenu addSubMenu(IOpenMenuItem menuItem, IOpenMenu openSubMenu) {
 		if (menuItem != null) {
+			//
+			openSubMenu.registerDataSetObserver(new MenuSetObserver() {
+				@Override
+				public void onShow(IOpenMenu openMenu) {
+					OPENLOG.D("===addSubMenu registerDataSetObserver====");
+					mMenuDataObservable.nofityShow(openMenu);
+				}
+			});
+			//
 			menuItem.setSubMenu(openSubMenu);
 			// 添加父菜单.
 			if (openSubMenu != null) {

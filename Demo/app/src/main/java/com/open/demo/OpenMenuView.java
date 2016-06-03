@@ -1,7 +1,6 @@
 package com.open.demo;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.view.KeyEvent;
@@ -25,8 +24,7 @@ import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
-import com.open.androidtvwidget.menu.OpenMenu;
-import com.open.androidtvwidget.menu.OpenSubMenu;
+import com.open.androidtvwidget.menu.MenuSetObserver;
 import com.open.androidtvwidget.utils.GenerateViewId;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
@@ -48,7 +46,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     private static final float DEFAULT_SCALE = 1.0f;
     //
     private Context mContext;
-    private boolean isRemoveFloatLat = false;
+    private boolean isRemoveFloatLat = true;
     private float mScaleX = DEFAULT_SCALE;
     private float mScaleY = DEFAULT_SCALE;
     // 定义浮动窗口布局
@@ -66,9 +64,9 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     public OpenMenuView(Context context) {
         mContext = context;
         if (mContext == null)
-            throw new AssertionError("你麻痹，你能将Context传正确么？都Null... ...");
+            throw new AssertionError("context is null");
         mInflater = LayoutInflater.from(mContext);
-        initMenuWindow();
+//        initMenuWindow();
     }
 
     private void initMenuWindow() {
@@ -115,11 +113,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
      */
     @Override
     public IOpenMenuView setMenuData(IOpenMenu openMenu) {
-        if (isRemoveFloatLat) {
-            initMenuChildView();
-            isRemoveFloatLat = false;
-        }
-        setMenuDataInternal(openMenu);
+        openMenu.registerDataSetObserver(mMenuSetObserver); // 注册--注册者.
         return this;
     }
 
@@ -170,8 +164,20 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         return absListView;
     }
 
+    MenuSetObserver mMenuSetObserver = new MenuSetObserver() {
+        @Override
+        public void onShow(IOpenMenu openMenu) {
+            OPENLOG.D("====onShow====");
+            setMenuDataInternal(openMenu);
+        }
+    };
+
     @SuppressWarnings("WrongConstant")
     private void setMenuDataInternal(IOpenMenu openMenu) {
+        if (isRemoveFloatLat) {
+            initMenuWindow();
+            isRemoveFloatLat = false;
+        }
         ArrayList<IOpenMenuItem> items = openMenu.getMenuDatas();
         if (items != null) {
             // 获取自定义的absListView.
@@ -403,7 +409,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         if (menuItem != null && menuItem.hasSubMenu()) {
             IOpenMenu subMenu = menuItem.getSubMenu();
             if (subMenu != null) {
-                setMenuData(subMenu);
+                setMenuDataInternal(subMenu);
             }
         }
     }

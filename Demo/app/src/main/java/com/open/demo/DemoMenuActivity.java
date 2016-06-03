@@ -1,14 +1,5 @@
 package com.open.demo;
 
-import com.open.androidtvwidget.menu.IOpenMenu;
-import com.open.androidtvwidget.menu.IOpenMenuItem;
-import com.open.androidtvwidget.menu.IOpenMenuView;
-import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
-import com.open.androidtvwidget.menu.OpenMenu;
-import com.open.androidtvwidget.menu.OpenSubMenu;
-import com.open.androidtvwidget.utils.OPENLOG;
-import com.open.androidtvwidget.view.MainUpView;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -24,6 +15,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.open.androidtvwidget.menu.IOpenMenu;
+import com.open.androidtvwidget.menu.IOpenMenuItem;
+import com.open.androidtvwidget.menu.IOpenMenuView;
+import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
+import com.open.androidtvwidget.menu.OpenMenu;
+import com.open.androidtvwidget.menu.OpenSubMenu;
+import com.open.androidtvwidget.utils.OPENLOG;
 
 /**
  * 菜单DEMO测试.
@@ -53,7 +52,7 @@ public class DemoMenuActivity extends Activity {
 		findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openMenuView.setMenuData(openMenu);
+				openMenu.showMenu();
 			}
 		});
 		mContext = DemoMenuActivity.this;
@@ -107,7 +106,7 @@ public class DemoMenuActivity extends Activity {
 		subMenu1_1.add("菜单1-2-2");
 		subMenu1_1.add("菜单1-2-3");
 		subMenu1.addSubMenu(1, subMenu1_1);
-		//
+		// 输出菜单数据.
 		openMenu.toString();
 		// 菜单VIEW测试.
 		openMenuView = new OpenMenuView(mContext);
@@ -146,6 +145,7 @@ public class DemoMenuActivity extends Activity {
 		});
 		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
+		openMenu.showMenu();
 	}
 
 	/**

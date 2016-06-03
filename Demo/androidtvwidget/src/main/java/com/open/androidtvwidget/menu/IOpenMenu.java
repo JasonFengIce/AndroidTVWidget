@@ -109,4 +109,7 @@ public interface IOpenMenu {
      */
 	void registerDataSetObserver(MenuSetObserver observer);
 	void unregisterDataSetObserver(MenuSetObserver observer);
+
+	void showMenu();
+	void hideMenu();
 }
