@@ -63,7 +63,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
-		// openMenu.setMenuView(getGridView(mContext));
+		// openMenu.setMenuView(getGridView(mContext)); // 设置自己的 菜单view（默认是listview).
 		openMenu.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(MenuAnimationUtils.showAnimation()); // 设置菜单显示动画.
 		openMenu.setMenuHideAnimation(MenuAnimationUtils.hideAnimation()); // 设置菜单隐藏动画.
@@ -88,14 +88,14 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		subMenu2.add("菜单2-1");
 		subMenu2.add("菜单2-2");
 		subMenu2.add("菜单2-3");
-		// 添加子菜单.
-		openMenu.addSubMenu(menuItem1, subMenu1);
-		openMenu.addSubMenu(4, subMenu2);
 		// 菜单1添加子菜单.
 		OpenSubMenu subMenu1_1 = new OpenSubMenu();
 		subMenu1_1.add("菜单1-2-1");
 		subMenu1_1.add("菜单1-2-2");
 		subMenu1_1.add("菜单1-2-3");
+		// 添加子菜单.
+		openMenu.addSubMenu(menuItem1, subMenu1);
+		openMenu.addSubMenu(4, subMenu2);
 		subMenu1.addSubMenu(1, subMenu1_1);
 		// 输出菜单数据.
 		openMenu.toString();
@@ -109,7 +109,6 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		openMenuView.setMoveView(mainUpView);
 		//
 		openMenuView.setOnMenuListener(new OnMenuListener() {
-
 			@Override
 			public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String title = "测试菜单 position:" + position + " id:" + view.getId();
