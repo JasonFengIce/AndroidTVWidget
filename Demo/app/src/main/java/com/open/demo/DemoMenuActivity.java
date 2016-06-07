@@ -15,6 +15,7 @@ import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
 import com.open.androidtvwidget.menu.OpenMenu;
+import com.open.androidtvwidget.menu.OpenMenuView;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.OPENLOG;
 
@@ -24,7 +25,7 @@ import com.open.androidtvwidget.utils.OPENLOG;
  * @author hailongqiu
  *
  */
-public class DemoMenuActivity extends Activity {
+public class DemoMenuActivity extends Activity implements OnClickListener {
 
 	private Context mContext;
 	IOpenMenu openMenu;
@@ -40,12 +41,8 @@ public class DemoMenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_menu_activity);
 		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
-		findViewById(R.id.button1).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openMenu.showMenu();
-			}
-		});
+		findViewById(R.id.button1).setOnClickListener(this);
+		findViewById(R.id.button2).setOnClickListener(this);
 		mContext = DemoMenuActivity.this;
 		initAllMenu();
 	}
@@ -139,6 +136,20 @@ public class DemoMenuActivity extends Activity {
 		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
 		openMenu.showMenu();
+//		subMenu1.showMenu();
+//		subMenu1_1.showMenu();
 	}
 
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch (id) {
+			case R.id.button1:
+				openMenu.showMenu();
+				break;
+			case R.id.button2:
+				openMenu.hideMenu();
+				break;
+		}
+	}
 }
