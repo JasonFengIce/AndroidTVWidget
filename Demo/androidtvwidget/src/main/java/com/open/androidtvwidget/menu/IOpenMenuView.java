@@ -11,6 +11,8 @@ public interface IOpenMenuView {
 		public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
 
 		public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
+
+		public boolean onMenuItemFocusChange(AdapterView<?> parent, View view);
 	}
 
 	/**
@@ -25,4 +27,8 @@ public interface IOpenMenuView {
 	 * 设置菜单view事件.
 	 */
 	public IOpenMenuView setOnMenuListener(OnMenuListener cb);
+	/**
+	 * 添加移动的view
+	 */
+	public IOpenMenuView setMoveView(View v);
 }

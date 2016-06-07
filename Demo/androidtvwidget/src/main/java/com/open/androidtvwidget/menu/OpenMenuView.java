@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -46,6 +47,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     // 定义浮动窗口布局
     private View mMainMenuView;
     private LinearLayout mFloatLayout;
+    private FrameLayout mMainMenuFlay;
+    private View mMoveView; // 用于保存移动VIEW.
     private LayoutParams mWmParams;
     // 创建浮动窗口设置布局参数的对象
     private WindowManager mWindowManager;
@@ -84,8 +87,29 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
 
     private void initMenuChildView() {
         mMainMenuView = mInflater.inflate(R.layout.open_menu_view, null);
-        mFloatLayout = (LinearLayout) mMainMenuView.findViewById(R.id.main_menu_lay);
+        mFloatLayout = (LinearLayout) mMainMenuView.findViewById(R.id.main_menu_lay); // 用于插入菜单view(listview或者gridview)
+        mMainMenuFlay = (FrameLayout) mMainMenuView.findViewById(R.id.main_menu_flay); // 用于插入移动边框.
+        // 添加整个菜单的view.
         mWindowManager.addView(mMainMenuView, mWmParams);
+        // 添加移动边框.
+        addMoveView();
+    }
+
+    /**
+     * 添加移动边框.
+     */
+    private void addMoveView() {
+        if (mMoveView != null) {
+            int count = mMainMenuFlay.getChildCount();
+            if (count >= 2) {
+                mMainMenuFlay.removeViewAt(count - 1);
+            }
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.width = 0;
+            layoutParams.height = 0;
+            mMainMenuFlay.addView(mMoveView, layoutParams);
+            mMainMenuFlay.requestLayout();
+        }
     }
 
     /*
@@ -128,7 +152,10 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         absListView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                View view = tempAbsListView.getSelectedView();
+                if (mOnMenuListener != null) {
+                    View view = tempAbsListView.getSelectedView();
+                    mOnMenuListener.onMenuItemFocusChange(tempAbsListView, view);
+                }
             }
         });
         absListView.setOnItemClickListener(this);
@@ -218,7 +245,13 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         // 判断是否已经没有了菜单.
         count = mFloatLayout.getChildCount();
         if (count == 0 && !isRemoveFloatLat) {
+            // 删除移动边框.
+            if (mMoveView != null) {
+                mMainMenuFlay.removeView(mMoveView);
+            }
+            // 删除多余的菜单view.(不知道有没用)
             mFloatLayout.removeAllViews();
+            // 删除菜单主view.
             mWindowManager.removeView(mMainMenuView);
             isRemoveFloatLat = true;
         }
@@ -390,7 +423,12 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
             if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
                 return;
         }
+        // 删除前面的菜单.(bug:修复鼠标单击)
+        if (removeItemMenuFront(parent, position)) {
+            return;
+        }
         // 显示菜单.
+        initMenuView(parent, position);
     }
 
     @Override
@@ -467,6 +505,12 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     @Override
     public IOpenMenuView setOnMenuListener(OnMenuListener cb) {
         this.mOnMenuListener = cb;
+        return this;
+    }
+
+    @Override
+    public IOpenMenuView setMoveView(View v) {
+        mMoveView = v;
         return this;
     }
 

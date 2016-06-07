@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
@@ -18,6 +19,7 @@ import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuView;
 import com.open.androidtvwidget.menu.OpenSubMenu;
 import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.androidtvwidget.view.MainUpView;
 
 /**
  * 菜单DEMO测试.
@@ -99,7 +101,15 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		openMenu.toString();
 		// 菜单VIEW测试.
 		openMenuView = new OpenMenuView(mContext);
+		// 设置移动边框.
+		final MainUpView mainUpView = new MainUpView(mContext);
+		EffectNoDrawBridge noDrawBridge = new EffectNoDrawBridge();
+		mainUpView.setEffectBridge(noDrawBridge);
+		noDrawBridge.setUpRectResource(R.drawable.white_light_10);
+		openMenuView.setMoveView(mainUpView);
+		//
 		openMenuView.setOnMenuListener(new OnMenuListener() {
+
 			@Override
 			public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String title = "测试菜单 position:" + position + " id:" + view.getId();
@@ -129,7 +139,16 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 
 			@Override
 			public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				mainUpView.setFocusView(view, oldView, 1.0f);
+				oldView = view;
 				return true;
+			}
+
+			@Override
+			public boolean onMenuItemFocusChange(AdapterView<?> parent, View view) {
+				mainUpView.setFocusView(view, oldView, 1.0f);
+				oldView = view;
+				return false;
 			}
 
 		});
