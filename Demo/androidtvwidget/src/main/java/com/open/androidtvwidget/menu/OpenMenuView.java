@@ -197,6 +197,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
      * 设置隐藏菜单.
      */
     private void hideMenu(final AbsListView absListView) {
+        if (absListView == null)
+            return;
         if (setAbsListViewHideAnimation(absListView, new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
