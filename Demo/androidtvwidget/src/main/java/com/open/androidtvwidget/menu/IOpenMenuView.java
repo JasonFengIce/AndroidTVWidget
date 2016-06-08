@@ -8,9 +8,9 @@ public interface IOpenMenuView {
      * 菜单View回调事件.
      */
     public interface OnMenuListener {
-        public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id);
+        public boolean onMenuItemClick(AdapterView<?> parent, IOpenMenuItem menuItem, View view, int position, long id);
 
-        public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id);
+        public boolean onMenuItemSelected(AdapterView<?> parent, IOpenMenuItem menuItem, View view, int position, long id);
 
         public boolean onMenuItemFocusChange(AdapterView<?> parent, View view);
     }

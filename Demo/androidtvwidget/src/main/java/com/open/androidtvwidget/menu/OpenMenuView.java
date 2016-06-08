@@ -355,7 +355,7 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
      *
      * @author hailongqiu
      */
-    class MenuAdpater extends BaseAdapter {
+    public class MenuAdpater extends BaseAdapter {
 
         private ArrayList<IOpenMenuItem> mItems;
         private IOpenMenu mOpenMenu;
@@ -437,7 +437,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // 菜单item选中事件触发.
         if (mOnMenuListener != null) {
-            if (mOnMenuListener.onMenuItemSelected(parent, view, position, id))
+            IOpenMenuItem menuItem = getAdapterOpenMenuItem(parent, position);
+            if (mOnMenuListener.onMenuItemSelected(parent, menuItem, view, position, id))
                 return;
         }
         // 删除前面的菜单.(bug:修复鼠标单击)
@@ -459,7 +460,8 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // 菜单item单击事件触发.
         if (mOnMenuListener != null) {
-            if (mOnMenuListener.onMenuItemClick(parent, view, position, id))
+            IOpenMenuItem menuItem = getAdapterOpenMenuItem(parent, position);
+            if (mOnMenuListener.onMenuItemClick(parent, menuItem, view, position, id))
                 return;
         }
         // 勾选选中设置.
@@ -470,6 +472,24 @@ public class OpenMenuView implements IOpenMenuView, OnKeyListener, OnItemSelecte
         }
         // 显示菜单.
         initMenuView(parent, position);
+    }
+
+    /**
+     * 从Adapter中获取菜单item的IOpenMenuItem.
+     */
+    private IOpenMenuItem getAdapterOpenMenuItem(AdapterView<?> parent, int position) {
+        IOpenMenuItem menuItem = null;
+        OpenMenuView.MenuAdpater menuAdpater = (OpenMenuView.MenuAdpater) parent.getAdapter();
+        if (menuAdpater != null) {
+            IOpenMenu openMenu = menuAdpater.getOpenMenu();
+            if (openMenu != null) {
+                List<IOpenMenuItem> items = openMenu.getMenuDatas();
+                if (items != null && items.size() > 0) {
+                    menuItem = items.get(position);
+                }
+            }
+        }
+        return menuItem;
     }
 
     /**

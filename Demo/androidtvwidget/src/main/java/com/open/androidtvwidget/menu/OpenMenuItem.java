@@ -30,12 +30,14 @@ public class OpenMenuItem implements IOpenMenuItem {
     @Override
     public IOpenMenuItem setIcon(Drawable icon) {
         mIconDrawable = icon;
+        notifyChanged();
         return this;
     }
 
     @Override
     public IOpenMenuItem setTitle(CharSequence title) {
         this.mTitle = title;
+        notifyChanged();
         return this;
     }
 
@@ -63,7 +65,7 @@ public class OpenMenuItem implements IOpenMenuItem {
     @Override
     public IOpenMenuItem setChecked(boolean checked) {
         this.mChecked = checked;
-        mMenu.notifyChanged();
+        notifyChanged();
         return this;
     }
 
@@ -86,6 +88,7 @@ public class OpenMenuItem implements IOpenMenuItem {
     @Override
     public IOpenMenuItem setTextSize(int size) {
         mTextSize = size;
+        notifyChanged();
         return this;
     }
 
@@ -97,6 +100,7 @@ public class OpenMenuItem implements IOpenMenuItem {
     @Override
     public IOpenMenuItem setObjectData(Object data) {
         this.mData = data;
+        notifyChanged();
         return this;
     }
 
@@ -114,6 +118,12 @@ public class OpenMenuItem implements IOpenMenuItem {
     @Override
     public int getId() {
         return this.mId;
+    }
+
+    private void notifyChanged() {
+        if (mMenu != null) {
+            mMenu.notifyChanged();
+        }
     }
 
 }

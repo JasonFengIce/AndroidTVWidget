@@ -112,7 +112,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		//
 		openMenuView.setOnMenuListener(new OnMenuListener() {
 			@Override
-			public boolean onMenuItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public boolean onMenuItemClick(AdapterView<?> parent,  IOpenMenuItem menuItem, View view, int position, long id) {
 				String title = "测试菜单 position:" + position + " id:" + view.getId();
 				switch (view.getId()) {
 				case R.id.menu_1_1:
@@ -123,6 +123,8 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 					openMenu.hideMenu();
 					break;
 				case R.id.menu_1_3:
+					if (menuItem != null)
+						menuItem.setTitle("设置菜单测试");
 					title = "菜单1-3-关闭";
 					break;
 				case R.id.menu_1_4:
@@ -139,7 +141,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 			}
 
 			@Override
-			public boolean onMenuItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public boolean onMenuItemSelected(AdapterView<?> parent, IOpenMenuItem menuItem, View view, int position, long id) {
 				mainUpView.setFocusView(view, oldView, 1.0f);
 				oldView = view;
 				return true;
