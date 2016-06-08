@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
@@ -63,6 +64,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 	private void initAllMenu() {
 		// 主菜单.
 		openMenu = new OpenMenu();
+		openMenu.setCheckedView(new RadioButton(mContext));
 		// openMenu.setMenuView(getGridView(mContext)); // 设置自己的 菜单view（默认是listview).
 		openMenu.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(MenuAnimationUtils.showAnimation()); // 设置菜单显示动画.
@@ -70,7 +72,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		// openMenu.setMenuMargins(100, 100, 0, 0); // 增加菜单的边距.
 		// openMenu.setGravity(Gravity.CENTER); // 设置菜单位置(中间，默认 TOP).
 		final IOpenMenuItem menuItem1 = openMenu.add("菜单1");
-		menuItem1.setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_1);
+		menuItem1.setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_1).setChecked(true);
 		openMenu.add("菜单2").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_2);
 		openMenu.add("菜单3").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_3);
 		openMenu.add("菜单4").setIcon(getResources(R.drawable.ic_launcher)).setId(R.id.menu_1_4);

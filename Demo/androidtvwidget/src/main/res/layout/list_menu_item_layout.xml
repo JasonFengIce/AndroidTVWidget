@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
+    <!-- 在这里插入勾选view(RadioButton或CheckBox) -->
     <!-- 在这里插入图标 mIconView -->
 
+    <!-- 注意 descendantFocusability，duplicateParentState 属性 -->
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
