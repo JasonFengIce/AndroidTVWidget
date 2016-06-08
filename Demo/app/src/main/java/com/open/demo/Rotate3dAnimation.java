@@ -22,18 +22,8 @@ import android.graphics.Camera;
 import android.graphics.Matrix;
 
 /**
- * float halfWidth = button1.getWidth()/2.0f;
- float halfHeight = button1.getHeight()/2.0f;
- int depthz=0;
- Rotate3dAnimation rotate3dAnimation = new Rotate3dAnimation(0, 50,halfWidth,halfHeight,depthz,false);
- rotate3dAnimation.setDuration(300);
- rotate3dAnimation.setFillAfter(true);
- button1.startAnimation(rotate3dAnimation);
- //
- Rotate3dAnimation rotate3dAnimation2 = new Rotate3dAnimation(0, -40,halfWidth,halfHeight,depthz,false);
- rotate3dAnimation2.setDuration(300);
- rotate3dAnimation2.setFillAfter(true);
- button2.startAnimation(rotate3dAnimation2);
+ * 一个在指定了两个角度的在Y轴旋转的动画类.
+ * 这个类也添加了一个z轴的属性用来提高效果.
  * An animation that rotates the view on the Y axis between two specified angles.
  * This animation also adds a translation on the Z axis (depth) to improve the effect.
  */
@@ -47,6 +37,10 @@ public class Rotate3dAnimation extends Animation {
     private Camera mCamera;
 
     /**
+     * 在Y轴创建了一个新的3D的旋转动画,这个旋转动画定义了它的开始角度和结束角度,
+     * 两个角度的单位都是度数,这个旋转动画围绕在2D空间的中心点执行.
+     * 你可以用X轴坐标(叫做centerX)和Y轴(叫做centerY)坐标来定义这个中心点.
+     * 当动画开始时,对于z轴(深度)的转换就会被执行.转换的长度和转换正向反向都可以指定.
      * Creates a new 3D rotation on the Y axis. The rotation is defined by its
      * start angle and its end angle. Both angles are in degrees. The rotation
      * is performed around a center point on the 2D space, definied by a pair
@@ -55,14 +49,14 @@ public class Rotate3dAnimation extends Animation {
      * of the translation can be specified, as well as whether the translation
      * should be reversed in time.
      *
-     * @param fromDegrees the start angle of the 3D rotation
-     * @param toDegrees the end angle of the 3D rotation
-     * @param centerX the X center of the 3D rotation
-     * @param centerY the Y center of the 3D rotation
-     * @param reverse true if the translation should be reversed, false otherwise
+     * @param fromDegrees the start angle of the 3D rotation 开始的角度
+     * @param toDegrees   the end angle of the 3D rotation 结束的角度
+     * @param centerX     the X center of the 3D rotation 中心点X轴坐标
+     * @param centerY     the Y center of the 3D rotation 中心点Y轴坐标
+     * @param reverse     true if the translation should be reversed, false otherwise true表示反向,false表示正向
      */
     public Rotate3dAnimation(float fromDegrees, float toDegrees,
-            float centerX, float centerY, float depthZ, boolean reverse) {
+                             float centerX, float centerY, float depthZ, boolean reverse) {
         mFromDegrees = fromDegrees;
         mToDegrees = toDegrees;
         mCenterX = centerX;
