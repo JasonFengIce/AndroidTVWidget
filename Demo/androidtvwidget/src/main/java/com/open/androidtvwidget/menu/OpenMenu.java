@@ -83,6 +83,11 @@ public class OpenMenu implements IOpenMenu {
 	}
 
 	@Override
+	public MenuDataObservable getMenuDataObservable() {
+		return this.mMenuDataObservable;
+	}
+
+	@Override
 	public void showMenu() {
 		mMenuDataObservable.nofityShow(this);
 	}

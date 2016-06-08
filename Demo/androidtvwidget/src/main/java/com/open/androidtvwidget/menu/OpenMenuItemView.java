@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 /**
@@ -19,10 +20,11 @@ import android.widget.TextView;
  * 如果要写自己的东西，可以在这里更新自己的需求或者模仿写.
  * @author hailongqiu 356752238@qq.com
  */
-public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.ItemView {
+public class OpenMenuItemView extends LinearLayout implements IOpenMenuView.ItemView {
 
 	private IOpenMenuItem mItemData;
 	private int mMenuType;
+	private Context mContext;
 
 	private ImageView mIconView;
 	private RadioButton mRadioButton;
@@ -31,12 +33,14 @@ public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.Item
 
 	private LayoutInflater mInflater;
 
-	public OpenMenuViewItem(Context context) {
+	public OpenMenuItemView(Context context) {
 		super(context);
+		this.mContext = context;
 	}
 
-	public OpenMenuViewItem(Context context, AttributeSet attrs) {
+	public OpenMenuItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.mContext = context;
 	}
 
 	@Override
@@ -102,6 +106,10 @@ public class OpenMenuViewItem extends LinearLayout implements IOpenMenuView.Item
 		LayoutInflater inflater = getInflater();
 		mIconView = (ImageView) inflater.inflate(R.layout.list_menu_item_icon, this, false);
 		addView(mIconView, 0);
+	}
+
+	private void insertRadioButton() {
+		RadioButton radioButton = new RadioButton(mContext);
 	}
 
 	private LayoutInflater getInflater() {

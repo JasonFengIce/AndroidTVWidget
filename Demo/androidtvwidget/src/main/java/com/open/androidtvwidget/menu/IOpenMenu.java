@@ -114,6 +114,7 @@ public interface IOpenMenu {
      */
 	void registerDataSetObserver(MenuSetObserver observer);
 	void unregisterDataSetObserver(MenuSetObserver observer);
+	MenuDataObservable getMenuDataObservable(); // 获取监听者.
 
 	void showMenu();
 	void hideMenu();

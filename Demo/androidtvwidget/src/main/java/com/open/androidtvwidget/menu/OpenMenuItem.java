@@ -11,7 +11,7 @@ public class OpenMenuItem implements IOpenMenuItem {
 	private IOpenMenu mMenu;
 	private IOpenMenu mSubMenu;
 	private Drawable mIconDrawable;
-	
+
 	OpenMenuItem(IOpenMenu menu, int id, CharSequence title) {
 		this.mMenu = menu;
 		this.mId = id;
