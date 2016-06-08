@@ -43,7 +43,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_menu_activity);
-		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
+//		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
 		findViewById(R.id.button1).setOnClickListener(this);
 		findViewById(R.id.button2).setOnClickListener(this);
 		mContext = DemoMenuActivity.this;
@@ -65,7 +65,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		// 主菜单.
 		openMenu = new OpenMenu();
 		openMenu.setCheckedView(new RadioButton(mContext));
-		// openMenu.setMenuView(getGridView(mContext)); // 设置自己的 菜单view（默认是listview).
+//		openMenu.setMenuView(getGridView(mContext)); // 设置自己的 菜单view（默认是listview).
 		openMenu.setMenuLoadAnimation(MenuAnimationUtils.loadAnimation2()); // 设置菜单动画.
 		openMenu.setMenuShowAnimation(MenuAnimationUtils.showAnimation()); // 设置菜单显示动画.
 		openMenu.setMenuHideAnimation(MenuAnimationUtils.hideAnimation()); // 设置菜单隐藏动画.
@@ -158,6 +158,7 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 		// 设置菜单数据.
 		openMenuView.setMenuData(openMenu);
 		openMenu.showMenu();
+		openMenu.getMenuView().setBackgroundResource(R.drawable.ic_bg_menu); // test
 //		subMenu1.showMenu();
 //		subMenu1_1.showMenu();
 	}
