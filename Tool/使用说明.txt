@@ -4,6 +4,7 @@
 
 就像DEMO里面一样，我是以1920*1080位基准，然后转换出来的1280*720
 
+javac GenerateValueFiles.java # 生成一个GenerateValueFiles.class
 
 java GenerateValueFiles 1920 1080
 
