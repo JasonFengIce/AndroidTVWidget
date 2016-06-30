@@ -20,6 +20,7 @@ import com.open.androidtvwidget.view.MainUpView;
 
 /**
  * DEMO测试.
+ *  xml布局中 clipChildren clipToPadding 不要忘记了，不然移动的边框无法显示出来的. (强烈注意)
  */
 public class MainActivity extends Activity implements OnClickListener {
 
