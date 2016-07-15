@@ -25,3 +25,5 @@ java GenerateValueFiles 1920 1080 2550,1666_w,h_w,h....;
 我发现一个BUG，就是 像素转换工具，
 如果有标题栏的话，精度是不对的
 差一个标题栏的高度.所以请设置没有标题栏高度再说吧.
+
+https://pan.baidu.com/s/1jH9sfmm
