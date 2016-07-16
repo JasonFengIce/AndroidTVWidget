@@ -26,4 +26,14 @@ java GenerateValueFiles 1920 1080 2550,1666_w,h_w,h....;
 如果有标题栏的话，精度是不对的
 差一个标题栏的高度.所以请设置没有标题栏高度再说吧.
 
+[demo]
 https://pan.baidu.com/s/1jH9sfmm
+
+[使用说明]
+http://note.youdao.com/yws/public/redirect/share?id=ded7f3cb20b67faf9e8b173499101a9a&type=false
+
+【使用注意】
+width, left, right 使用 w_100
+height, top, bottom 使用 h_100
+textsize 使用 w_40
+注意imageview,因为background和src不同, src要压缩比例的，注意设置scaleType.
