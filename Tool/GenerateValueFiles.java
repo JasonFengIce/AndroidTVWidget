@@ -74,7 +74,7 @@ public class GenerateValueFiles {
                 System.out.println("skip invalidate params : w,h = " + val);
                 continue;
             }
-            sb.append(h + "," + w + ";");
+            sb.append(w + "," + h + ";");
         }
 
         return sb.toString();
@@ -154,8 +154,8 @@ public class GenerateValueFiles {
     }
 
     public static void main(String[] args) {
-        int baseW = 320;
-        int baseH = 400;
+        int baseW = 1920;
+        int baseH = 1080;
         String addition = "";
         try {
             if (args.length >= 3) {
