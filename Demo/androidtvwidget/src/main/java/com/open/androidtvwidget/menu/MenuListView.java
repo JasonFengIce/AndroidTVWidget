@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * 菜单控件.
  * Created by hailongqiu on 2016/8/5.
@@ -109,6 +111,12 @@ public class MenuListView extends LinearLayout {
     }
 
     protected class MenuRecycleBin {
+
+        private ArrayList<View>[] mScrapViews;
+        private ArrayList<View> mCurrentScrap;
+        private ArrayList<View> mSkippedScrap;
+        private SparseArray<View> mTransientStateViews;
+
         View getTransientStateView(int position) {
             return null;
         }
