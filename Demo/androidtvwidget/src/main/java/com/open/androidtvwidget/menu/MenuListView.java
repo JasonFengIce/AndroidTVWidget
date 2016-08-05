@@ -1,23 +1,26 @@
 package com.open.androidtvwidget.menu;
 
 import android.content.Context;
-import android.database.DataSetObserver;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
-import android.widget.BaseAdapter;
+import android.util.SparseArray;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.open.androidtvwidget.menu.BaseMenuAdapter;
-import com.open.androidtvwidget.menu.IOpenMenu;
-import com.open.androidtvwidget.menu.MenuSetObserver;
-
 /**
+ * 菜单控件.
  * Created by hailongqiu on 2016/8/5.
  */
 public class MenuListView extends LinearLayout {
 
-    private BaseMenuAdapter mBaseMenuAdapter;
+    private MenuRecycleBin mRecycler;
+    private BaseMenuAdapter mAdapter;
     private MenuSetObserver mDataSetObserver;
+    private int mOldItemCount;
+    private int mItemCount;
+    private boolean mDataChanged;
 
     public MenuListView(Context context) {
         this(context, null);
@@ -29,35 +32,93 @@ public class MenuListView extends LinearLayout {
 
     public MenuListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
-    private void setAdapter(BaseMenuAdapter baseMenuAdapter) {
+    private void init() {
+        mRecycler = new MenuRecycleBin();
+    }
 
-        if (mBaseMenuAdapter != null && mDataSetObserver != null) {
-            mBaseMenuAdapter.unregisterDataSetObserver(mDataSetObserver);
+    public void setAdapter(BaseMenuAdapter baseMenuAdapter) {
+        ListView ls;
+        if (mAdapter != null && mDataSetObserver != null) {
+            mAdapter.unregisterDataSetObserver(mDataSetObserver);
         }
 
-        this.mBaseMenuAdapter = baseMenuAdapter;
+        this.mAdapter = baseMenuAdapter;
 
-        if (this.mBaseMenuAdapter != null) {
+        if (this.mAdapter != null) {
+            mOldItemCount = mItemCount;
+            mItemCount = mAdapter.getCount();
             mDataSetObserver = new MenuListViewSetObserver();
-            mBaseMenuAdapter.registerDataSetObserver(mDataSetObserver);
+            mAdapter.registerDataSetObserver(mDataSetObserver);
         }
+
+        requestLayout();
     }
 
     public BaseMenuAdapter getAdapter() {
-        return this.mBaseMenuAdapter;
+        return this.mAdapter;
+    }
+
+    /**
+     */
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+        }
+    };
+
+    private View makeAndAddView(int position) {
+        View child;
+        if (!mDataChanged) {
+            child = mRecycler.getActiveView(position);
+            if (child != null) {
+                setupChild(child, position);
+                return child;
+            }
+        }
+        return null;
+    }
+
+    private void obtainView(int position) {
+        final View transientView = mRecycler.getTransientStateView(position);
+        final View updatedView = this.mAdapter.getView(position, transientView, this);
+        if (transientView != null) {
+            final LayoutParams params = (LayoutParams) transientView.getLayoutParams();
+            if (transientView != updatedView) {
+                mRecycler.addScrapView(updatedView, position);
+            }
+        }
+    }
+
+    private void setupChild(View child, int position) {
+        addViewInLayout(child, position, null);
     }
 
     protected class MenuListViewSetObserver extends MenuSetObserver {
+        private SparseArray<View> mTransientStateViews;
+
         @Override
-        public void onChanged(IOpenMenu openMenu) {
-            super.onChanged(openMenu);
+        public void onChanged() {
         }
 
         @Override
         public void onInvalidated() {
-            super.onInvalidated();
+        }
+    }
+
+    protected class MenuRecycleBin {
+        View getTransientStateView(int position) {
+            return null;
+        }
+
+        void addScrapView(View scrap, int position) {
+
+        }
+
+        View getActiveView(int position) {
+            return null;
         }
     }
 }
