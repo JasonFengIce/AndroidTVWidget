@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <com.open.androidtvwidget.menu.MenuListView
+        android:id="@+id/menulistview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

@@ -15,6 +15,7 @@ public abstract class BaseMenuAdapter {
     public abstract Object getItem(int position);
     public abstract  int getCount();
     public abstract int getItemViewType(int position);
+    public abstract int getViewTypeCount();
 
     public void notifyDataSetChanged() {
         if (mMenuSetObserver != null) {
@@ -29,7 +30,7 @@ public abstract class BaseMenuAdapter {
     }
 
     public void registerDataSetObserver(MenuSetObserver observer) {
-        mMenuSetObserver.unregisterObserver(observer);
+        mMenuSetObserver.registerObserver(observer);
     }
 
     public void unregisterDataSetObserver(MenuSetObserver observer) {
