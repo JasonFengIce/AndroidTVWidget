@@ -6,19 +6,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
-import com.open.androidtvwidget.menu.BaseMenuAdapter;
 import com.open.androidtvwidget.menu.IOpenMenu;
 import com.open.androidtvwidget.menu.IOpenMenuItem;
 import com.open.androidtvwidget.menu.IOpenMenuView;
 import com.open.androidtvwidget.menu.IOpenMenuView.OnMenuListener;
-import com.open.androidtvwidget.menu.MenuListView;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuView;
 import com.open.androidtvwidget.menu.OpenSubMenu;
@@ -46,38 +43,6 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.demo_menu_activity);
-		MenuListView menulistview1 = (MenuListView) findViewById(R.id.menulistview1);
-		menulistview1.setAdapter(new BaseMenuAdapter() {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				return null;
-			}
-
-			@Override
-			public long getItemId(int position) {
-				return 0;
-			}
-
-			@Override
-			public Object getItem(int position) {
-				return null;
-			}
-
-			@Override
-			public int getCount() {
-				return 0;
-			}
-
-			@Override
-			public int getItemViewType(int position) {
-				return 0;
-			}
-
-			@Override
-			public int getViewTypeCount() {
-				return 0;
-			}
-		});
 //		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
 		findViewById(R.id.button1).setOnClickListener(this);
 		findViewById(R.id.button2).setOnClickListener(this);
