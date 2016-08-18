@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.open.androidtvwidget.utils.OPENLOG;
@@ -73,7 +72,7 @@ public class RecyclerViewTV extends RecyclerView {
             @Override
             public void onFocusChange(View itemView, boolean hasFocus) {
                 if (null != mOnItemListener) {
-                    if (null != itemView) {
+                    if (null != itemView && getScrollState() != SCROLL_STATE_SETTLING) {
                         mItemView = itemView; // 选中的item.
                         itemView.setSelected(hasFocus);
                         if (hasFocus) {
@@ -138,6 +137,7 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     public boolean requestChildRectangleOnScreen(View child, Rect rect, boolean immediate) {
+        OPENLOG.D("child:" + child + " rect:" + rect + " immediate:" + immediate);
         final int parentLeft = getPaddingLeft();
         final int parentTop = getPaddingTop();
         final int parentRight = getWidth() - getPaddingRight();
@@ -193,6 +193,8 @@ public class RecyclerViewTV extends RecyclerView {
     @Override
     public void smoothScrollBy(int dx, int dy) {
         // ViewFlinger --> smoothScrollBy(int dx, int dy, int duration, Interpolator interpolator)
+        //  ViewFlinger --> run --> hresult = mLayout.scrollHorizontallyBy(dx, mRecycler, mState);
+        // LinearLayoutManager --> scrollBy --> mOrientationHelper.offsetChildren(-scrolled);
         super.smoothScrollBy(dx, dy);
     }
 

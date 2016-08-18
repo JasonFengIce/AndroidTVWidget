@@ -13,6 +13,7 @@ import android.view.View.OnFocusChangeListener;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridAdapter;
 import com.open.demo.adapter.RecyclerViewAdapter;
@@ -34,6 +35,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_recyclerview_activity);
+        OPENLOG.initTag("hailongqiu", true); // 打开debug信息.
         mContext = DemoRecyclerviewActivity.this;
         recyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
@@ -52,10 +54,10 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
 
             @Override
             public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-                Log.d("hailongqiu", "onItemSelected itemView:" + itemView.getLeft() + "," + itemView.getTop());
-//                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-//                mRecyclerViewBridge.setUnFocusView(oldView);
-//                oldView = itemView;
+                OPENLOG.D("onItemSelected itemView:" + itemView.getLeft() + "," + itemView.getTop());
+                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+                mRecyclerViewBridge.setUnFocusView(oldView);
+                oldView = itemView;
             }
 
             @Override
@@ -65,7 +67,7 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
             // 调整边框偏移的问题.
             @Override
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-                Log.d("hailongqiu", "onReviseFocusFollow itemView:" + itemView.getLeft() + "," + itemView.getTop());
+                OPENLOG.D("onReviseFocusFollow itemView:" + itemView.getLeft() + "," + itemView.getTop());
                 mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
                 mRecyclerViewBridge.setUnFocusView(oldView);
                 oldView = itemView;
