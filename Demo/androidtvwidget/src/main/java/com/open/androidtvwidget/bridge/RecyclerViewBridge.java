@@ -6,8 +6,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+
+import com.open.androidtvwidget.utils.OPENLOG;
 
 public class RecyclerViewBridge extends EffectNoDrawBridge {
 	
@@ -29,6 +32,7 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 	 */
 	@Override
 	public void flyWhiteBorder(final View focusView, View moveView, float scaleX, float scaleY) {
+		OPENLOG.D("flyWhiteBorder1111");
 		RectF paddingRect = getDrawUpRect();
 		int newWidth = 0;
 		int newHeight = 0;
@@ -45,6 +49,15 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 			oldHeight = moveView.getMeasuredHeight();
 			Rect fromRect = findLocationWithView(moveView);
 			Rect toRect = findLocationWithView(focusView);
+			//
+			if (null != focusView.getParent() && focusView.getParent() instanceof RecyclerView) {
+				final RecyclerView rv = (RecyclerView) focusView.getParent();
+				final int offset = rv.getBaseline();
+				if (offset != -1) {
+					toRect.offset(rv.getLayoutManager().canScrollHorizontally() ? -offset : 0,
+							rv.getLayoutManager().canScrollVertically() ? -offset : 0);
+				}
+			}
 			//
 			if (mDy != 0) {
 				toRect.set(toRect.left, toRect.top - (mDy), toRect.right, toRect.bottom - (mDy));

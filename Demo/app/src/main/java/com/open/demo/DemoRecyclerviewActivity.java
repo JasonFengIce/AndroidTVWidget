@@ -68,9 +68,9 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
             @Override
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
                 OPENLOG.D("onReviseFocusFollow itemView:" + itemView.getLeft() + "," + itemView.getTop());
-                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-                mRecyclerViewBridge.setUnFocusView(oldView);
-                oldView = itemView;
+//                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+//                mRecyclerViewBridge.setUnFocusView(oldView);
+//                oldView = itemView;
             }
         });
     }

@@ -72,7 +72,7 @@ public class RecyclerViewTV extends RecyclerView {
             @Override
             public void onFocusChange(View itemView, boolean hasFocus) {
                 if (null != mOnItemListener) {
-                    if (null != itemView && getScrollState() != SCROLL_STATE_SETTLING) {
+                    if (null != itemView) {
                         mItemView = itemView; // 选中的item.
                         itemView.setSelected(hasFocus);
                         if (hasFocus) {
@@ -102,7 +102,7 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-        OPENLOG.D(""+ gainFocus + " ,direction=" + direction);
+        OPENLOG.D("" + gainFocus + " ,direction=" + direction);
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
 
@@ -142,8 +142,13 @@ public class RecyclerViewTV extends RecyclerView {
         final int parentTop = getPaddingTop();
         final int parentRight = getWidth() - getPaddingRight();
         final int parentBottom = getHeight() - getPaddingBottom();
-        final int childLeft = child.getLeft() + rect.left - child.getScrollX();
-        final int childTop = child.getTop() + rect.top - child.getScrollY();
+
+        final int childLeft = child.getLeft() + rect.left;
+        final int childTop = child.getTop() + rect.top;
+
+//        final int childLeft = child.getLeft() + rect.left - child.getScrollX();
+//        final int childTop = child.getTop() + rect.top - child.getScrollY();
+
         final int childRight = childLeft + rect.width();
         final int childBottom = childTop + rect.height();
 
@@ -152,42 +157,79 @@ public class RecyclerViewTV extends RecyclerView {
         final int offScreenRight = Math.max(0, childRight - parentRight + mSelectedItemOffsetEnd);
         final int offScreenBottom = Math.max(0, childBottom - parentBottom + mSelectedItemOffsetEnd);
 
+        final boolean canScrollHorizontal = getLayoutManager().canScrollHorizontally();
+        final boolean canScrollVertical = getLayoutManager().canScrollVertically();
+
         // Favor the "start" layout direction over the end when bringing one side or the other
         // of a large rect into view. If we decide to bring in end because start is already
         // visible, limit the scroll such that start won't go out of bounds.
         final int dx;
-        if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-            dx = offScreenRight != 0 ? offScreenRight
-                    : Math.max(offScreenLeft, childRight - parentRight);
+        if (canScrollHorizontal) {
+            if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                dx = offScreenRight != 0 ? offScreenRight
+                        : Math.max(offScreenLeft, childRight - parentRight);
+            } else {
+                dx = offScreenLeft != 0 ? offScreenLeft
+                        : Math.min(childLeft - parentLeft, offScreenRight);
+            }
         } else {
-            dx = offScreenLeft != 0 ? offScreenLeft
-                    : Math.min(childLeft - parentLeft, offScreenRight);
+            dx = 0;
         }
 
         // Favor bringing the top into view over the bottom. If top is already visible and
         // we should scroll to make bottom visible, make sure top does not go out of bounds.
-        final int dy = offScreenTop != 0 ? offScreenTop : Math.min(childTop - parentTop, offScreenBottom);
+        final int dy;
+        if (canScrollVertical) {
+            dy = offScreenTop != 0 ? offScreenTop : Math.min(childTop - parentTop, offScreenBottom);
+        } else {
+            dy = 0;
+        }
 
-        if (dx != 0 || dy != 0) {
-            if (immediate) {
-                scrollBy(dx, dy);
-            } else {
-                smoothScrollBy(dx, dy);
-            }
-            // 刷新,具体请参考getChildDrawingOrder方法.
-            if (!isVertical()) {
-                if (dx == 0) {
-                    postInvalidate();
+        if (cannotScrollForwardOrBackward(isVertical() ? dy : dx)) {
+            offset = -1;
+        } else {
+            offset = isVertical() ? dy : dx;
+
+            if (dx != 0 || dy != 0) {
+                if (immediate) {
+                    scrollBy(dx, dy);
+                } else {
+                    smoothScrollBy(dx, dy);
                 }
-            } else if (dy == 0) {
-                postInvalidate();
+                return true;
             }
-            return true;
+
         }
 
         // 重绘是为了选中item置顶，具体请参考getChildDrawingOrder方法
         postInvalidate();
+
         return false;
+    }
+
+    private int offset = -1;
+
+    private boolean cannotScrollForwardOrBackward(int value) {
+        return cannotScrollBackward(value) || cannotScrollForward(value);
+    }
+
+    /**
+     * 判断第一个位置，没有移动.
+     */
+    public boolean cannotScrollBackward(int delta) {
+        return (getFirstVisiblePosition() == 0 && delta <= 0);
+    }
+
+    /**
+     * 判断是否达到了最后一个位置，没有再移动了.
+     */
+    public boolean cannotScrollForward(int delta) {
+        return ((getFirstVisiblePosition() + getLayoutManager().getChildCount()) == getLayoutManager().getItemCount()) && (delta >= 0);
+    }
+
+    @Override
+    public int getBaseline() {
+        return offset;
     }
 
     @Override
