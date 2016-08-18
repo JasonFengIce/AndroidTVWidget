@@ -16,23 +16,11 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 	
 	private AnimatorSet mCurrentAnimatorSet;
 	
-	private int mDx = 0;
-	private int mDy = 0;
-	
-	public void setFocusView(View newView, View oldView, float scale, int dx, int dy) {
-		this.mDx = dx;
-		this.mDy = dy;
-		//
-		setFocusView(newView, scale);
-		setUnFocusView(oldView);
-	}
-	
 	/**
 	 * 重写边框移动函数.
 	 */
 	@Override
 	public void flyWhiteBorder(final View focusView, View moveView, float scaleX, float scaleY) {
-		OPENLOG.D("flyWhiteBorder1111");
 		RectF paddingRect = getDrawUpRect();
 		int newWidth = 0;
 		int newHeight = 0;
@@ -49,7 +37,8 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 			oldHeight = moveView.getMeasuredHeight();
 			Rect fromRect = findLocationWithView(moveView);
 			Rect toRect = findLocationWithView(focusView);
-			//
+
+			// 处理 RecyclerView TV 上 移动边框跑偏的问题.
 			if (null != focusView.getParent() && focusView.getParent() instanceof RecyclerView) {
 				final RecyclerView rv = (RecyclerView) focusView.getParent();
 				final int offset = rv.getBaseline();
@@ -57,11 +46,6 @@ public class RecyclerViewBridge extends EffectNoDrawBridge {
 					toRect.offset(rv.getLayoutManager().canScrollHorizontally() ? -offset : 0,
 							rv.getLayoutManager().canScrollVertically() ? -offset : 0);
 				}
-			}
-			//
-			if (mDy != 0) {
-				toRect.set(toRect.left, toRect.top - (mDy), toRect.right, toRect.bottom - (mDy));
-				mDy = 0;
 			}
 			//
 			int x = toRect.left - fromRect.left - ((int)Math.rint(paddingRect.left));

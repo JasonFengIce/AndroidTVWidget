@@ -50,13 +50,12 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
         recyclerView.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
             public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
+                mRecyclerViewBridge.setUnFocusView(oldView);
             }
 
             @Override
             public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-                OPENLOG.D("onItemSelected itemView:" + itemView.getLeft() + "," + itemView.getTop());
                 mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-                mRecyclerViewBridge.setUnFocusView(oldView);
                 oldView = itemView;
             }
 
@@ -67,10 +66,8 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
             // 调整边框偏移的问题.
             @Override
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-                OPENLOG.D("onReviseFocusFollow itemView:" + itemView.getLeft() + "," + itemView.getTop());
-//                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-//                mRecyclerViewBridge.setUnFocusView(oldView);
-//                oldView = itemView;
+                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+                oldView = itemView;
             }
         });
     }

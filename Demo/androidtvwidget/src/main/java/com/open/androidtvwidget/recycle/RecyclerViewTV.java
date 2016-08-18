@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.open.androidtvwidget.utils.OPENLOG;
@@ -37,6 +38,7 @@ public class RecyclerViewTV extends RecyclerView {
     private int position = 0;
     private OnItemListener mOnItemListener;
     private ItemListener mItemListener;
+    private int offset = -1;
 
     private void init(Context context) {
         setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
@@ -102,7 +104,7 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
-        OPENLOG.D("" + gainFocus + " ,direction=" + direction);
+        OPENLOG.D("gainFocus:" + gainFocus + " ,direction=" + direction);
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     }
 
@@ -137,7 +139,6 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     public boolean requestChildRectangleOnScreen(View child, Rect rect, boolean immediate) {
-        OPENLOG.D("child:" + child + " rect:" + rect + " immediate:" + immediate);
         final int parentLeft = getPaddingLeft();
         final int parentTop = getPaddingTop();
         final int parentRight = getWidth() - getPaddingRight();
@@ -184,12 +185,10 @@ public class RecyclerViewTV extends RecyclerView {
         } else {
             dy = 0;
         }
-
         if (cannotScrollForwardOrBackward(isVertical() ? dy : dx)) {
             offset = -1;
         } else {
             offset = isVertical() ? dy : dx;
-
             if (dx != 0 || dy != 0) {
                 if (immediate) {
                     scrollBy(dx, dy);
@@ -207,14 +206,14 @@ public class RecyclerViewTV extends RecyclerView {
         return false;
     }
 
-    private int offset = -1;
-
     private boolean cannotScrollForwardOrBackward(int value) {
-        return cannotScrollBackward(value) || cannotScrollForward(value);
+//        return cannotScrollBackward(value) || cannotScrollForward(value);
+        return false;
     }
 
     /**
      * 判断第一个位置，没有移动.
+     * getStartWithPadding --> return (mIsVertical ? getPaddingTop() : getPaddingLeft());
      */
     public boolean cannotScrollBackward(int delta) {
         return (getFirstVisiblePosition() == 0 && delta <= 0);
@@ -222,6 +221,8 @@ public class RecyclerViewTV extends RecyclerView {
 
     /**
      * 判断是否达到了最后一个位置，没有再移动了.
+     * getEndWithPadding -->  mIsVertical ?  (getHeight() - getPaddingBottom()) :
+     * (getWidth() - getPaddingRight());
      */
     public boolean cannotScrollForward(int delta) {
         return ((getFirstVisiblePosition() + getLayoutManager().getChildCount()) == getLayoutManager().getItemCount()) && (delta >= 0);
@@ -330,6 +331,7 @@ public class RecyclerViewTV extends RecyclerView {
     @Override
     public void onScrollStateChanged(int state) {
         if (state == SCROLL_STATE_IDLE) {
+            offset = -1;
             final View focuse = getFocusedChild();
             if (null != mOnItemListener && null != focuse) {
                 mOnItemListener.onReviseFocusFollow(this, focuse, getChildLayoutPosition(focuse));
