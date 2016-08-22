@@ -44,11 +44,14 @@ public interface OpenMenuItem {
     public Object getObjectData();
 
     /**
-     * 保存子菜单.
+     * 添加子菜单.
      */
-    public OpenMenuItem setSubMenu(OpenMenu subMenu);
+    public OpenMenuItem addSubMenu(OpenMenu openSubMenu);
 
     public OpenMenu getSubMenu();
+
+    public OpenMenuItem showSubMenu();
+    public OpenMenuItem hideSubMenu();
 
     /**
      * 判断子菜单是否存在.

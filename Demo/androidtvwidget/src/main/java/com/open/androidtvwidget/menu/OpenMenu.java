@@ -1,13 +1,5 @@
 package com.open.androidtvwidget.menu;
 
-import android.graphics.Rect;
-import android.view.animation.Animation;
-import android.view.animation.LayoutAnimationController;
-import android.widget.AbsListView;
-import android.widget.CompoundButton;
-
-import com.open.androidtvwidget.R;
-
 import java.util.ArrayList;
 
 /**

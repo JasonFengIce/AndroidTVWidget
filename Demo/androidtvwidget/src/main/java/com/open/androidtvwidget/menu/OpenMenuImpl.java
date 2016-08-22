@@ -114,34 +114,13 @@ public class OpenMenuImpl implements OpenMenu {
     public OpenMenu addSubMenu(int pos, OpenMenu openSubMenu) {
         if (mItems != null && pos < mItems.size()) {
             OpenMenuItem menuItem = mItems.get(pos);
-            return addSubMenu(menuItem, openSubMenu);
+            addSubMenu(menuItem, openSubMenu);
         }
         return openSubMenu;
     }
 
     public OpenMenu addSubMenu(OpenMenuItem menuItem, OpenMenu openSubMenu) {
-        if (menuItem != null) {
-            //
-            openSubMenu.registerDataSetObserver(new MenuSetObserver() {
-                @Override
-                public void onShow(OpenMenu openMenu) {
-                    OPENLOG.D("===addSubMenu registerDataSetObserver onShow====");
-                    mMenuDataObservable.nofityShow(openMenu);
-                }
-
-                @Override
-                public void onHide(OpenMenu openMenu) {
-                    OPENLOG.D("===addSubMenu registerDataSetObserver onHide====");
-                    mMenuDataObservable.notifyHide(openMenu);
-                }
-            });
-            //
-            menuItem.setSubMenu(openSubMenu);
-            // 添加父菜单.
-            if (openSubMenu != null) {
-                openSubMenu.setParentMenu(OpenMenuImpl.this);
-            }
-        }
+        menuItem.addSubMenu(openSubMenu);
         return openSubMenu;
     }
 
