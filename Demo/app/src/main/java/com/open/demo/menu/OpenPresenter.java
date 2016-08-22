@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 /**
  * Created by hailongqiu on 2016/8/22.
  */
-public abstract class Presenter {
+public abstract class OpenPresenter {
 
     /**
      * 基本数据类型(ViewHolder)

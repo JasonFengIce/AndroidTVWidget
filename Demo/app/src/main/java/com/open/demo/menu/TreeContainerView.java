@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.open.demo.R;
 
 /**
+ *  树级菜单控件. 上面是 item text, 下面是子菜单.
  * Created by hailongqiu on 2016/8/22.
  */
 public class TreeContainerView extends LinearLayout {
@@ -56,7 +57,7 @@ public class TreeContainerView extends LinearLayout {
      * 添加子菜单(item下的子菜单).
      */
     public void addSubMenuView(View subMenuView) {
-        if (mMenuDock.indexOfChild(subMenuView) < 0) {
+        if (subMenuView != null && mMenuDock.indexOfChild(subMenuView) < 0) {
             mMenuDock.addView(subMenuView);
         }
     }
@@ -65,9 +66,17 @@ public class TreeContainerView extends LinearLayout {
      * 删除子菜单。
      */
     public void removeSubMenuView(View subMenuView) {
-        if (mMenuDock.indexOfChild(subMenuView) >= 0) {
+        if (subMenuView != null && mMenuDock.indexOfChild(subMenuView) >= 0) {
             mMenuDock.removeView(subMenuView);
         }
+    }
+
+    public View getItemView() {
+        return getChildAt(0);
+    }
+
+    public View getSubMenuView() {
+        return mMenuDock.getChildAt(0);
     }
 
     /**

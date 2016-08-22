@@ -9,24 +9,32 @@ import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hailongqiu on 2016/8/22.
  */
 public class MenuAdapter extends RecyclerView.Adapter {
 
-    TreeMenuPresenter mTreeMenuPresenter;
     private OpenMenu mOpenMenu;
+    private OpenPresenter mPresenter;
 
-    public MenuAdapter(Context context) {
-        mTreeMenuPresenter = new TreeMenuPresenter(context); //
+    public MenuAdapter(Context context, OpenMenu openMenu) {
+        this.mOpenMenu = openMenu;
+        mPresenter = new TreeMenuPresenter();
+    }
+
+    public void setOpenMenu(OpenMenu openMenu) {
+        this.mOpenMenu = openMenu;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MenuPresenter.ViewHolder presenterVh = mTreeMenuPresenter.onCreateViewHolder(parent);
-        ViewHolder viewHolder = new ViewHolder(presenterVh.view);
+        View view;
+        OpenPresenter presenter = this.mPresenter;
+        OpenPresenter.ViewHolder presenterVh;
+        presenterVh = presenter.onCreateViewHolder(parent);
+        view = presenterVh.view;
+        ViewHolder viewHolder = new ViewHolder(view, presenter, presenterVh);
         return viewHolder;
     }
 
@@ -34,6 +42,8 @@ public class MenuAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ArrayList<OpenMenuItem> items = mOpenMenu.getMenuDatas();
         OpenMenuItem menuItem = items.get(position);
+        ViewHolder viewHolder = (ViewHolder) holder;
+        this.mPresenter.onBindViewHolder(viewHolder.getViewHolder(), menuItem);
     }
 
     @Override
@@ -42,8 +52,23 @@ public class MenuAdapter extends RecyclerView.Adapter {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View itemView) {
+
+        final OpenPresenter.ViewHolder mHolder;
+        final OpenPresenter mPresenter;
+
+        public ViewHolder(View itemView, OpenPresenter presenter, OpenPresenter.ViewHolder holder) {
             super(itemView);
+            this.mPresenter = presenter;
+            this.mHolder = holder;
         }
+
+        public OpenPresenter.ViewHolder getViewHolder() {
+            return this.mHolder;
+        }
+
+        public OpenPresenter getOpenPresenter() {
+            return this.mPresenter;
+        }
+
     }
 }

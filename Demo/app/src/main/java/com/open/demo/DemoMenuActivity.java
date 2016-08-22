@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.GridView;
@@ -11,7 +12,11 @@ import android.widget.GridView;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuImpl;
 import com.open.androidtvwidget.menu.OpenMenuItem;
+import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.demo.adapter.HeaderGridAdapter;
+import com.open.demo.adapter.RecyclerViewAdapter;
+import com.open.demo.menu.MenuAdapter;
 
 /**
  * 菜单DEMO测试.
@@ -21,7 +26,8 @@ import com.open.androidtvwidget.utils.OPENLOG;
 public class DemoMenuActivity extends Activity implements OnClickListener {
 
     private Context mContext;
-    OpenMenu openMenu;
+    OpenMenu mOpenMenu;
+    RecyclerViewTV mRecyclerView;
 
     public DemoMenuActivity() {
         OPENLOG.initTag("hailongqiu", true); // 测试LOG输出.
@@ -31,6 +37,9 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_menu_activity);
+        // test menu.
+        mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView_menu);
+
 //		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
         findViewById(R.id.button1).setOnClickListener(this);
         findViewById(R.id.button2).setOnClickListener(this);
@@ -42,24 +51,17 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         return getResources().getDrawable(id);
     }
 
-    private GridView getGridView(Context context) {
-        GridView gridView = new GridView(context);
-        gridView.setColumnWidth(200);
-        gridView.setNumColumns(4);
-        return gridView;
-    }
-
     private void initAllMenu() {
         // 主菜单.
-        openMenu = new OpenMenuImpl();
-        final OpenMenuItem menuItem1 = openMenu.add("菜单1");
+        mOpenMenu = new OpenMenuImpl();
+        final OpenMenuItem menuItem1 = mOpenMenu.add("菜单1");
         menuItem1.setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_1).setChecked(true);
-        openMenu.add("菜单2").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_2);
-        openMenu.add("菜单3").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_3);
-        openMenu.add("菜单4").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_4);
-        openMenu.add("菜单5").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_5);
-        openMenu.add("菜单6").setIconRes(R.drawable.ic_launcher);
-        openMenu.add("菜单7").setIconRes(R.drawable.ic_launcher);
+        mOpenMenu.add("菜单2").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_2);
+        mOpenMenu.add("菜单3").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_3);
+        mOpenMenu.add("菜单4").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_4);
+        mOpenMenu.add("菜单5").setIconRes(R.drawable.ic_launcher).setId(R.id.menu_1_5);
+        mOpenMenu.add("菜单6").setIconRes(R.drawable.ic_launcher);
+        mOpenMenu.add("菜单7").setIconRes(R.drawable.ic_launcher);
         // 菜单1的子菜单.
         OpenMenu subMenu1 = new OpenMenuImpl();
         subMenu1.add("菜单1-1");
@@ -77,10 +79,14 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         subMenu1_2.add("菜单1-2-3");
         // 添加子菜单.
         menuItem1.addSubMenu(subMenu1); // 一级菜单的menuItem1 添加二级菜单.
-        openMenu.addSubMenu(4, subMenu2); // 一级菜单添加二级菜单.
+        mOpenMenu.addSubMenu(4, subMenu2); // 一级菜单添加二级菜单.
         subMenu1.addSubMenu(1, subMenu1_2); // 二级菜单添加三级菜单.
         // 输出菜单数据.
-        openMenu.toString();
+        mOpenMenu.toString();
+        // test menu.
+        MenuAdapter menuAdapter = new MenuAdapter(mContext, mOpenMenu);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setAdapter(menuAdapter);
     }
 
     @Override
@@ -88,10 +94,10 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.button1:
-                openMenu.showMenu();
+                mOpenMenu.showMenu();
                 break;
             case R.id.button2:
-                openMenu.hideMenu();
+                mOpenMenu.hideMenu();
                 break;
         }
     }
