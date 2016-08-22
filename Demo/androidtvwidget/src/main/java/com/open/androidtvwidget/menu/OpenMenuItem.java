@@ -1,129 +1,65 @@
 package com.open.androidtvwidget.menu;
 
-import android.graphics.drawable.Drawable;
-import android.widget.CompoundButton;
+/**
+ * 菜单item接口.
+ *
+ * @author hailongqiu
+ */
+public interface OpenMenuItem {
+    static final int NO_ICON = 0; // 默认icon id.
+    static final int DEFAULT_TEXT_SIZE = 24; // 默认字体
 
-public class OpenMenuItem implements IOpenMenuItem {
+    /**
+     * 设置菜单item-ID.
+     */
+    public OpenMenuItem setId(int id);
 
-    private int mId;
-    private int mTextSize = DEFAULT_TEXT_SIZE;
-    private boolean mChecked = false;
-    private Object mData;
-    private CharSequence mTitle;
+    public int getId();
 
-    private CompoundButton mCompoundButton;
-    private IOpenMenu mMenu;
-    private IOpenMenu mSubMenu;
-    private Drawable mIconDrawable;
+    /**
+     * 设置菜单资源.
+     */
+    public OpenMenuItem setIconRes(int iconID);
+    public int getIconRes();
 
-    OpenMenuItem(IOpenMenu menu, int id, CharSequence title) {
-        this.mMenu = menu;
-        this.mId = id;
-        this.mTitle = title;
-    }
+    /**
+     * 设置菜单文本内容
+     */
+    public OpenMenuItem setTitle(CharSequence title);
 
-    @Override
-    public Drawable getIcon() {
-        return mIconDrawable;
-    }
+    public CharSequence getTitle();
 
-    @Override
-    public IOpenMenuItem setIcon(Drawable icon) {
-        mIconDrawable = icon;
-        notifyChanged();
-        return this;
-    }
+    /**
+     * 设置字体大小.
+     */
+    public OpenMenuItem setTextSize(int size);
 
-    @Override
-    public IOpenMenuItem setTitle(CharSequence title) {
-        this.mTitle = title;
-        notifyChanged();
-        return this;
-    }
+    public int getTextSize();
 
-    @Override
-    public CharSequence getTitle() {
-        return mTitle;
-    }
+    /**
+     * 设置数据.
+     */
+    public OpenMenuItem setObjectData(Object data);
 
-    @Override
-    public IOpenMenu getSubMenu() {
-        return mSubMenu;
-    }
+    public Object getObjectData();
 
-    @Override
-    public IOpenMenuItem setSubMenu(IOpenMenu subMenu) {
-        mSubMenu = subMenu;
-        return this;
-    }
+    /**
+     * 保存子菜单.
+     */
+    public OpenMenuItem setSubMenu(OpenMenu subMenu);
 
-    @Override
-    public boolean hasSubMenu() {
-        return (mSubMenu != null);
-    }
+    public OpenMenu getSubMenu();
 
-    @Override
-    public IOpenMenuItem setChecked(boolean checked) {
-        this.mChecked = checked;
-        notifyChanged();
-        return this;
-    }
+    /**
+     * 判断子菜单是否存在.
+     */
+    public boolean hasSubMenu();
 
-    @Override
-    public boolean isChecked() {
-        return this.mChecked;
-    }
+    /**
+     * 设置checked标志位.
+     */
+    public OpenMenuItem setChecked(boolean checked);
 
-    @Override
-    public IOpenMenuItem setCheckedView(CompoundButton compoundButton) {
-        this.mCompoundButton = compoundButton;
-        return this;
-    }
-
-    @Override
-    public CompoundButton getCheckedView() {
-        return this.mCompoundButton;
-    }
-
-    @Override
-    public IOpenMenuItem setTextSize(int size) {
-        mTextSize = size;
-        notifyChanged();
-        return this;
-    }
-
-    @Override
-    public int getTextSize() {
-        return mTextSize;
-    }
-
-    @Override
-    public IOpenMenuItem setObjectData(Object data) {
-        this.mData = data;
-        notifyChanged();
-        return this;
-    }
-
-    @Override
-    public Object getObjectData() {
-        return this.mData;
-    }
-
-    @Override
-    public IOpenMenuItem setId(int id) {
-        this.mId = id;
-        return this;
-    }
-
-    @Override
-    public int getId() {
-        return this.mId;
-    }
-
-    private void notifyChanged() {
-        if (mMenu != null) {
-            mMenu.notifyChanged();
-        }
-    }
+    public boolean isChecked();
 
 }
