@@ -52,9 +52,11 @@ public class TreeMenuPresenter extends OpenPresenter {
                     if (!menuItem.isShowSubMenu()) {
                         // 显示菜单.
                         menuAdapter.addAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                        mRecyclerViewTV.scrollToPosition(position + 1);
                     } else {
                         // 隐藏菜单.
                         menuAdapter.removeAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                        mRecyclerViewTV.scrollToPosition(position + 1);
                     }
                     menuItem.setShowSubMenu(!menuItem.isShowSubMenu());
                 }
