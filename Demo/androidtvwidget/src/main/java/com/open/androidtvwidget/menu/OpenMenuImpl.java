@@ -37,6 +37,7 @@ public class OpenMenuImpl implements OpenMenu {
     private OpenMenu mParent;
 
     private int mTextSize = OpenMenuItem.DEFAULT_TEXT_SIZE;
+    private int mTreeDepth = 0; // 菜单的深度
 
     public OpenMenuImpl() {
         init();
@@ -77,6 +78,16 @@ public class OpenMenuImpl implements OpenMenu {
     public void hideMenu() {
         if (mMenuDataObservable != null)
             mMenuDataObservable.notifyHide(this);
+    }
+
+    @Override
+    public void setTreeDepth(int treeDepth) {
+        this.mTreeDepth = treeDepth;
+    }
+
+    @Override
+    public int getTreeDepth() {
+        return this.mTreeDepth;
     }
 
     @Override
@@ -131,7 +142,7 @@ public class OpenMenuImpl implements OpenMenu {
     public String toString() {
         for (OpenMenuItem item : mItems) {
             String title = item.getTitle().toString();
-            OPENLOG.E("menu item:" + title);
+            OPENLOG.E("menu item:" + title + " 深度:" + item.getMenu().getTreeDepth());
             OpenMenu submenu = item.getSubMenu();
             if (submenu != null) {
                 OPENLOG.E("=======sub menu======start start start start");

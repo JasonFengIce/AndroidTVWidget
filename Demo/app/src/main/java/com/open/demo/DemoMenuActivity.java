@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.GridView;
 
+import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuImpl;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
-import com.open.demo.adapter.HeaderGridAdapter;
-import com.open.demo.adapter.RecyclerViewAdapter;
+import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.menu.MenuAdapter;
 
 /**
@@ -37,9 +36,6 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_menu_activity);
-        // test menu.
-        mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView_menu);
-
 //		findViewById(R.id.content11).setBackgroundResource(R.drawable.main_bg);
         findViewById(R.id.button1).setOnClickListener(this);
         findViewById(R.id.button2).setOnClickListener(this);
@@ -84,9 +80,26 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         // 输出菜单数据.
         mOpenMenu.toString();
         // test menu.
-        MenuAdapter menuAdapter = new MenuAdapter(mContext, mOpenMenu);
+        final MainUpView mainUpView = new MainUpView(mContext);
+        mainUpView.setEffectBridge(new OpenEffectBridge());
+        mainUpView.setUpRectResource(R.drawable.white_light_10);
+        mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView_menu);
+        MenuAdapter menuAdapter = new MenuAdapter(mRecyclerView, mOpenMenu);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(menuAdapter);
+        mRecyclerView.setOnItemListener(new RecyclerViewTV.OnItemListener() {
+            @Override
+            public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
+                mainUpView.setUnFocusView(itemView);
+            }
+            @Override
+            public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
+                mainUpView.setFocusView(itemView, 1.0f);
+            }
+            @Override
+            public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
+            }
+        });
     }
 
     @Override

@@ -44,6 +44,9 @@ public interface OpenMenu {
 
     void hideMenu();
 
+    void setTreeDepth(int treeDepth);
+    int getTreeDepth();
+
     /**
      * 数据更新.
      */

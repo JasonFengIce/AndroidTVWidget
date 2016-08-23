@@ -1,19 +1,19 @@
 package com.open.demo.menu;
 
-import android.graphics.Color;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.open.androidtvwidget.menu.MenuSetObserver;
+import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
+import com.open.androidtvwidget.menu.OpenMenuItemView;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.demo.R;
-import com.open.demo.adapter.HeaderGridAdapter;
-import com.open.demo.adapter.RecyclerViewAdapter;
 
 /**
  * 树级菜单的 Presenter. (mvp)
@@ -21,20 +21,17 @@ import com.open.demo.adapter.RecyclerViewAdapter;
  */
 public class TreeMenuPresenter extends OpenPresenter {
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-//        View subMenuView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_listview, parent, false);
-        MenuContentView subMenuView = new MenuContentView(parent.getContext());
-//        RecyclerViewTV subMenuView = new RecyclerViewTV(parent.getContext());
-        View headview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header_view, parent, false);
+    private RecyclerViewTV mRecyclerViewTV;
 
-        TreeContainerView treeContainerView = new TreeContainerView(parent.getContext());
-        treeContainerView.addItemView(headview);
-        treeContainerView.addSubMenuView(subMenuView);
+    public TreeMenuPresenter(RecyclerViewTV recyclerViewTV) {
+        this.mRecyclerViewTV = recyclerViewTV;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(final ViewGroup parent) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_menu_item_layout, parent, false);
         //
-        OpenPresenter.ViewHolder result;
-        result = new ContainerViewHolder(treeContainerView, subMenuView);
-        //
+        OpenPresenter.ViewHolder result = new ContainerViewHolder(rootView);
         return result;
     }
 
@@ -42,32 +39,37 @@ public class TreeMenuPresenter extends OpenPresenter {
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
         OpenMenuItem menuItem = (OpenMenuItem) item;
         ContainerViewHolder holder = (ContainerViewHolder) viewHolder;
-        // 设置item 属性.
-        TreeContainerView treeContainerView = (TreeContainerView) holder.view;
-        View headview = treeContainerView.getItemView();
-        TextView head_tv= (TextView) headview.findViewById(R.id.head_tv);
-        head_tv.setText("" + menuItem.getTitle());
-        head_tv.setTextColor(Color.BLACK);
-        //
-        if (menuItem.hasSubMenu()) {
-            MenuContentView menuContentView = (MenuContentView) treeContainerView.getSubMenuView();
-            RecyclerViewTV recyclerViewTV = (RecyclerViewTV)menuContentView.getRecyclerViewTV();
-            recyclerViewTV.setLayoutManager(new LinearLayoutManager(recyclerViewTV.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            ViewGroup.LayoutParams layoutParams = recyclerViewTV.getLayoutParams();
-            layoutParams.height = 150;
-            recyclerViewTV.setLayoutParams(layoutParams);
-            MenuAdapter menuAdapter = new MenuAdapter(recyclerViewTV.getContext(), menuItem.getSubMenu());
-            recyclerViewTV.setAdapter(menuAdapter);
-            OPENLOG.D("111"  + recyclerViewTV);
+        OpenMenuItemView openMenuItemView = (OpenMenuItemView) holder.view;
+        openMenuItemView.initialize(menuItem);
+        // 子控件.
+        if (menuItem.getMenu().getParentMenu() != null) {
+            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) openMenuItemView.getLayoutParams();
+            lp.leftMargin = menuItem.getMenu().getTreeDepth() * 45;
         }
+        // item 单击处理.
+        mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
+                MenuAdapter menuAdapter = (MenuAdapter) mRecyclerViewTV.getAdapter();
+                OpenMenuItem menuItem = (OpenMenuItem) menuAdapter.getItemPosition(position);
+                if (menuItem.hasSubMenu()) {
+                    OPENLOG.D("展开子菜单");
+                    if (!menuItem.isShowSubMenu()) {
+                        // 显示菜单.
+                        menuAdapter.addAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                    } else {
+                        // 隐藏菜单.
+                        menuAdapter.removeAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                    }
+                    menuItem.setShowSubMenu(!menuItem.isShowSubMenu());
+                }
+            }
+        });
     }
 
     static class ContainerViewHolder extends OpenPresenter.ViewHolder {
-        public View mSubMenuView;
-
-        public ContainerViewHolder(View view, View subMenuView) {
+        public ContainerViewHolder(View view) {
             super(view);
-            this.mSubMenuView = subMenuView;
         }
     }
 

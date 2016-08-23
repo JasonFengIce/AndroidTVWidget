@@ -59,15 +59,17 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
                 oldView = itemView;
             }
 
-            @Override
-            public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-            }
-
             // 调整边框偏移的问题.
             @Override
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
                 mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
                 oldView = itemView;
+            }
+        });
+        // item 单击事件处理.
+        recyclerView.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
             }
         });
     }

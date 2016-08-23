@@ -1,11 +1,14 @@
 package com.open.androidtvwidget.menu;
 
+import com.open.androidtvwidget.utils.OPENLOG;
+
 public class OpenMenuItemImpl implements OpenMenuItem {
 
     private int mIconID; // icon 资源 id.
     private int mId; // item id.
     private int mTextSize = DEFAULT_TEXT_SIZE; // item 文本大小.
     private boolean mChecked = false; // item 勾选状态.
+    private boolean mIsShowSubMenu = false; // 是否显示子菜单.
     private Object mData;
     private CharSequence mTitle; // item 文本.
 
@@ -69,6 +72,10 @@ public class OpenMenuItemImpl implements OpenMenuItem {
     public OpenMenuItem addSubMenu(OpenMenu openSubMenu) {
         this.mSubMenu = openSubMenu;
         this.mSubMenu.setParentMenu(mMenu); // 添加父菜单.
+        // 子菜单添加深度.
+        if (mMenu != null) {
+            this.mSubMenu.setTreeDepth(mMenu.getTreeDepth() + 1);
+        }
         return this;
     }
 
@@ -80,6 +87,16 @@ public class OpenMenuItemImpl implements OpenMenuItem {
     @Override
     public boolean hasSubMenu() {
         return (mSubMenu != null);
+    }
+
+    @Override
+    public boolean isShowSubMenu() {
+        return this.mIsShowSubMenu;
+    }
+
+    @Override
+    public void setShowSubMenu(boolean isShow) {
+        this.mIsShowSubMenu = isShow;
     }
 
     @Override
@@ -132,10 +149,15 @@ public class OpenMenuItemImpl implements OpenMenuItem {
     /**
      * 数据更新.
      */
+
     private void notifyChanged() {
         if (mMenu != null) {
             mMenu.notifyChanged();
         }
+    }
+
+    public OpenMenu getMenu() {
+        return this.mMenu;
     }
 
 }

@@ -59,10 +59,24 @@ public interface OpenMenuItem {
     public boolean hasSubMenu();
 
     /**
+     * 判断子菜单是否显示了.
+     */
+    public boolean isShowSubMenu();
+    public void setShowSubMenu(boolean isShow);
+
+    /**
      * 设置checked标志位.
      */
     public OpenMenuItem setChecked(boolean checked);
 
     public boolean isChecked();
 
+    public OpenMenu getMenu();
+
+    /**
+     * 菜单item接口函数.
+     */
+    public interface ItemView {
+        public void initialize(OpenMenuItem itemData);
+    }
 }

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.open.demo.R;
 
 /**
- *  树级菜单控件. 上面是 item text, 下面是子菜单.
+ * 树级菜单控件. 上面是 item text, 下面是子菜单.
  * Created by hailongqiu on 2016/8/22.
  */
 public class TreeContainerView extends LinearLayout {
@@ -33,6 +33,7 @@ public class TreeContainerView extends LinearLayout {
         inflater.inflate(R.layout.lb_tree_container, this);
         mMenuDock = (ViewGroup) findViewById(R.id.lb_tree_container_menu_dock);
         setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS); // viewgroup会覆盖子类控件而直接获得焦点, item单击问题.
     }
 
     /**
