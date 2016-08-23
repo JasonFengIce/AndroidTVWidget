@@ -1,7 +1,5 @@
 package com.open.androidtvwidget.menu;
 
-import com.open.androidtvwidget.utils.OPENLOG;
-
 public class OpenMenuItemImpl implements OpenMenuItem {
 
     private int mIconID; // icon 资源 id.
@@ -27,6 +25,7 @@ public class OpenMenuItemImpl implements OpenMenuItem {
         if (mSubMenu != null) {
             mSubMenu.showMenu();
         }
+        this.mIsShowSubMenu = true;
         return this;
     }
 
@@ -35,6 +34,7 @@ public class OpenMenuItemImpl implements OpenMenuItem {
         if (mSubMenu != null) {
             mSubMenu.hideMenu();
         }
+        this.mIsShowSubMenu = false;
         return this;
     }
 
@@ -72,10 +72,6 @@ public class OpenMenuItemImpl implements OpenMenuItem {
     public OpenMenuItem addSubMenu(OpenMenu openSubMenu) {
         this.mSubMenu = openSubMenu;
         this.mSubMenu.setParentMenu(mMenu); // 添加父菜单.
-        // 子菜单添加深度.
-        if (mMenu != null) {
-            this.mSubMenu.setTreeDepth(mMenu.getTreeDepth() + 1);
-        }
         return this;
     }
 
@@ -158,6 +154,11 @@ public class OpenMenuItemImpl implements OpenMenuItem {
 
     public OpenMenu getMenu() {
         return this.mMenu;
+    }
+
+    @Override
+    public void setMenu(OpenMenu menu) {
+        this.mMenu = menu;
     }
 
 }

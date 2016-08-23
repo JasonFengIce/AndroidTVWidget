@@ -72,6 +72,7 @@ public interface OpenMenuItem {
     public boolean isChecked();
 
     public OpenMenu getMenu();
+    public void setMenu(OpenMenu menu);
 
     /**
      * 菜单item接口函数.

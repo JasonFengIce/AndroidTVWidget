@@ -1,11 +1,9 @@
 package com.open.demo.menu;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.open.androidtvwidget.menu.MenuSetObserver;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
@@ -26,19 +24,6 @@ public class MenuAdapter extends RecyclerView.Adapter {
         this.mOpenMenu = openMenu;
         this.mPresenter = new TreeMenuPresenter(recyclerView);
         //
-        this.mOpenMenu.registerDataSetObserver(new MenuSetObserver() {
-            @Override
-            public void onShow(OpenMenu openMenu) {
-                super.onShow(openMenu);
-                OPENLOG.D("onShow123456789");
-            }
-
-            @Override
-            public void onHide(OpenMenu openMenu) {
-                super.onHide(openMenu);
-                OPENLOG.D("onHide123456789");
-            }
-        });
     }
 
     public void setOpenMenu(OpenMenu openMenu) {
@@ -55,8 +40,22 @@ public class MenuAdapter extends RecyclerView.Adapter {
     }
 
     public void removeAll(List<OpenMenuItem> list, int pos) {
+        int sizeNum = removeAllSubMenu(list);
+        OPENLOG.D("sizeNum:" + sizeNum);
+        notifyItemRangeRemoved(pos, sizeNum);
+    }
+
+    private int removeAllSubMenu(List<OpenMenuItem> list) {
+        int sizeNum = list.size();
+        for (OpenMenuItem menuItem : list) {
+            if (menuItem.hasSubMenu() && menuItem.isShowSubMenu()) {
+                menuItem.setShowSubMenu(false);
+                List<OpenMenuItem> delSubItems = menuItem.getSubMenu().getMenuDatas();
+                sizeNum += removeAllSubMenu(delSubItems);
+            }
+        }
         mOpenMenu.getMenuDatas().removeAll(list);
-        notifyItemRangeRemoved(pos, list.size());
+        return sizeNum;
     }
 
     @Override

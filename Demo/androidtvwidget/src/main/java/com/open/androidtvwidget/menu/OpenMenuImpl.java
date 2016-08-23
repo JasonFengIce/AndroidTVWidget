@@ -37,7 +37,6 @@ public class OpenMenuImpl implements OpenMenu {
     private OpenMenu mParent;
 
     private int mTextSize = OpenMenuItem.DEFAULT_TEXT_SIZE;
-    private int mTreeDepth = 0; // 菜单的深度
 
     public OpenMenuImpl() {
         init();
@@ -81,13 +80,8 @@ public class OpenMenuImpl implements OpenMenu {
     }
 
     @Override
-    public void setTreeDepth(int treeDepth) {
-        this.mTreeDepth = treeDepth;
-    }
-
-    @Override
     public int getTreeDepth() {
-        return this.mTreeDepth;
+        return this.mParent == null ? 0 : this.mParent.getTreeDepth() + 1;
     }
 
     @Override

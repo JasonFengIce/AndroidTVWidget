@@ -73,6 +73,11 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         subMenu1_2.add("菜单1-2-1");
         subMenu1_2.add("菜单1-2-2");
         subMenu1_2.add("菜单1-2-3");
+        //
+        OpenMenu subMenu1_2_1 = new OpenMenuImpl();
+        subMenu1_2_1.add("菜单1-2-1-1");
+        subMenu1_2_1.add("菜单1-2-1-2");
+        subMenu1_2.addSubMenu(0, subMenu1_2_1); // 三级菜单添加四级菜单.
         // 添加子菜单.
         menuItem1.addSubMenu(subMenu1); // 一级菜单的menuItem1 添加二级菜单.
         mOpenMenu.addSubMenu(4, subMenu2); // 一级菜单添加二级菜单.

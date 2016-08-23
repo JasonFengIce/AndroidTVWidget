@@ -4,15 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.open.androidtvwidget.menu.MenuSetObserver;
-import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.menu.OpenMenuItemView;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
-import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.demo.R;
 
 /**
@@ -50,10 +45,10 @@ public class TreeMenuPresenter extends OpenPresenter {
         mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-                MenuAdapter menuAdapter = (MenuAdapter) mRecyclerViewTV.getAdapter();
+                MenuAdapter menuAdapter = getAdapter();
                 OpenMenuItem menuItem = (OpenMenuItem) menuAdapter.getItemPosition(position);
+                // 判断是否存在子菜单.
                 if (menuItem.hasSubMenu()) {
-                    OPENLOG.D("展开子菜单");
                     if (!menuItem.isShowSubMenu()) {
                         // 显示菜单.
                         menuAdapter.addAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
@@ -65,6 +60,10 @@ public class TreeMenuPresenter extends OpenPresenter {
                 }
             }
         });
+    }
+
+    public MenuAdapter getAdapter() {
+        return (MenuAdapter) mRecyclerViewTV.getAdapter();
     }
 
     static class ContainerViewHolder extends OpenPresenter.ViewHolder {
