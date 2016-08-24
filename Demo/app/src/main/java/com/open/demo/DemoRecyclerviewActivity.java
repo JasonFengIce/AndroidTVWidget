@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
-import com.open.androidtvwidget.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridAdapter;

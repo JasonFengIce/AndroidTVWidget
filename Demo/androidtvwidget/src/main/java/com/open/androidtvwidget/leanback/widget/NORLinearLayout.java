@@ -1,10 +1,11 @@
-package com.open.demo.menu;
+package com.open.androidtvwidget.leanback.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 /**
+ * 优化过的LinerLayout. --> hasOverlappingRendering (false)
  * Created by hailongqiu on 2016/8/22.
  */
 public class NORLinearLayout extends LinearLayout {

@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.open.androidtvwidget.leanback.OpenPresenter;
+import com.open.androidtvwidget.leanback.widget.OpenPresenter;
 
 /**
  * Created by hailongqiu on 2016/8/22.

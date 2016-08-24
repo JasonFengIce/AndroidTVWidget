@@ -13,7 +13,7 @@ import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuImpl;
 import com.open.androidtvwidget.menu.OpenMenuItem;
-import com.open.androidtvwidget.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;

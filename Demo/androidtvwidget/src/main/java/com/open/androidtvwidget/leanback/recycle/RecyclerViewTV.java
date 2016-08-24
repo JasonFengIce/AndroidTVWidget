@@ -1,4 +1,4 @@
-package com.open.androidtvwidget.recycle;
+package com.open.androidtvwidget.leanback.recycle;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.open.androidtvwidget.utils.OPENLOG;

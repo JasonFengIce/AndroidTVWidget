@@ -1,4 +1,4 @@
-package com.open.androidtvwidget.leanback;
+package com.open.androidtvwidget.leanback.widget;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +28,4 @@ public abstract class OpenPresenter {
 
     public abstract int getItemCount();
 
-    public OpenMenu getOpenMenu() {
-        return null;
-    }
-
-    public void setOpenMenu(OpenMenu openMenu) {
-
-    }
 }

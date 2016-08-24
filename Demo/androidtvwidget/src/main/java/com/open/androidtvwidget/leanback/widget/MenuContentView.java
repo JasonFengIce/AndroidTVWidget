@@ -1,4 +1,4 @@
-package com.open.demo.menu;
+package com.open.androidtvwidget.leanback.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.open.androidtvwidget.recycle.RecyclerViewTV;
-import com.open.demo.R;
+import com.open.androidtvwidget.R;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 
 /**
- *  MenuContentView 是子菜单的内容.
+ *  MenuContentView 是 Leanback 一个item 标题头下面的横向RecyclerView.
  * Created by hailongqiu on 2016/8/22.
  */
 public class MenuContentView extends LinearLayout {

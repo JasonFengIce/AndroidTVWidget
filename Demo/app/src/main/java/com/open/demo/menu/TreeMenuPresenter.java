@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
-import com.open.androidtvwidget.leanback.OpenPresenter;
+import com.open.androidtvwidget.leanback.widget.OpenPresenter;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.menu.OpenMenuItemView;
-import com.open.androidtvwidget.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.demo.R;
 
 import java.util.ArrayList;
@@ -27,16 +27,6 @@ public class TreeMenuPresenter extends OpenPresenter {
 
     public TreeMenuPresenter(RecyclerViewTV recyclerViewTV, OpenMenu openMenu) {
         this.mRecyclerViewTV = recyclerViewTV;
-        this.mOpenMenu = openMenu;
-    }
-
-    @Override
-    public OpenMenu getOpenMenu() {
-        return this.mOpenMenu;
-    }
-
-    @Override
-    public void setOpenMenu(OpenMenu openMenu) {
         this.mOpenMenu = openMenu;
     }
 
