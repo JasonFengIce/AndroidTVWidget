@@ -202,19 +202,19 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
 
     @Override
     public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
-        mRecyclerViewBridge.setUnFocusView(oldView);
+//        mRecyclerViewBridge.setUnFocusView(oldView);
     }
 
     @Override
     public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
-        oldView = itemView;
+//        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
+//        oldView = itemView;
     }
 
     @Override
     public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
-        oldView = itemView;
+//        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
+//        oldView = itemView;
     }
 
 }
