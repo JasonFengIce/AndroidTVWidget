@@ -5,10 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
+import com.open.androidtvwidget.leanback.OpenPresenter;
+import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.menu.OpenMenuItemView;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.demo.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 树级菜单的 Presenter. (mvp)
@@ -17,9 +23,48 @@ import com.open.demo.R;
 public class TreeMenuPresenter extends OpenPresenter {
 
     private RecyclerViewTV mRecyclerViewTV;
+    private OpenMenu mOpenMenu;
 
-    public TreeMenuPresenter(RecyclerViewTV recyclerViewTV) {
+    public TreeMenuPresenter(RecyclerViewTV recyclerViewTV, OpenMenu openMenu) {
         this.mRecyclerViewTV = recyclerViewTV;
+        this.mOpenMenu = openMenu;
+    }
+
+    @Override
+    public OpenMenu getOpenMenu() {
+        return this.mOpenMenu;
+    }
+
+    @Override
+    public void setOpenMenu(OpenMenu openMenu) {
+        this.mOpenMenu = openMenu;
+    }
+
+    private OpenMenuItem getItemPosition(int position) {
+        return mOpenMenu.getMenuDatas().get(position);
+    }
+
+    private void addAll(List<OpenMenuItem> list, int pos) {
+        mOpenMenu.getMenuDatas().addAll(pos, list);
+        getAdapter().notifyItemRangeInserted(pos, list.size());
+    }
+
+    private void removeAll(List<OpenMenuItem> list, int pos) {
+        int sizeNum = removeAllSubMenu(list);
+        getAdapter().notifyItemRangeRemoved(pos, sizeNum);
+    }
+
+    private int removeAllSubMenu(List<OpenMenuItem> list) {
+        int sizeNum = list.size();
+        for (OpenMenuItem menuItem : list) {
+            if (menuItem.hasSubMenu() && menuItem.isShowSubMenu()) {
+                menuItem.setShowSubMenu(false);
+                List<OpenMenuItem> delSubItems = menuItem.getSubMenu().getMenuDatas();
+                sizeNum += removeAllSubMenu(delSubItems);
+            }
+        }
+        mOpenMenu.getMenuDatas().removeAll(list);
+        return sizeNum;
     }
 
     @Override
@@ -31,8 +76,9 @@ public class TreeMenuPresenter extends OpenPresenter {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        OpenMenuItem menuItem = (OpenMenuItem) item;
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        ArrayList<OpenMenuItem> items = mOpenMenu.getMenuDatas();
+        OpenMenuItem menuItem = items.get(position);
         ContainerViewHolder holder = (ContainerViewHolder) viewHolder;
         OpenMenuItemView openMenuItemView = (OpenMenuItemView) holder.view;
         openMenuItemView.initialize(menuItem);
@@ -45,17 +91,17 @@ public class TreeMenuPresenter extends OpenPresenter {
         mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-                MenuAdapter menuAdapter = getAdapter();
-                OpenMenuItem menuItem = (OpenMenuItem) menuAdapter.getItemPosition(position);
+                GeneralAdapter menuAdapter = getAdapter();
+                OpenMenuItem menuItem = getItemPosition(position);
                 // 判断是否存在子菜单.
                 if (menuItem.hasSubMenu()) {
                     if (!menuItem.isShowSubMenu()) {
                         // 显示菜单.
-                        menuAdapter.addAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                        addAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
                         mRecyclerViewTV.scrollToPosition(position + 1);
                     } else {
                         // 隐藏菜单.
-                        menuAdapter.removeAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
+                        removeAll(menuItem.getSubMenu().getMenuDatas(), position + 1);
                         mRecyclerViewTV.scrollToPosition(position + 1);
                     }
                     menuItem.setShowSubMenu(!menuItem.isShowSubMenu());
@@ -64,8 +110,13 @@ public class TreeMenuPresenter extends OpenPresenter {
         });
     }
 
-    public MenuAdapter getAdapter() {
-        return (MenuAdapter) mRecyclerViewTV.getAdapter();
+    @Override
+    public int getItemCount() {
+        return mOpenMenu != null ? mOpenMenu.getMenuDatas().size() : 0;
+    }
+
+    public GeneralAdapter getAdapter() {
+        return (GeneralAdapter) mRecyclerViewTV.getAdapter();
     }
 
     static class ContainerViewHolder extends OpenPresenter.ViewHolder {

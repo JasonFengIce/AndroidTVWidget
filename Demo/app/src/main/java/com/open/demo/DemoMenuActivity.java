@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +16,8 @@ import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
-import com.open.demo.menu.MenuAdapter;
+import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
+import com.open.demo.menu.TreeMenuPresenter;
 
 /**
  * 菜单DEMO测试.
@@ -89,9 +91,10 @@ public class DemoMenuActivity extends Activity implements OnClickListener {
         mainUpView.setEffectBridge(new OpenEffectBridge());
         mainUpView.setUpRectResource(R.drawable.white_light_10);
         mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView_menu);
-        MenuAdapter menuAdapter = new MenuAdapter(mRecyclerView, mOpenMenu);
+        GeneralAdapter menuAdapter = new GeneralAdapter(new TreeMenuPresenter(mRecyclerView, mOpenMenu));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(menuAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
             public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {

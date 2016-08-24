@@ -1,7 +1,9 @@
-package com.open.demo.menu;
+package com.open.androidtvwidget.leanback;
 
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.open.androidtvwidget.menu.OpenMenu;
 
 /**
  * Created by hailongqiu on 2016/8/22.
@@ -21,6 +23,16 @@ public abstract class OpenPresenter {
     }
 
     public abstract ViewHolder onCreateViewHolder(ViewGroup parent);
-    public abstract void onBindViewHolder(ViewHolder viewHolder, Object item);
 
+    public abstract void onBindViewHolder(ViewHolder viewHolder, int position);
+
+    public abstract int getItemCount();
+
+    public OpenMenu getOpenMenu() {
+        return null;
+    }
+
+    public void setOpenMenu(OpenMenu openMenu) {
+
+    }
 }
