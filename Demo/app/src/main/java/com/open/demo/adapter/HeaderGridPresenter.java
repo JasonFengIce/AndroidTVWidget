@@ -57,22 +57,10 @@ public class HeaderGridPresenter extends OpenPresenter {
     }
 
     @Override
-    public void onViewAttachedToWindow(ViewHolder viewHolder) {
-    }
-
-    @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         if (isHeader(position)) {
             return;
         }
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
-    }
-
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
     }
 
 }

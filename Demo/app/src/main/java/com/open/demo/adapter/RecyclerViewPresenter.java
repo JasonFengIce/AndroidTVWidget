@@ -43,22 +43,10 @@ public class RecyclerViewPresenter extends OpenPresenter {
     }
 
     @Override
-    public void onViewAttachedToWindow(ViewHolder viewHolder) {
-    }
-
-    @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         GridViewHolder gridViewHolder = (GridViewHolder) viewHolder;
         TextView textView = (TextView) gridViewHolder.tv;
         textView.setText("item " + labels.get(position));
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
-    }
-
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
     }
 
 }

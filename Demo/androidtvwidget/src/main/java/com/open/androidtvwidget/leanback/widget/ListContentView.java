@@ -13,19 +13,19 @@ import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
  *  MenuContentView 是 Leanback 一个item 标题头下面的横向RecyclerView.
  * Created by hailongqiu on 2016/8/22.
  */
-public class MenuContentView extends LinearLayout {
+public class ListContentView extends LinearLayout {
 
     private RecyclerViewTV mRecyclerViewTV;
 
-    public MenuContentView(Context context) {
+    public ListContentView(Context context) {
         this(context, null);
     }
 
-    public MenuContentView(Context context, AttributeSet attrs) {
+    public ListContentView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public MenuContentView(Context context, AttributeSet attrs, int defStyle) {
+    public ListContentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //
         LayoutInflater inflater = LayoutInflater.from(context);

@@ -11,11 +11,17 @@ import android.view.View;
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.widget.ListRow;
+import com.open.androidtvwidget.leanback.widget.ListRowPresenter;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * recyclerview Demo.
@@ -48,7 +54,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         // 初始化左侧菜单.
         initLeftMenu();
         //  初始化带标题头的demo.
-        testHeaderGridLayout();
+//        testHeaderGridLayout();
+        testLeanbackDemo();
         //
         mRecyclerView.setOnItemListener(this);
         // item 单击事件处理.
@@ -148,7 +155,23 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
      *  Leanback Demo.
      */
     private void testLeanbackDemo() {
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        // 添加标题头.
+        List<ListRow> listRows = new ArrayList<ListRow>();
+        for (int i = 0; i < 6; i++) {
+            String txt = "标题头" + i;
+            // 添加一行的数据.
+            ListRow listRow = new ListRow(txt);
+            for (int j = 0; j < 20; j++) {
+                listRow.add("行" + i + "列" + j);
+            }
+            listRows.add(listRow);
+        }
+        //
+        ListRowPresenter listRowPresenter = new ListRowPresenter(listRows);
+        GeneralAdapter generalAdapter = new GeneralAdapter(listRowPresenter);
+        mRecyclerView.setAdapter(generalAdapter);
     }
 
     // 左边侧边栏的单击事件.
@@ -184,13 +207,13 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
 
     @Override
     public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-        mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
         oldView = itemView;
     }
 
     @Override
     public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-        mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
         oldView = itemView;
     }
 

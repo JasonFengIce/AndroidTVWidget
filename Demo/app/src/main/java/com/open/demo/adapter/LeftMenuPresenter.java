@@ -33,18 +33,9 @@ public class LeftMenuPresenter extends OpenPresenter {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Button btn = new Button(parent.getContext());
         return new ViewHolder(btn);
-    }
-
-    @Override
-    public void onViewAttachedToWindow(ViewHolder viewHolder) {
     }
 
     @Override
@@ -52,14 +43,6 @@ public class LeftMenuPresenter extends OpenPresenter {
         Button btn = (Button) viewHolder.view;
         String str = strList.get(position);
         btn.setText(str);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
-    }
-
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
     }
 
 }

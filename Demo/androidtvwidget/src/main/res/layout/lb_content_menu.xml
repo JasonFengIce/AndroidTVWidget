@@ -4,6 +4,7 @@
     android:id="@+id/menu_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FF0000"
     android:clipToPadding="false">
 
 </com.open.androidtvwidget.leanback.recycle.RecyclerViewTV>

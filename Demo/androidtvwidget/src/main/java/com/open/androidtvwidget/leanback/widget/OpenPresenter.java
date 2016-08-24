@@ -20,12 +20,34 @@ public abstract class OpenPresenter {
         }
     }
 
-    public abstract int getItemCount();
-    public abstract int getItemViewType(int position);
+    public int getItemCount() {
+        return 0;
+    }
+
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
     public abstract ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-    public abstract void onViewAttachedToWindow(ViewHolder viewHolder);
-    public abstract void onBindViewHolder(ViewHolder viewHolder, int position);
-    public abstract void onViewDetachedFromWindow (ViewHolder viewHolder);
-    public abstract void onUnbindViewHolder(ViewHolder viewHolder);
+
+    public void onViewAttachedToWindow(ViewHolder viewHolder) {
+
+    }
+
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+
+    }
+
+    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
+
+    }
+
+    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
+
+    }
+
+    public void onUnbindViewHolder(ViewHolder viewHolder) {
+
+    }
 
 }
