@@ -3,8 +3,6 @@ package com.open.androidtvwidget.leanback.widget;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.open.androidtvwidget.menu.OpenMenu;
-
 /**
  * Created by hailongqiu on 2016/8/22.
  */
@@ -22,10 +20,12 @@ public abstract class OpenPresenter {
         }
     }
 
-    public abstract ViewHolder onCreateViewHolder(ViewGroup parent);
-
-    public abstract void onBindViewHolder(ViewHolder viewHolder, int position);
-
     public abstract int getItemCount();
+    public abstract int getItemViewType(int position);
+    public abstract ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
+    public abstract void onViewAttachedToWindow(ViewHolder viewHolder);
+    public abstract void onBindViewHolder(ViewHolder viewHolder, int position);
+    public abstract void onViewDetachedFromWindow (ViewHolder viewHolder);
+    public abstract void onUnbindViewHolder(ViewHolder viewHolder);
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.open.androidtvwidget.leanback.widget.OpenPresenter;
 
 /**
+ * RecyclerView 通用 Adapter.
  * Created by hailongqiu on 2016/8/22.
  */
 public class GeneralAdapter extends RecyclerView.Adapter {
@@ -18,11 +19,21 @@ public class GeneralAdapter extends RecyclerView.Adapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return this.mPresenter.getItemViewType(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.mPresenter.getItemCount();
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         OpenPresenter presenter = this.mPresenter;
         OpenPresenter.ViewHolder presenterVh;
-        presenterVh = presenter.onCreateViewHolder(parent);
+        presenterVh = presenter.onCreateViewHolder(parent, viewType);
         view = presenterVh.view;
         ViewHolder viewHolder = new ViewHolder(view, presenter, presenterVh);
         return viewHolder;
@@ -31,17 +42,25 @@ public class GeneralAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        this.mPresenter.onBindViewHolder(viewHolder.getViewHolder(), position);
+        viewHolder.mPresenter.onBindViewHolder(viewHolder.getViewHolder(), position);
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.mPresenter.onViewAttachedToWindow(viewHolder.mHolder);
     }
 
     @Override
-    public int getItemCount() {
-        return mPresenter.getItemCount();
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.mPresenter.onViewDetachedFromWindow(viewHolder.mHolder);
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.mPresenter.onUnbindViewHolder(viewHolder.mHolder);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

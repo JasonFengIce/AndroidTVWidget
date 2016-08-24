@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.leanback.widget.OpenPresenter;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.menu.OpenMenuItemView;
-import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.demo.R;
 
 import java.util.ArrayList;
@@ -58,7 +58,17 @@ public class TreeMenuPresenter extends OpenPresenter {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent) {
+    public int getItemCount() {
+        return mOpenMenu != null ? mOpenMenu.getMenuDatas().size() : 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_menu_item_layout, parent, false);
         //
         OpenPresenter.ViewHolder result = new ContainerViewHolder(rootView);
@@ -101,8 +111,15 @@ public class TreeMenuPresenter extends OpenPresenter {
     }
 
     @Override
-    public int getItemCount() {
-        return mOpenMenu != null ? mOpenMenu.getMenuDatas().size() : 0;
+    public void onViewAttachedToWindow(ViewHolder viewHolder) {
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
+    }
+
+    @Override
+    public void onUnbindViewHolder(ViewHolder viewHolder) {
     }
 
     public GeneralAdapter getAdapter() {

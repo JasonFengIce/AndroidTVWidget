@@ -7,27 +7,29 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
+import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
-import com.open.demo.adapter.HeaderGridAdapter;
-import com.open.demo.adapter.RecyclerViewAdapter;
+import com.open.demo.adapter.HeaderGridPresenter;
+import com.open.demo.adapter.LeftMenuPresenter;
+import com.open.demo.adapter.RecyclerViewPresenter;
 
 /**
  * recyclerview Demo.
  * setSelectedItemAtCentered 设置一直在中间. (如果设置 false，那么请使用setSelectedItemOffset来设置相差的边距)
+ *
  * @author hailongqiu
  */
-public class DemoRecyclerviewActivity extends Activity implements OnClickListener, OnFocusChangeListener {
+public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV.OnItemListener {
 
-    Context mContext;
-    RecyclerViewTV recyclerView;
-    MainUpView mainUpView1;
-    RecyclerViewBridge mRecyclerViewBridge;
+    private Context mContext;
+    private RecyclerViewTV left_menu_rv; // 左侧菜单.
+    private RecyclerViewTV mRecyclerView;
+    private MainUpView mainUpView1;
+    private RecyclerViewBridge mRecyclerViewBridge;
     private View oldView;
 
     @Override
@@ -36,67 +38,78 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
         setContentView(R.layout.demo_recyclerview_activity);
         OPENLOG.initTag("hailongqiu", true); // 打开debug信息.
         mContext = DemoRecyclerviewActivity.this;
-        recyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView);
+        left_menu_rv = (RecyclerViewTV) findViewById(R.id.left_menu_rv);
+        mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
         mainUpView1.setEffectBridge(new RecyclerViewBridge());
-        //
+        // 注意这里，需要使用 RecyclerViewBridge 的移动边框 Bridge.
         mRecyclerViewBridge = (RecyclerViewBridge) mainUpView1.getEffectBridge();
         mRecyclerViewBridge.setUpRectResource(R.drawable.test_rectangle);
-        //
+        // 初始化左侧菜单.
+        initLeftMenu();
+        //  初始化带标题头的demo.
         testHeaderGridLayout();
-        initAllViewEvents();
         //
-        recyclerView.setOnItemListener(new RecyclerViewTV.OnItemListener() {
-            @Override
-            public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
-                mRecyclerViewBridge.setUnFocusView(oldView);
-            }
-
-            @Override
-            public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-                oldView = itemView;
-            }
-
-            // 调整边框偏移的问题.
-            @Override
-            public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-                mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
-                oldView = itemView;
-            }
-        });
+        mRecyclerView.setOnItemListener(this);
         // item 单击事件处理.
-        recyclerView.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
+        mRecyclerView.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
             }
         });
     }
 
-    private void initAllViewEvents() {
-        findViewById(R.id.h_liner_btn).setOnClickListener(this);
-        findViewById(R.id.v_liner_btn).setOnClickListener(this);
-        findViewById(R.id.h_grid_btn).setOnClickListener(this);
-        findViewById(R.id.v_grid_btn).setOnClickListener(this);
-        findViewById(R.id.head_grid_btn).setOnClickListener(this);
-        //
-        findViewById(R.id.h_liner_btn).setOnFocusChangeListener(this);
-        findViewById(R.id.v_liner_btn).setOnFocusChangeListener(this);
-        findViewById(R.id.h_grid_btn).setOnFocusChangeListener(this);
-        findViewById(R.id.v_grid_btn).setOnFocusChangeListener(this);
-        findViewById(R.id.head_grid_btn).setOnFocusChangeListener(this);
+    private void initLeftMenu() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        left_menu_rv.setLayoutManager(layoutManager);
+        left_menu_rv.setFocusable(false);
+        GeneralAdapter generalAdapter = new GeneralAdapter(new LeftMenuPresenter());
+        left_menu_rv.setAdapter(generalAdapter);
+        left_menu_rv.setOnItemListener(new RecyclerViewTV.OnItemListener() {
+            @Override
+            public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
+                // 传入 itemView也可以, 自己保存的 oldView也可以.
+                mRecyclerViewBridge.setUnFocusView(itemView);
+            }
+
+            @Override
+            public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
+                mRecyclerViewBridge.setFocusView(itemView, 1.0f);
+                oldView = itemView;
+            }
+
+            /**
+             * 这里是调整开头和结尾的移动边框.
+             */
+            @Override
+            public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
+                mRecyclerViewBridge.setFocusView(itemView, 1.0f);
+                oldView = itemView;
+            }
+        });
+        left_menu_rv.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
+                // 测试.
+                mRecyclerViewBridge.setFocusView(itemView, oldView, 1.0f);
+                oldView = itemView;
+                //
+                onViewItemClick(itemView, position);
+            }
+        });
     }
 
     /**
      * 测试LinerLayout.
      */
-    public void testRecyclerViewLinerLayout(int orientation) {
+    private void testRecyclerViewLinerLayout(int orientation) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(orientation);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setFocusable(false);
-        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(100);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setFocusable(false);
+        GeneralAdapter generalAdapter = new GeneralAdapter(new RecyclerViewPresenter(100));
+        mRecyclerView.setAdapter(generalAdapter);
     }
 
     /**
@@ -105,10 +118,10 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
     private void testRecyclerViewGridLayout(int orientation) {
         GridLayoutManager gridlayoutManager = new GridLayoutManager(this, 4);
         gridlayoutManager.setOrientation(orientation);
-        recyclerView.setLayoutManager(gridlayoutManager);
-        recyclerView.setFocusable(false);
-        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(100);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        mRecyclerView.setLayoutManager(gridlayoutManager);
+        mRecyclerView.setFocusable(false);
+        GeneralAdapter generalAdapter = new GeneralAdapter(new RecyclerViewPresenter(100));
+        mRecyclerView.setAdapter(generalAdapter);
     }
 
     /**
@@ -118,38 +131,46 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
         final GridLayoutManager gridlayoutManager = new GridLayoutManager(this, 5);
         gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         // recyclerView.setHasFixedSize(true); // 保持固定的大小
-        recyclerView.setLayoutManager(gridlayoutManager);
-        recyclerView.setFocusable(false);
-        final HeaderGridAdapter mHeaderGridAdapter = new HeaderGridAdapter(100);
-        recyclerView.setAdapter(mHeaderGridAdapter);
+        mRecyclerView.setLayoutManager(gridlayoutManager);
+        mRecyclerView.setFocusable(false);
+        final HeaderGridPresenter headerGridAdapter = new HeaderGridPresenter(100);
+        GeneralAdapter generalAdapter = new GeneralAdapter(headerGridAdapter);
+        mRecyclerView.setAdapter(generalAdapter);
         gridlayoutManager.setSpanSizeLookup(new SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return mHeaderGridAdapter.isHeader(position) ? gridlayoutManager.getSpanCount() : 1;
+                return headerGridAdapter.isHeader(position) ? gridlayoutManager.getSpanCount() : 1;
             }
         });
     }
 
-    // 左边侧边栏的单击事件.
+    /**
+     *  Leanback Demo.
+     */
+    private void testLeanbackDemo() {
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.h_liner_btn: // 横向 liner layout.
+    }
+
+    // 左边侧边栏的单击事件.
+    private void onViewItemClick(View v, int pos) {
+        switch (pos) {
+            case 0: // 横向 liner layout.
                 testRecyclerViewLinerLayout(LinearLayoutManager.HORIZONTAL);
                 break;
-            case R.id.v_liner_btn:
+            case 1:
                 testRecyclerViewLinerLayout(LinearLayoutManager.VERTICAL);
                 break;
-            case R.id.h_grid_btn: // 横向 grid layout.
+            case 2: // 横向 grid layout.
                 testRecyclerViewGridLayout(GridLayoutManager.HORIZONTAL);
                 break;
-            case R.id.v_grid_btn:
+            case 3:
                 testRecyclerViewGridLayout(GridLayoutManager.VERTICAL);
                 break;
-            case R.id.head_grid_btn: // 带header的grid.
+            case 4: // 带header的grid.
                 testHeaderGridLayout();
+                break;
+            case 5: // Leanback demo.
+                testLeanbackDemo();
                 break;
             default:
                 break;
@@ -157,9 +178,20 @@ public class DemoRecyclerviewActivity extends Activity implements OnClickListene
     }
 
     @Override
-    public void onFocusChange(View focusview, boolean hasFocus) {
-        mRecyclerViewBridge.setFocusView(focusview, oldView, 1.0f);
-        oldView = focusview;
+    public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
+        mRecyclerViewBridge.setUnFocusView(oldView);
+    }
+
+    @Override
+    public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
+        mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+        oldView = itemView;
+    }
+
+    @Override
+    public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
+        mRecyclerViewBridge.setFocusView(itemView, 1.4f, 1.2f);
+        oldView = itemView;
     }
 
 }
