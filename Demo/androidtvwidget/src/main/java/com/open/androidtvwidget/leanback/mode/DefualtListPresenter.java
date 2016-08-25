@@ -30,6 +30,10 @@ public class DefualtListPresenter extends OpenPresenter {
         return mItems.size();
     }
 
+    public Object getItem(int pos) {
+        return this.mItems.get(pos);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Button btn = new Button(parent.getContext());

@@ -56,7 +56,6 @@ public class ItemListPresenter extends OpenPresenter {
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
             }
         });
-//        itemListViewHolder.mRecyclerViewTV.getLayoutParams().height = 120;
     }
 
     static class ItemListViewHolder extends OpenPresenter.ViewHolder {

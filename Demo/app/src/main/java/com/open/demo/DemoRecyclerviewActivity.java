@@ -10,23 +10,24 @@ import android.view.View;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
-import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemHeaderPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemListPresenter;
-import com.open.androidtvwidget.leanback.recycle.AutoMeaureGridLayoutManager;
-import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
-import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.leanback.mode.ListRow;
 import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
 import com.open.androidtvwidget.leanback.mode.OpenPresenter;
+import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
+import com.open.demo.mode.Movie;
+import com.open.demo.mode.TestMoviceListPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * recyclerview Demo.
@@ -156,13 +157,29 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         });
     }
 
-    public static final String MOVIE_CATEGORY[] = {
+    /**
+     * Leanback 标题头.
+     */
+    private static final String MOVIE_CATEGORY[] = {
             "全部软件",
             "聊天工具",
             "浏览器",
             "游戏娱乐",
             "网络游戏",
             "杀毒安全",
+    };
+
+    /**
+     * Leanback 横向 数据测试.
+     */
+    private static final Movie MOVIE_ITEMS[] = {
+            new Movie(0, "有道云笔记"),
+            new Movie(0, "陌陌"),
+            new Movie(0, "爱奇艺"),
+            new Movie(0, "英雄联盟"),
+            new Movie(0, "腾讯视频"),
+            new Movie(0, "QQ音乐"),
+            new Movie(0, "无敌讯飞"),
     };
 
     /**
@@ -178,7 +195,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt);
             for (int j = 0; j < 20; j++) {
-                listRow.add("行" + i + "列" + j);
+                listRow.add(MOVIE_ITEMS[new Random().nextInt(MOVIE_ITEMS.length - 1)]);
             }
             listRows.add(listRow);
         }
@@ -187,7 +204,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         //  而横向中的item 继承 DefualtListPresenter 来重写.
         ListRowPresenter listRowPresenter = new ListRowPresenter(listRows,
                 new ItemHeaderPresenter(),
-                new ItemListPresenter(new DefualtListPresenter()));
+                new ItemListPresenter(new TestMoviceListPresenter()));
         GeneralAdapter generalAdapter = new GeneralAdapter(listRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
     }
