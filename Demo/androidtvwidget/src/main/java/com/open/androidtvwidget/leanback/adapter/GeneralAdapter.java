@@ -18,6 +18,10 @@ public class GeneralAdapter extends RecyclerView.Adapter {
         this.mPresenter = presenter;
     }
 
+    public OpenPresenter getPresenter() {
+        return this.mPresenter;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return this.mPresenter.getItemViewType(position);

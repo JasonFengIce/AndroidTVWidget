@@ -15,13 +15,10 @@
             android:id="@+id/left_menu_rv"
             android:layout_width="@dimen/w_200"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
             android:focusable="false" />
     </LinearLayout>
 
     <RelativeLayout
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -32,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#000000"
-            android:clipToPadding="false"
             android:focusable="false" >
             
         </com.open.androidtvwidget.leanback.recycle.RecyclerViewTV>

@@ -13,6 +13,7 @@ import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.leanback.widget.ListRow;
 import com.open.androidtvwidget.leanback.widget.ListRowPresenter;
+import com.open.androidtvwidget.leanback.widget.OpenPresenter;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
@@ -21,7 +22,6 @@ import com.open.demo.adapter.RecyclerViewPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * recyclerview Demo.
@@ -151,16 +151,25 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         });
     }
 
+    public static final String MOVIE_CATEGORY[] = {
+            "全部软件",
+            "聊天工具",
+            "浏览器",
+            "游戏娱乐",
+            "网络游戏",
+            "杀毒安全",
+    };
+
     /**
-     *  Leanback Demo.
+     * Leanback Demo.
      */
     private void testLeanbackDemo() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         // 添加标题头.
         List<ListRow> listRows = new ArrayList<ListRow>();
-        for (int i = 0; i < 6; i++) {
-            String txt = "标题头" + i;
+        for (int i = 0; i < MOVIE_CATEGORY.length; i++) {
+            String txt = MOVIE_CATEGORY[i];
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt);
             for (int j = 0; j < 20; j++) {
@@ -180,13 +189,13 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             case 0: // 横向 liner layout.
                 testRecyclerViewLinerLayout(LinearLayoutManager.HORIZONTAL);
                 break;
-            case 1:
+            case 1: // 纵向 liner layout.
                 testRecyclerViewLinerLayout(LinearLayoutManager.VERTICAL);
                 break;
             case 2: // 横向 grid layout.
                 testRecyclerViewGridLayout(GridLayoutManager.HORIZONTAL);
                 break;
-            case 3:
+            case 3: // 纵向 grid layout.
                 testRecyclerViewGridLayout(GridLayoutManager.VERTICAL);
                 break;
             case 4: // 带header的grid.
@@ -200,21 +209,36 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         }
     }
 
+    /**
+     * 排除 Leanback demo的RecyclerView.
+     */
+    private boolean isListRowPresenter() {
+        GeneralAdapter generalAdapter = (GeneralAdapter) mRecyclerView.getAdapter();
+        OpenPresenter openPresenter = generalAdapter.getPresenter();
+        return (openPresenter instanceof ListRowPresenter);
+    }
+
     @Override
     public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
-//        mRecyclerViewBridge.setUnFocusView(oldView);
+        if (!isListRowPresenter()) {
+            mRecyclerViewBridge.setUnFocusView(oldView);
+        }
     }
 
     @Override
     public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-//        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
-//        oldView = itemView;
+        if (!isListRowPresenter()) {
+            mRecyclerViewBridge.setFocusView(itemView, 1.2f);
+            oldView = itemView;
+        }
     }
 
     @Override
     public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-//        mRecyclerViewBridge.setFocusView(itemView, 1.0f);
-//        oldView = itemView;
+        if (!isListRowPresenter()) {
+            mRecyclerViewBridge.setFocusView(itemView, 1.2f);
+            oldView = itemView;
+        }
     }
 
 }

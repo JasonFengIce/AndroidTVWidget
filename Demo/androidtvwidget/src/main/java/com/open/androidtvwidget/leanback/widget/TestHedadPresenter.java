@@ -12,8 +12,8 @@ public class TestHedadPresenter extends OpenPresenter {
 
     List<String> mItems;
 
-    public TestHedadPresenter(List<String> items) {
-        mItems = items;
+    public TestHedadPresenter(Object items) {
+        mItems = (List<String>) items;
     }
 
     @Override
@@ -29,7 +29,8 @@ public class TestHedadPresenter extends OpenPresenter {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ((Button) viewHolder.view).setText(mItems.get(position));
+        String str = ((String)mItems.get(position));
+        ((Button) viewHolder.view).setText(str);
 
     }
 }

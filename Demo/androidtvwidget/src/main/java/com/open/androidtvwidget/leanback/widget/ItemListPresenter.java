@@ -20,16 +20,13 @@ public class ItemListPresenter extends OpenPresenter {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ListContentView listContentView = new ListContentView(parent.getContext());
-
         return new ItemListViewHolder(listContentView, listContentView.getRecyclerViewTV());
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        OPENLOG.D("onBindViewHolder2222222222");
         ItemListViewHolder itemListViewHolder = (ItemListViewHolder) viewHolder;
-        List<String> items = (List<String>) item;
-        GeneralAdapter generalAdapter = new GeneralAdapter(new TestHedadPresenter(items));
+        GeneralAdapter generalAdapter = new GeneralAdapter(new TestHedadPresenter(item));
         itemListViewHolder.mRecyclerViewTV.setLayoutManager(new LinearLayoutManager(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false));
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
         itemListViewHolder.mRecyclerViewTV.getLayoutParams().height = 120;

@@ -3,17 +3,13 @@ package com.open.androidtvwidget.leanback.widget;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.menu.OpenMenuItemView;
 
-import java.util.List;
-
 /**
- * 标题头的 Presenter.
+ * 标题头的 Presenter. (test)
  * Created by hailongqiu on 2016/8/24.
  */
 public class ItemHeaderPresenter extends OpenPresenter {
