@@ -1,13 +1,11 @@
 package com.open.androidtvwidget.leanback.mode;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
-import com.open.androidtvwidget.leanback.recycle.AutoMeaureGridLayoutManager;
-import com.open.androidtvwidget.leanback.recycle.AutoMeaureLayoutManger;
+import com.open.androidtvwidget.leanback.recycle.LinearLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.leanback.widget.ListContentView;
 
@@ -38,8 +36,10 @@ public class ItemListPresenter extends OpenPresenter {
         final ItemListViewHolder itemListViewHolder = (ItemListViewHolder) viewHolder;
         mListPresenter.setItems(item);
         GeneralAdapter generalAdapter = new GeneralAdapter(mListPresenter);
-        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureLayoutManger(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.VERTICAL, false));
+//        new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.VERTICAL, false)
+        LinearLayoutManagerTV lm = new LinearLayoutManagerTV(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        lm.setAutoMeasureEnabled(true);
+        itemListViewHolder.mRecyclerViewTV.setLayoutManager(lm);
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
         itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
