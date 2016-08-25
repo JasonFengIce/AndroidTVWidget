@@ -39,6 +39,8 @@ public class LeftMenuPresenter extends OpenPresenter {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Button btn = (Button) viewHolder.view;
+        btn.setFocusableInTouchMode(true); // 只是测试鼠标效果.
+        btn.setFocusable(true);
         String str = strList.get(position);
         btn.setText(str);
     }

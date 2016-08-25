@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.open.androidtvwidget.R;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.LinearLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
@@ -38,7 +39,7 @@ public class ItemListPresenter extends OpenPresenter {
         GeneralAdapter generalAdapter = new GeneralAdapter(mListPresenter);
 //        new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.VERTICAL, false)
         LinearLayoutManagerTV lm = new LinearLayoutManagerTV(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        lm.setAutoMeasureEnabled(true);
+        lm.setAutoMeasureEnabled(true); // 自动适应布局.
         itemListViewHolder.mRecyclerViewTV.setLayoutManager(lm);
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
         itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {

@@ -9,6 +9,7 @@ import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
 import com.open.demo.R;
 
 /**
+ * Leanback 横向item demo.
  * Created by hailongqiu on 2016/8/25.
  */
 public class TestMoviceListPresenter extends DefualtListPresenter {

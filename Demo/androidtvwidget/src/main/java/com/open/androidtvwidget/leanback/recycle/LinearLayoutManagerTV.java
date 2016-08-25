@@ -112,6 +112,9 @@ public class LinearLayoutManagerTV extends LinearLayoutManager {
         }
     }
 
+    /**
+     * 自动适应布局. (当height="wrap_..")
+     */
     public void setAutoMeasureEnabled(boolean isAutoMeaure) {
         this.mIsAutoMeaure = isAutoMeaure;
     }

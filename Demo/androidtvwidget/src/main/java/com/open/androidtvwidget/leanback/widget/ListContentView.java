@@ -30,7 +30,7 @@ public class ListContentView extends LinearLayout {
         super(context, attrs, defStyle);
         //
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.lb_content_menu, this);
+        inflater.inflate(R.layout.lb_content_view, this);
         mRecyclerViewTV = (RecyclerViewTV) findViewById(R.id.menu_content);
         //
         setOrientation(LinearLayout.VERTICAL);
