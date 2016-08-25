@@ -13,6 +13,8 @@ import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemHeaderPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemListPresenter;
+import com.open.androidtvwidget.leanback.recycle.AutoMeaureGridLayoutManager;
+import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.leanback.mode.ListRow;
 import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
@@ -126,7 +128,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
      * 测试GridLayout.
      */
     private void testRecyclerViewGridLayout(int orientation) {
-        GridLayoutManager gridlayoutManager = new GridLayoutManager(this, 4);
+        GridLayoutManagerTV gridlayoutManager = new GridLayoutManagerTV(this, 4); // 解决快速长按焦点丢失问题.
         gridlayoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setFocusable(false);
@@ -138,7 +140,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
      * 测试带标题栏的grid.
      */
     private void testHeaderGridLayout() {
-        final GridLayoutManager gridlayoutManager = new GridLayoutManager(this, 5);
+        final GridLayoutManagerTV gridlayoutManager = new GridLayoutManagerTV(this, 5); // 解决快速长按焦点丢失问题.
         gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         // recyclerView.setHasFixedSize(true); // 保持固定的大小
         mRecyclerView.setLayoutManager(gridlayoutManager);

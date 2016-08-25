@@ -14,6 +14,10 @@ import com.open.androidtvwidget.utils.OPENLOG;
  */
 public class AutoMeaureLayoutManger extends LinearLayoutManager {
 
+    public AutoMeaureLayoutManger(Context context) {
+        super(context);
+    }
+
     public AutoMeaureLayoutManger(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }

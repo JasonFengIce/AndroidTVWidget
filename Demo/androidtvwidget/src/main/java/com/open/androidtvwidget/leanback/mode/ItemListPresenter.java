@@ -38,8 +38,8 @@ public class ItemListPresenter extends OpenPresenter {
         final ItemListViewHolder itemListViewHolder = (ItemListViewHolder) viewHolder;
         mListPresenter.setItems(item);
         GeneralAdapter generalAdapter = new GeneralAdapter(mListPresenter);
-//        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureLayoutManger(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.HORIZONTAL, false));
+        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureLayoutManger(viewHolder.view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+//        itemListViewHolder.mRecyclerViewTV.setLayoutManager(new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.VERTICAL, false));
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
         itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
