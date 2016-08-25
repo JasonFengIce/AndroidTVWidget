@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.open.androidtvwidget.leanback.widget.OpenPresenter;
+import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 
 /**
  * RecyclerView 通用 Adapter.

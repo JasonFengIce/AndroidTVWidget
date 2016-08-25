@@ -1,4 +1,4 @@
-package com.open.androidtvwidget.leanback.widget;
+package com.open.androidtvwidget.leanback.mode;
 
 import android.view.LayoutInflater;
 import android.view.View;

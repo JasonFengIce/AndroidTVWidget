@@ -1,16 +1,10 @@
-package com.open.androidtvwidget.leanback.widget;
+package com.open.androidtvwidget.leanback.mode;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
-import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.widget.ItemContainerView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,13 +13,30 @@ import java.util.List;
  */
 public class ListRowPresenter extends OpenPresenter {
 
-    OpenPresenter mItemHeaderPresenter = new ItemHeaderPresenter(); // item 标题头的 Presenter.
-    OpenPresenter mItemListPresenter = new ItemListPresenter(); // item 标题头下面的 横向 items.
+    OpenPresenter mItemHeaderPresenter;//  item 标题头的 Presenter.
+    OpenPresenter mItemListPresenter;// item 标题头下面的 横向 items.
 
     List<ListRow> mItems;
 
-    public ListRowPresenter(List<ListRow> items) {
+    /**
+     * 你可以设置自己的 头 presenter, 还有横向 presenter.
+     *
+     * @param items
+     * @param headPresenter
+     * @param listPresenter
+     */
+    public ListRowPresenter(List<ListRow> items, OpenPresenter headPresenter, OpenPresenter listPresenter) {
         this.mItems = items;
+        if (headPresenter != null) {
+            this.mItemHeaderPresenter = headPresenter;
+        }
+        if (listPresenter != null) {
+            this.mItemListPresenter = listPresenter;
+        }
+    }
+
+    public ListRowPresenter(List<ListRow> items) {
+        this(items, new ItemHeaderPresenter(), new ItemListPresenter(new DefualtListPresenter()));
     }
 
     @Override

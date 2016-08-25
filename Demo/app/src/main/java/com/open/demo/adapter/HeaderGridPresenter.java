@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.open.androidtvwidget.leanback.widget.OpenPresenter;
+import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.demo.R;
 
 import java.util.ArrayList;

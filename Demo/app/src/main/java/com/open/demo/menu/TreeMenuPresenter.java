@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
-import com.open.androidtvwidget.leanback.widget.OpenPresenter;
+import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.androidtvwidget.menu.OpenMenu;
 import com.open.androidtvwidget.menu.OpenMenuItem;
 import com.open.androidtvwidget.menu.OpenMenuItemView;

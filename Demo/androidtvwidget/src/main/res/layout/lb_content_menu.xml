@@ -2,10 +2,9 @@
 <com.open.androidtvwidget.leanback.recycle.RecyclerViewTV
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_content"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#FF0000"
-    android:clipToPadding="false">
+    android:descendantFocusability="blocksDescendants">
 
 </com.open.androidtvwidget.leanback.recycle.RecyclerViewTV>

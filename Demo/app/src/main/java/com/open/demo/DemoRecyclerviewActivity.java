@@ -10,10 +10,13 @@ import android.view.View;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
+import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
+import com.open.androidtvwidget.leanback.mode.ItemHeaderPresenter;
+import com.open.androidtvwidget.leanback.mode.ItemListPresenter;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
-import com.open.androidtvwidget.leanback.widget.ListRow;
-import com.open.androidtvwidget.leanback.widget.ListRowPresenter;
-import com.open.androidtvwidget.leanback.widget.OpenPresenter;
+import com.open.androidtvwidget.leanback.mode.ListRow;
+import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
+import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
@@ -177,8 +180,12 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             }
             listRows.add(listRow);
         }
-        //
-        ListRowPresenter listRowPresenter = new ListRowPresenter(listRows);
+        // 测试demo, 一般你想要自己的效果，
+        // 继承 Header 和 List 可以继承 OpenPresente来重写.
+        //  而横向中的item 继承 DefualtListPresenter 来重写.
+        ListRowPresenter listRowPresenter = new ListRowPresenter(listRows,
+                new ItemHeaderPresenter(),
+                new ItemListPresenter(new DefualtListPresenter()));
         GeneralAdapter generalAdapter = new GeneralAdapter(listRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
     }

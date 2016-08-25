@@ -1,11 +1,9 @@
 package com.open.demo.adapter;
 
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.open.androidtvwidget.leanback.widget.OpenPresenter;
-import com.open.androidtvwidget.utils.OPENLOG;
+import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -32,6 +32,9 @@ public class ItemContainerView extends LinearLayout {
         inflater.inflate(R.layout.lb_item_container, this);
         mHeadDock = (ViewGroup) findViewById(R.id.lb_item_container_head_dock);
         setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        //
+        setClipChildren(false);
+        setClipToPadding(false);
     }
 
     public void addHeaderView(View headerView) {
