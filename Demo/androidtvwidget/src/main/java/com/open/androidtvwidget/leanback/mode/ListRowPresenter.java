@@ -27,16 +27,12 @@ public class ListRowPresenter extends OpenPresenter {
      */
     public ListRowPresenter(List<ListRow> items, OpenPresenter headPresenter, OpenPresenter listPresenter) {
         this.mItems = items;
-        if (headPresenter != null) {
-            this.mItemHeaderPresenter = headPresenter;
-        }
-        if (listPresenter != null) {
-            this.mItemListPresenter = listPresenter;
-        }
+        this.mItemHeaderPresenter = headPresenter;
+        this.mItemListPresenter = listPresenter;
     }
 
     public ListRowPresenter(List<ListRow> items) {
-        this(items, new ItemHeaderPresenter(), new ItemListPresenter(new DefualtListPresenter()));
+        this(items, null, null);
     }
 
     @Override
@@ -60,11 +56,17 @@ public class ListRowPresenter extends OpenPresenter {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemContainerView itemContainerView = new ItemContainerView(parent.getContext());
         // 添加标题头.
-        ViewHolder headVH = mItemHeaderPresenter.onCreateViewHolder(parent, viewType);
-        itemContainerView.addHeaderView(headVH.view);
+        ViewHolder headVH = null;
+        if (mItemHeaderPresenter != null) {
+            headVH = mItemHeaderPresenter.onCreateViewHolder(parent, viewType);
+            itemContainerView.addHeaderView(headVH.view);
+        }
         // 添加横向控件.
-        ViewHolder listVH = mItemListPresenter.onCreateViewHolder(parent, viewType);
-        itemContainerView.addRowView(listVH.view);
+        ViewHolder listVH = null;
+        if (mItemListPresenter != null) {
+            listVH = mItemListPresenter.onCreateViewHolder(parent, viewType);
+            itemContainerView.addRowView(listVH.view);
+        }
         //
         return new ListRowViewHolder(itemContainerView, headVH, listVH);
     }

@@ -203,19 +203,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             add(new Movie(0, "优酷AA"));
             add(new Movie(0, "篮球AA"));
             add(new Movie(0, "足球AAA1"));
-            add(new Movie(0, "足球AAA2"));
-            add(new Movie(0, "足球AAA3"));
-            add(new Movie(0, "足球AAA4"));
-            add(new Movie(0, "足球AAA5"));
-            add(new Movie(0, "足球AAA6"));
-            add(new Movie(0, "足球AAA7"));
-            add(new Movie(0, "足球AAA8"));
-            add(new Movie(0, "足球AAA9"));
-            add(new Movie(0, "足球AAA10"));
-            add(new Movie(0, "足球AAA11"));
-            add(new Movie(0, "足球AAA12"));
-            add(new Movie(0, "足球AAA13"));
-            add(new Movie(0, "足球AAA14"));
             add(new Movie(0, "足球AAA15"));
             add(new Movie(0, "足球AAA16"));
         }

@@ -13,16 +13,6 @@ import com.open.androidtvwidget.leanback.widget.ListContentView;
  */
 public class ItemListPresenter extends OpenPresenter {
 
-    DefualtListPresenter mListPresenter;
-
-    public ItemListPresenter() {
-        mListPresenter = new DefualtListPresenter();
-    }
-
-    public ItemListPresenter(DefualtListPresenter listPresenter) {
-//        this.mListPresenter = listPresenter;
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ListContentView listContentView = new ListContentView(parent.getContext());
@@ -46,30 +36,30 @@ public class ItemListPresenter extends OpenPresenter {
         itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
             public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
-                if (mListPresenter.getOnItemListener() != null) {
-                    mListPresenter.getOnItemListener().onItemPreSelected(parent, itemView, position);
+                if (itemListViewHolder.defualtListPresenter.getOnItemListener() != null) {
+                    itemListViewHolder.defualtListPresenter.getOnItemListener().onItemPreSelected(parent, itemView, position);
                 }
             }
 
             @Override
             public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-                if (mListPresenter.getOnItemListener() != null) {
-                    mListPresenter.getOnItemListener().onItemSelected(parent, itemView, position);
+                if (itemListViewHolder.defualtListPresenter.getOnItemListener() != null) {
+                    itemListViewHolder.defualtListPresenter.getOnItemListener().onItemSelected(parent, itemView, position);
                 }
             }
 
             @Override
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-                if (mListPresenter.getOnItemListener() != null) {
-                    mListPresenter.getOnItemListener().onReviseFocusFollow(parent, itemView, position);
+                if (itemListViewHolder.defualtListPresenter.getOnItemListener() != null) {
+                    itemListViewHolder.defualtListPresenter.getOnItemListener().onReviseFocusFollow(parent, itemView, position);
                 }
             }
         });
         itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-                if (mListPresenter.getOnItemClickListener() != null) {
-                    mListPresenter.getOnItemClickListener().onItemClick(parent, itemView, position);
+                if (itemListViewHolder.defualtListPresenter.getOnItemClickListener() != null) {
+                    itemListViewHolder.defualtListPresenter.getOnItemClickListener().onItemClick(parent, itemView, position);
                 }
             }
         });
