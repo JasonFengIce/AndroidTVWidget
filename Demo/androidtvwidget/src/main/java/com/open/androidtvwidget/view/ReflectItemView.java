@@ -179,6 +179,11 @@ public class ReflectItemView extends FrameLayout {
     }
 
     @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         try {
             if (canvas != null) {

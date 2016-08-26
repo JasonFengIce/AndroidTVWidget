@@ -29,7 +29,6 @@ public class DefualtListPresenter extends OpenPresenter {
 
 
     public RecyclerView.LayoutManager getLayoutManger(Context context) {
-//        new AutoMeaureGridLayoutManager(viewHolder.view.getContext(), 4, GridLayoutManager.VERTICAL, false)
         LinearLayoutManagerTV lm = new LinearLayoutManagerTV(context, LinearLayoutManager.HORIZONTAL, false);
         lm.setAutoMeasureEnabled(true); // 自动适应布局.
         return lm;

@@ -41,8 +41,6 @@ public class ItemListPresenter extends OpenPresenter {
             public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
                 if (mListPresenter.getOnItemListener() != null) {
                     mListPresenter.getOnItemListener().onItemPreSelected(parent, itemView, position);
-                } else {
-                    itemView.animate().scaleX(1.0f).scaleY(1.0f).start();
                 }
             }
 
@@ -50,8 +48,6 @@ public class ItemListPresenter extends OpenPresenter {
             public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
                 if (mListPresenter.getOnItemListener() != null) {
                     mListPresenter.getOnItemListener().onItemSelected(parent, itemView, position);
-                } else {
-                    itemView.animate().scaleX(mListPresenter.getScaleX()).scaleY(mListPresenter.getScanleY()).start();
                 }
             }
 
@@ -59,14 +55,15 @@ public class ItemListPresenter extends OpenPresenter {
             public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
                 if (mListPresenter.getOnItemListener() != null) {
                     mListPresenter.getOnItemListener().onReviseFocusFollow(parent, itemView, position);
-                } else {
                 }
             }
         });
         itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-                mListPresenter.getOnItemClickListener().onItemClick(parent, itemView, position);
+                if (mListPresenter.getOnItemClickListener() != null) {
+                    mListPresenter.getOnItemClickListener().onItemClick(parent, itemView, position);
+                }
             }
         });
     }
