@@ -32,7 +32,7 @@ public class HeaderGridPresenter extends OpenPresenter {
      * 判断是否为Header.
      */
     public boolean isHeader(int position) {
-        return (position % 12) == 0;
+        return (position % 15) == 0;
     }
 
     @Override
