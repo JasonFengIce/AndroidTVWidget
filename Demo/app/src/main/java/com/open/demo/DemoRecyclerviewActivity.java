@@ -27,7 +27,6 @@ import com.open.demo.mode.TestMoviceListPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * recyclerview Demo.
@@ -172,14 +171,29 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     /**
      * Leanback 横向 数据测试.
      */
-    private static final Movie MOVIE_ITEMS[] = {
-            new Movie(0, "有道云笔记"),
-            new Movie(0, "陌陌"),
-            new Movie(0, "爱奇艺"),
-            new Movie(0, "英雄联盟"),
-            new Movie(0, "腾讯视频"),
-            new Movie(0, "QQ音乐"),
-            new Movie(0, "无敌讯飞"),
+    private static final List<Movie> MOVIE_ITEMS = new ArrayList<Movie>() {
+        {
+            add(new Movie(0, "天天2模拟器"));
+            add(new Movie(0, "陌陌222"));
+            add(new Movie(0, "爱奇艺222"));
+            add(new Movie(0, "英雄2联盟2"));
+            add(new Movie(0, "腾讯22视频"));
+            add( new Movie(0, "QQ22音乐"));
+            add(new Movie(0, "无敌22讯飞"));
+        }
+    };
+    private static final List<Movie> MOVIE_ITEMS2 = new ArrayList<Movie>() {
+        {
+            add(new Movie(0, "360浏览器"));
+            add(new Movie(0, "美图秀秀"));
+            add(new Movie(0, "YY语音"));
+            add(new Movie(0, "迅雷"));
+            add(new Movie(0, "腾讯视频"));
+            add(new Movie(0, "酷狗阴影"));
+            add(new Movie(0, "优酷"));
+            add(new Movie(0, "篮球"));
+            add(new Movie(0, "足球"));
+        }
     };
 
     /**
@@ -188,15 +202,21 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     private void testLeanbackDemo() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        // 添加标题头.
+        // 添加测试数据。
         List<ListRow> listRows = new ArrayList<ListRow>();
         for (int i = 0; i < MOVIE_CATEGORY.length; i++) {
             String txt = MOVIE_CATEGORY[i];
             // 添加一行的数据.
-            ListRow listRow = new ListRow(txt);
-            for (int j = 0; j < 20; j++) {
-                listRow.add(MOVIE_ITEMS[new Random().nextInt(MOVIE_ITEMS.length - 1)]);
+            ListRow listRow = new ListRow(txt); // 标题头.
+            List<Movie> movies = MOVIE_ITEMS2;
+            if (i % 2 == 0) {
+                movies = MOVIE_ITEMS;
             }
+            // 添加一行 中 列的数据。
+//            for (int j = 0; j < movies.size(); j++)
+//                listRow.add(movies.get(j));
+            listRow.addAll(movies);
+
             listRows.add(listRow);
         }
         // 测试demo, 一般你想要自己的效果，
