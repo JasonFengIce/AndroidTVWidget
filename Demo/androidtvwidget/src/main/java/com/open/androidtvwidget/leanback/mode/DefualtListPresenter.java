@@ -3,6 +3,8 @@ package com.open.androidtvwidget.leanback.mode;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
+
 import java.util.List;
 
 /**
@@ -12,9 +14,27 @@ import java.util.List;
 public class DefualtListPresenter extends OpenPresenter {
 
     List<Object> mItems;
+    private RecyclerViewTV.OnItemListener mOnItemListener;
+    private RecyclerViewTV.OnItemClickListener mOnItemClickListener; // item 单击事件.
 
     public DefualtListPresenter() {
 
+    }
+
+    public RecyclerViewTV.OnItemListener getOnItemListener() {
+        return mOnItemListener;
+    }
+
+    public RecyclerViewTV.OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemListener(RecyclerViewTV.OnItemListener onItemListener) {
+        this.mOnItemListener = onItemListener;
+    }
+
+    public void setOnItemClickListener(RecyclerViewTV.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
     public DefualtListPresenter(Object items) {
