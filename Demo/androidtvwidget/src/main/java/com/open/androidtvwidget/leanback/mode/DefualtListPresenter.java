@@ -83,8 +83,8 @@ public class DefualtListPresenter extends OpenPresenter {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        String str = ((String) mItems.get(position));
-        Button btn = ((Button) viewHolder.view);
-        btn.setText(str);
+//        Mo str = ((String) mItems.get(position));
+//        Button btn = ((Button) viewHolder.view);
+//        btn.setText(str);
     }
 }

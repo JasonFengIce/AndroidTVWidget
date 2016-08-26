@@ -20,7 +20,7 @@ public class ItemListPresenter extends OpenPresenter {
     }
 
     public ItemListPresenter(DefualtListPresenter listPresenter) {
-        this.mListPresenter = listPresenter;
+//        this.mListPresenter = listPresenter;
     }
 
     @Override
@@ -29,12 +29,19 @@ public class ItemListPresenter extends OpenPresenter {
         return new ItemListViewHolder(listContentView, listContentView.getRecyclerViewTV());
     }
 
+    public DefualtListPresenter getDefualtListPresenter() {
+        return new DefualtListPresenter();
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final Object item) {
         final ItemListViewHolder itemListViewHolder = (ItemListViewHolder) viewHolder;
-        mListPresenter.setItems(item);
-        GeneralAdapter generalAdapter = new GeneralAdapter(mListPresenter);
-        itemListViewHolder.mRecyclerViewTV.setLayoutManager(mListPresenter.getLayoutManger(viewHolder.view.getContext()));
+        if (itemListViewHolder.defualtListPresenter == null) {
+            itemListViewHolder.defualtListPresenter = getDefualtListPresenter();
+        }
+        itemListViewHolder.defualtListPresenter.setItems(item);
+        GeneralAdapter generalAdapter = new GeneralAdapter(itemListViewHolder.defualtListPresenter);
+        itemListViewHolder.mRecyclerViewTV.setLayoutManager(itemListViewHolder.defualtListPresenter.getLayoutManger(viewHolder.view.getContext()));
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
         itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {
             @Override
@@ -70,6 +77,8 @@ public class ItemListPresenter extends OpenPresenter {
 
     static class ItemListViewHolder extends OpenPresenter.ViewHolder {
         private RecyclerViewTV mRecyclerViewTV;
+        private GeneralAdapter generalAdapter;
+        private DefualtListPresenter defualtListPresenter;
 
         public ItemListViewHolder(View view, RecyclerViewTV rv) {
             super(view);

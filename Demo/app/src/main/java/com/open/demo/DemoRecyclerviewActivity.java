@@ -23,6 +23,7 @@ import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
 import com.open.demo.mode.Movie;
+import com.open.demo.mode.NewItemListPresenter;
 import com.open.demo.mode.TestMoviceListPresenter;
 
 import java.util.ArrayList;
@@ -191,6 +192,34 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             add(new Movie(0, "足球"));
         }
     };
+    private static final List<Movie> MOVIE_ITEMS2 = new ArrayList<Movie>() {
+        {
+            add(new Movie(0, "天天模拟器AAA"));
+            add(new Movie(0, "陌陌AAA"));
+            add(new Movie(0, "爱奇艺222AAA"));
+            add(new Movie(0, "英雄2联盟2AA"));
+            add(new Movie(0, "腾讯视频AA"));
+            add(new Movie(0, "酷狗阴影AA"));
+            add(new Movie(0, "优酷AA"));
+            add(new Movie(0, "篮球AA"));
+            add(new Movie(0, "足球AAA1"));
+            add(new Movie(0, "足球AAA2"));
+            add(new Movie(0, "足球AAA3"));
+            add(new Movie(0, "足球AAA4"));
+            add(new Movie(0, "足球AAA5"));
+            add(new Movie(0, "足球AAA6"));
+            add(new Movie(0, "足球AAA7"));
+            add(new Movie(0, "足球AAA8"));
+            add(new Movie(0, "足球AAA9"));
+            add(new Movie(0, "足球AAA10"));
+            add(new Movie(0, "足球AAA11"));
+            add(new Movie(0, "足球AAA12"));
+            add(new Movie(0, "足球AAA13"));
+            add(new Movie(0, "足球AAA14"));
+            add(new Movie(0, "足球AAA15"));
+            add(new Movie(0, "足球AAA16"));
+        }
+    };
 
     /**
      * Leanback Demo.
@@ -205,6 +234,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt); // 标题头.
             List<Movie> movies = MOVIE_ITEMS;
+            if (i % 2 == 0)
+                movies = MOVIE_ITEMS2;
             listRow.addAll(movies); // 添加列的数据.
             // 添加一行的数据（标题头，列的数据)
             listRows.add(listRow);
@@ -215,7 +246,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         TestMoviceListPresenter testMoviceListPresenter = new TestMoviceListPresenter();
         ListRowPresenter listRowPresenter = new ListRowPresenter(listRows,
                 new ItemHeaderPresenter(),
-                new ItemListPresenter(testMoviceListPresenter));
+                new NewItemListPresenter());
         GeneralAdapter generalAdapter = new GeneralAdapter(listRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
     }
