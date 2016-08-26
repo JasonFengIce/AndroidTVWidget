@@ -230,7 +230,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         // 测试demo, 一般你想要自己的效果，
         // 继承 Header 和 List 可以继承 OpenPresente来重写.
         //  而横向中的item 继承 DefualtListPresenter 来重写.
-        TestMoviceListPresenter testMoviceListPresenter = new TestMoviceListPresenter();
         ListRowPresenter listRowPresenter = new ListRowPresenter(listRows,
                 new ItemHeaderPresenter(),
                 new NewItemListPresenter());

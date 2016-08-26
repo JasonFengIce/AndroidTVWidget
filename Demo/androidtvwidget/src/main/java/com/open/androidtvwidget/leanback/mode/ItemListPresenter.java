@@ -67,7 +67,6 @@ public class ItemListPresenter extends OpenPresenter {
 
     static class ItemListViewHolder extends OpenPresenter.ViewHolder {
         private RecyclerViewTV mRecyclerViewTV;
-        private GeneralAdapter generalAdapter;
         private DefualtListPresenter defualtListPresenter;
 
         public ItemListViewHolder(View view, RecyclerViewTV rv) {
