@@ -33,5 +33,5 @@ public class TestMoviceListPresenter extends DefualtListPresenter {
         });
         textview.setText(movie.getTitle());
     }
-    
+
 }
