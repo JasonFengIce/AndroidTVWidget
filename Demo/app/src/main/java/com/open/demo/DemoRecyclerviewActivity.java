@@ -180,10 +180,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             add(new Movie(0, "腾讯22视频"));
             add( new Movie(0, "QQ22音乐"));
             add(new Movie(0, "无敌22讯飞"));
-        }
-    };
-    private static final List<Movie> MOVIE_ITEMS2 = new ArrayList<Movie>() {
-        {
             add(new Movie(0, "360浏览器"));
             add(new Movie(0, "美图秀秀"));
             add(new Movie(0, "YY语音"));
@@ -208,15 +204,9 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             String txt = MOVIE_CATEGORY[i];
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt); // 标题头.
-            List<Movie> movies = MOVIE_ITEMS2;
-            if (i % 2 == 0) {
-                movies = MOVIE_ITEMS;
-            }
-            // 添加一行 中 列的数据。
-//            for (int j = 0; j < movies.size(); j++)
-//                listRow.add(movies.get(j));
-            listRow.addAll(movies);
-
+            List<Movie> movies = MOVIE_ITEMS;
+            listRow.addAll(movies); // 添加列的数据.
+            // 添加一行的数据（标题头，列的数据)
             listRows.add(listRow);
         }
         // 测试demo, 一般你想要自己的效果，
