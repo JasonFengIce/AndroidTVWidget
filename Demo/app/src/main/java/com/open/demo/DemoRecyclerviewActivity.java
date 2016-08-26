@@ -3,6 +3,8 @@ package com.open.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
@@ -208,6 +210,9 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         }
     };
 
+    List<ListRow> mListRows = new ArrayList<ListRow>();
+    ListRowPresenter mListRowPresenter;
+
     /**
      * Leanback Demo.
      */
@@ -215,7 +220,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         // 添加测试数据。
-        List<ListRow> listRows = new ArrayList<ListRow>();
         for (int i = 0; i < MOVIE_CATEGORY.length; i++) {
             String txt = MOVIE_CATEGORY[i];
             // 添加一行的数据.
@@ -225,16 +229,26 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 movies = MOVIE_ITEMS2;
             listRow.addAll(movies); // 添加列的数据.
             // 添加一行的数据（标题头，列的数据)
-            listRows.add(listRow);
+            mListRows.add(listRow);
         }
         // 测试demo, 一般你想要自己的效果，
         // 继承 Header 和 List 可以继承 OpenPresente来重写.
         //  而横向中的item 继承 DefualtListPresenter 来重写.
-        ListRowPresenter listRowPresenter = new ListRowPresenter(listRows,
+        mListRowPresenter = new ListRowPresenter(mListRows,
                 new ItemHeaderPresenter(),
                 new NewItemListPresenter());
-        GeneralAdapter generalAdapter = new GeneralAdapter(listRowPresenter);
+        GeneralAdapter generalAdapter = new GeneralAdapter(mListRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
+        // 更新数据测试
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                ListRow listRow = mListRows.get(0);
+                listRow.setHeaderItem("改变标题头数据");
+                mListRowPresenter.setItems(mListRows, 0);
+            }
+        };
+        handler.sendEmptyMessageDelayed(10, 6666);
     }
 
     // 左边侧边栏的单击事件.

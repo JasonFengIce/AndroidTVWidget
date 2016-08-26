@@ -3,6 +3,7 @@ package com.open.androidtvwidget.leanback.mode;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.widget.ItemContainerView;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ListRowPresenter extends OpenPresenter {
     OpenPresenter mItemListPresenter;// item 标题头下面的 横向 items.
 
     List<ListRow> mItems;
+    GeneralAdapter mAdapter;
 
     /**
      * 你可以设置自己的 头 presenter, 还有横向 presenter.
@@ -33,6 +35,23 @@ public class ListRowPresenter extends OpenPresenter {
 
     public ListRowPresenter(List<ListRow> items) {
         this(items, null, null);
+    }
+
+    @Override
+    public void setAdapter(GeneralAdapter adapter) {
+        this.mAdapter = adapter;
+    }
+
+    public void setItems(List<ListRow> items, int position) {
+        this.mItems = items;
+        if (this.mAdapter != null)
+            this.mAdapter.notifyItemChanged(position);
+    }
+
+    public void setItems(List<ListRow> items) {
+        this.mItems = items;
+        if (this.mAdapter != null)
+            this.mAdapter.notifyDataSetChanged();
     }
 
     @Override
