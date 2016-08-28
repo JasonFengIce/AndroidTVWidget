@@ -100,7 +100,7 @@ public class ListRowPresenter extends OpenPresenter {
         }
 
         if (listRowViewHolder.mListViewHolder != null) {
-            mItemListPresenter.onBindViewHolder(listRowViewHolder.mListViewHolder, listRow.getItems());
+            mItemListPresenter.onBindViewHolder(listRowViewHolder.mListViewHolder, listRow);
         }
 
     }

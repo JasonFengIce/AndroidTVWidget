@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
 import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
+import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemHeaderPresenter;
 import com.open.androidtvwidget.leanback.mode.ItemListPresenter;
 import com.open.androidtvwidget.leanback.mode.ListRow;
@@ -25,7 +26,6 @@ import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
 import com.open.demo.mode.Movie;
-import com.open.demo.mode.NewItemListPresenter;
 import com.open.demo.mode.TestMoviceListPresenter;
 
 import java.util.ArrayList;
@@ -228,15 +228,23 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             if (i % 2 == 0)
                 movies = MOVIE_ITEMS2;
             listRow.addAll(movies); // 添加列的数据.
+            listRow.setOpenPresenter(new TestMoviceListPresenter()); // 设置列的item样式.
             // 添加一行的数据（标题头，列的数据)
             mListRows.add(listRow);
         }
+        // 添加最后一行数据.
+        ListRow lastListRow = new ListRow("设置");
+        lastListRow.add("网络wifi");
+        lastListRow.add("声音");
+        lastListRow.add("声音");
+        lastListRow.setOpenPresenter(new DefualtListPresenter());
+        mListRows.add(lastListRow);
         // 测试demo, 一般你想要自己的效果，
         // 继承 Header 和 List 可以继承 OpenPresente来重写.
         //  而横向中的item 继承 DefualtListPresenter 来重写.
         mListRowPresenter = new ListRowPresenter(mListRows,
                 new ItemHeaderPresenter(),
-                new NewItemListPresenter());
+                new ItemListPresenter());
         GeneralAdapter generalAdapter = new GeneralAdapter(mListRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
         // 更新数据测试
