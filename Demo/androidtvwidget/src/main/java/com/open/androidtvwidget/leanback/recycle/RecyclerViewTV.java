@@ -135,12 +135,11 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     public void requestChildFocus(View child, View focused) {
-        int pos = getPositionByView(child);
-        RecyclerView.ViewHolder vh = getChildViewHolder(child);
-        OPENLOG.D("pos:" + pos + "child:" + child + " vh:" + vh);
         // 一行的选中.
         if (mChildViewHolderSelectedListener != null) {
-            mChildViewHolderSelectedListener.onChildViewHolderSelected(this, child, pos);
+            int pos = getPositionByView(child);
+            RecyclerView.ViewHolder vh = getChildViewHolder(child);
+            mChildViewHolderSelectedListener.onChildViewHolderSelected(this, vh, pos);
         }
         //
         if (null != child) {
@@ -368,7 +367,7 @@ public class RecyclerViewTV extends RecyclerView {
     }
 
     public interface OnChildViewHolderSelectedListener {
-        public void onChildViewHolderSelected(RecyclerView parent, View child,
+        public void onChildViewHolderSelected(RecyclerView parent, RecyclerView.ViewHolder vh,
                                               int position);
     }
 

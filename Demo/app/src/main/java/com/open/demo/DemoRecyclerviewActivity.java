@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.open.androidtvwidget.bridge.RecyclerViewBridge;
@@ -159,6 +160,10 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         });
     }
 
+    ///////////////////////////////////////////////////////////////
+    ////   Leanback 测试 Demo start ---->
+    ///////////////////////////////////////////////////////////////
+
     /**
      * Leanback 标题头.
      */
@@ -181,7 +186,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             add(new Movie(0, "爱奇艺222"));
             add(new Movie(0, "英雄2联盟2"));
             add(new Movie(0, "腾讯22视频"));
-            add( new Movie(0, "QQ22音乐"));
+            add(new Movie(0, "QQ22音乐"));
             add(new Movie(0, "无敌22讯飞"));
             add(new Movie(0, "360浏览器"));
             add(new Movie(0, "美图秀秀"));
@@ -210,8 +215,36 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         }
     };
 
+    private final RecyclerViewTV.OnChildViewHolderSelectedListener mRowSelectedListener =
+            new RecyclerViewTV.OnChildViewHolderSelectedListener() {
+                @Override
+                public void onChildViewHolderSelected(RecyclerView parent,
+                                                      RecyclerView.ViewHolder viewHolder, int position) {
+                    onRowSelected(parent, viewHolder, position, -1);
+                }
+            };
+
+    private GeneralAdapter.ViewHolder mSelectedViewHolder;
     List<ListRow> mListRows = new ArrayList<ListRow>();
     ListRowPresenter mListRowPresenter;
+
+    /**
+     * 一行选中.
+     */
+    private void onRowSelected(RecyclerView parent, RecyclerView.ViewHolder viewHolder,
+                               int position, int subposition) {
+        if (mSelectedViewHolder != viewHolder) {
+            OPENLOG.D("pos:" + position + " vh:" + viewHolder);
+            OPENLOG.D("pos:" + position + " vh:" + viewHolder);
+            // 先清除 MselectedViewHolder 的一行选中颜色.
+            // 设置当前选中的 一行的选中颜色.
+            mSelectedViewHolder = (GeneralAdapter.ViewHolder) viewHolder;
+        }
+    }
+
+    private void setRowViewSelected(GeneralAdapter.ViewHolder viewHolder) {
+        viewHolder.getViewHolder();
+    }
 
     /**
      * Leanback Demo.
@@ -247,6 +280,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 new ItemListPresenter());
         GeneralAdapter generalAdapter = new GeneralAdapter(mListRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
+        // 行选中的事件.
+        mRecyclerView.setOnChildViewHolderSelectedListener(mRowSelectedListener);
         // 更新数据测试
         Handler handler = new Handler() {
             @Override
@@ -258,6 +293,10 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         };
         handler.sendEmptyMessageDelayed(10, 6666);
     }
+
+    ///////////////////////////////////////////////////////////////
+    ////   Leanback 测试 Demo end ---->
+    ///////////////////////////////////////////////////////////////
 
     // 左边侧边栏的单击事件.
     private void onViewItemClick(View v, int pos) {
