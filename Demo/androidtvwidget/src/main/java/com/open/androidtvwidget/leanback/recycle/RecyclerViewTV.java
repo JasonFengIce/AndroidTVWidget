@@ -40,6 +40,8 @@ public class RecyclerViewTV extends RecyclerView {
     private ItemListener mItemListener;
     private int offset = -1;
 
+    private RecyclerViewTV.OnChildViewHolderSelectedListener mChildViewHolderSelectedListener;
+
     private void init(Context context) {
         setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         setHasFixedSize(true);
@@ -133,6 +135,14 @@ public class RecyclerViewTV extends RecyclerView {
 
     @Override
     public void requestChildFocus(View child, View focused) {
+        int pos = getPositionByView(child);
+        RecyclerView.ViewHolder vh = getChildViewHolder(child);
+        OPENLOG.D("pos:" + pos + "child:" + child + " vh:" + vh);
+        // 一行的选中.
+        if (mChildViewHolderSelectedListener != null) {
+            mChildViewHolderSelectedListener.onChildViewHolderSelected(this, child, pos);
+        }
+        //
         if (null != child) {
             if (mSelectedItemCentered) {
                 mSelectedItemOffsetStart = !isVertical() ? (getFreeWidth() - child.getWidth()) : (getFreeHeight() - child.getHeight());
@@ -357,6 +367,11 @@ public class RecyclerViewTV extends RecyclerView {
         void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position);
     }
 
+    public interface OnChildViewHolderSelectedListener {
+        public void onChildViewHolderSelected(RecyclerView parent, View child,
+                                              int position);
+    }
+
     public interface OnItemClickListener {
         void onItemClick(RecyclerViewTV parent, View itemView, int position);
     }
@@ -367,6 +382,26 @@ public class RecyclerViewTV extends RecyclerView {
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
+    }
+
+    /**
+     * 控制焦点高亮问题.
+     * 2016.08.29
+     */
+    public void setOnChildViewHolderSelectedListener(OnChildViewHolderSelectedListener listener) {
+        mChildViewHolderSelectedListener = listener;
+    }
+
+    private int getPositionByView(View view) {
+        if (view == null) {
+            return NO_POSITION;
+        }
+        LayoutParams params = (LayoutParams) view.getLayoutParams();
+        if (params == null || params.isItemRemoved()) {
+            // when item is removed, the position value can be any value.
+            return NO_POSITION;
+        }
+        return params.getViewPosition();
     }
 
 }

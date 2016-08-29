@@ -31,36 +31,8 @@ public class ItemListPresenter extends OpenPresenter {
         GeneralAdapter generalAdapter = new GeneralAdapter(itemListViewHolder.mDefualtListPresenter);
         itemListViewHolder.mRecyclerViewTV.setLayoutManager(itemListViewHolder.mDefualtListPresenter.getLayoutManger(viewHolder.view.getContext()));
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
-        itemListViewHolder.mRecyclerViewTV.setOnItemListener(new RecyclerViewTV.OnItemListener() {
-            @Override
-            public void onItemPreSelected(RecyclerViewTV parent, View itemView, int position) {
-                if (itemListViewHolder.mDefualtListPresenter.getOnItemListener() != null) {
-                    itemListViewHolder.mDefualtListPresenter.getOnItemListener().onItemPreSelected(parent, itemView, position);
-                }
-            }
-
-            @Override
-            public void onItemSelected(RecyclerViewTV parent, View itemView, int position) {
-                if (itemListViewHolder.mDefualtListPresenter.getOnItemListener() != null) {
-                    itemListViewHolder.mDefualtListPresenter.getOnItemListener().onItemSelected(parent, itemView, position);
-                }
-            }
-
-            @Override
-            public void onReviseFocusFollow(RecyclerViewTV parent, View itemView, int position) {
-                if (itemListViewHolder.mDefualtListPresenter.getOnItemListener() != null) {
-                    itemListViewHolder.mDefualtListPresenter.getOnItemListener().onReviseFocusFollow(parent, itemView, position);
-                }
-            }
-        });
-        itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(new RecyclerViewTV.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerViewTV parent, View itemView, int position) {
-                if (itemListViewHolder.mDefualtListPresenter.getOnItemClickListener() != null) {
-                    itemListViewHolder.mDefualtListPresenter.getOnItemClickListener().onItemClick(parent, itemView, position);
-                }
-            }
-        });
+        itemListViewHolder.mRecyclerViewTV.setOnItemListener(itemListViewHolder.mDefualtListPresenter.getOnItemListener());
+        itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(itemListViewHolder.mDefualtListPresenter.getOnItemClickListener());
     }
 
     static class ItemListViewHolder extends OpenPresenter.ViewHolder {

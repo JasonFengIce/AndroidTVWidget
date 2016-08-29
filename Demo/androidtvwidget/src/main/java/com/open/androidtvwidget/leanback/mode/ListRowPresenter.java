@@ -54,6 +54,10 @@ public class ListRowPresenter extends OpenPresenter {
             this.mAdapter.notifyDataSetChanged();
     }
 
+    public List<ListRow> getItems() {
+        return this.mItems;
+    }
+
     @Override
     public int getItemCount() {
         return mItems != null ? mItems.size() : 0;
