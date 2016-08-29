@@ -49,6 +49,7 @@ public class TestMoviceListPresenter extends DefualtListPresenter {
         //
         TextView tv = (TextView) openCardView.findViewById(R.id.title_tv);
         tv.setText(movie.getTitle());
+        //
         if (this.mIsSelect) {
             openCardView.setAlpha(0.5f);
         } else {

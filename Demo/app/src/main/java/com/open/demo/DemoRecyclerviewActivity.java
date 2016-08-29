@@ -248,22 +248,30 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     }
 
     private void setRowViewSelected(GeneralAdapter.ViewHolder viewHolder, boolean selected) {
-        ListRowPresenter.ListRowViewHolder listRowPresenter = (ListRowPresenter.ListRowViewHolder) viewHolder.getViewHolder();
-        ItemListPresenter.ItemListViewHolder itemListViewHolder = (ItemListPresenter.ItemListViewHolder) listRowPresenter.getListViewHolder();
-        TestMoviceListPresenter testMoviceListPresenter = (TestMoviceListPresenter) itemListViewHolder.getDefualtListPresenter();
-        testMoviceListPresenter.setSelect(selected);
-        //
-        RecyclerViewTV recyclerViewTV = itemListViewHolder.getRecyclerViewTV();
-        int count = recyclerViewTV.getChildCount();
-        for (int i = 0; i < count; i++) {
-            View view = recyclerViewTV.getChildAt(i);
-            if (selected) {
-                view.setAlpha(0.5f);
-            } else {
-                view.setAlpha(1.0f);
+        if (isListRowPresenter()) {
+            try {
+                ListRowPresenter.ListRowViewHolder listRowPresenter = (ListRowPresenter.ListRowViewHolder) viewHolder.getViewHolder();
+                ItemListPresenter.ItemListViewHolder itemListViewHolder = (ItemListPresenter.ItemListViewHolder) listRowPresenter.getListViewHolder();
+                DefualtListPresenter defualtListPresenter = itemListViewHolder.getDefualtListPresenter();
+                if (defualtListPresenter instanceof TestMoviceListPresenter) {
+                    TestMoviceListPresenter testMoviceListPresenter = (TestMoviceListPresenter) defualtListPresenter;
+                    testMoviceListPresenter.setSelect(selected);
+                    //
+                    RecyclerViewTV recyclerViewTV = itemListViewHolder.getRecyclerViewTV();
+                    int count = recyclerViewTV.getChildCount();
+                    for (int i = 0; i < count; i++) {
+                        View view = recyclerViewTV.getChildAt(i);
+                        if (selected) {
+                            view.setAlpha(0.5f);
+                        } else {
+                            view.setAlpha(1.0f);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        //
     }
 
     /**
