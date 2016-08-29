@@ -35,7 +35,7 @@ public class ItemListPresenter extends OpenPresenter {
         itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(itemListViewHolder.mDefualtListPresenter.getOnItemClickListener());
     }
 
-    static class ItemListViewHolder extends OpenPresenter.ViewHolder {
+    public static class ItemListViewHolder extends OpenPresenter.ViewHolder {
         private RecyclerViewTV mRecyclerViewTV;
         private DefualtListPresenter mDefualtListPresenter;
 
@@ -46,6 +46,14 @@ public class ItemListPresenter extends OpenPresenter {
 
         public void setDefualtListPresenter(DefualtListPresenter presenter) {
             this.mDefualtListPresenter = presenter;
+        }
+
+        public DefualtListPresenter getDefualtListPresenter() {
+            return this.mDefualtListPresenter;
+        }
+
+        public RecyclerViewTV getRecyclerViewTV() {
+            return this.mRecyclerViewTV;
         }
     }
 

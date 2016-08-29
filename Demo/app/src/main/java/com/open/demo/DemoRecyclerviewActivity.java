@@ -237,13 +237,31 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             OPENLOG.D("pos:" + position + " vh:" + viewHolder);
             OPENLOG.D("pos:" + position + " vh:" + viewHolder);
             // 先清除 MselectedViewHolder 的一行选中颜色.
+            if (mSelectedViewHolder != null) {
+                setRowViewSelected(mSelectedViewHolder, false);
+            }
             // 设置当前选中的 一行的选中颜色.
             mSelectedViewHolder = (GeneralAdapter.ViewHolder) viewHolder;
+            if (mSelectedViewHolder != null) {
+                setRowViewSelected(mSelectedViewHolder, true);
+            }
         }
     }
 
-    private void setRowViewSelected(GeneralAdapter.ViewHolder viewHolder) {
-        viewHolder.getViewHolder();
+    private void setRowViewSelected(GeneralAdapter.ViewHolder viewHolder, boolean selected) {
+        ListRowPresenter.ListRowViewHolder listRowPresenter = (ListRowPresenter.ListRowViewHolder) viewHolder.getViewHolder();
+        ItemListPresenter.ItemListViewHolder itemListViewHolder = (ItemListPresenter.ItemListViewHolder) listRowPresenter.getListViewHolder();
+        //
+        RecyclerViewTV recyclerViewTV = itemListViewHolder.getRecyclerViewTV();
+        int count = recyclerViewTV.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View view = recyclerViewTV.getChildAt(i);
+            if (selected) {
+                view.setAlpha(1.0f);
+            } else {
+                view.setAlpha(0.2f);
+            }
+        }
     }
 
     /**

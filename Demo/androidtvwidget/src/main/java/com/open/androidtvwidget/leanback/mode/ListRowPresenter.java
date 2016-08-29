@@ -109,7 +109,7 @@ public class ListRowPresenter extends OpenPresenter {
 
     }
 
-    static class ListRowViewHolder extends OpenPresenter.ViewHolder {
+    public static class ListRowViewHolder extends OpenPresenter.ViewHolder {
 
         ViewHolder mHeadViewHolder;
         ViewHolder mListViewHolder;
@@ -120,6 +120,9 @@ public class ListRowPresenter extends OpenPresenter {
             this.mListViewHolder = lilstVH;
         }
 
+        public ViewHolder getListViewHolder() {
+            return mListViewHolder;
+        }
     }
 
 }
