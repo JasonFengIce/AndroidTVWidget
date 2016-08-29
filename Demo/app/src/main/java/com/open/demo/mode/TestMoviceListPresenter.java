@@ -17,10 +17,16 @@ import com.open.demo.R;
  */
 public class TestMoviceListPresenter extends DefualtListPresenter {
 
+    boolean mIsSelect;
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.lb_h_item, parent, false);
         return new ViewHolder(itemView);
+    }
+
+    public void setSelect(boolean isSelect) {
+        this.mIsSelect = isSelect;
     }
 
     @Override
@@ -43,6 +49,11 @@ public class TestMoviceListPresenter extends DefualtListPresenter {
         //
         TextView tv = (TextView) openCardView.findViewById(R.id.title_tv);
         tv.setText(movie.getTitle());
+        if (this.mIsSelect) {
+            openCardView.setAlpha(0.5f);
+        } else {
+            openCardView.setAlpha(1.0f);
+        }
     }
 
 }
