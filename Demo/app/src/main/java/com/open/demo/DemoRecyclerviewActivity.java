@@ -2,6 +2,7 @@ package com.open.demo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -61,7 +62,10 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         mainUpView1.setEffectBridge(new RecyclerViewBridge());
         // 注意这里，需要使用 RecyclerViewBridge 的移动边框 Bridge.
         mRecyclerViewBridge = (RecyclerViewBridge) mainUpView1.getEffectBridge();
-        mRecyclerViewBridge.setUpRectResource(R.drawable.test_rectangle);
+        mRecyclerViewBridge.setUpRectResource(R.drawable.video_cover_cursor);
+        RectF receF = new RectF(getDimension(R.dimen.w_130), getDimension(R.dimen.h_130),
+                getDimension(R.dimen.w_130), getDimension(R.dimen.h_130));
+        mRecyclerViewBridge.setDrawShadowRectPadding(receF);
         // 初始化左侧菜单.
         initLeftMenu();
         //  初始化带标题头的demo.
@@ -336,14 +340,18 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                // 保存原来的焦点位置.
-                ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getSelectView();
-                if (itemContainerView != null) {
-                    saveRowPos = mRecyclerView.getSelectPostion(); // 保存第几列的焦点.
-                    ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
-                    if (listContentView != null) {
-                        RecyclerViewTV recyclerViewTV = listContentView.getRecyclerViewTV();
-                        saveColumnPos = recyclerViewTV.getSelectPostion();
+                View view = mRecyclerView.getSelectView();
+                // 我这里DEMO比较多，不要照抄我的，谢谢.
+                if (view != null && view instanceof  ItemContainerView) {
+                    // 保存原来的焦点位置.
+                    ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getSelectView();
+                    if (itemContainerView != null) {
+                        saveRowPos = mRecyclerView.getSelectPostion(); // 保存第几列的焦点.
+                        ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
+                        if (listContentView != null) {
+                            RecyclerViewTV recyclerViewTV = listContentView.getRecyclerViewTV();
+                            saveColumnPos = recyclerViewTV.getSelectPostion();
+                        }
                     }
                 }
                 // 请求更新数据.
@@ -365,10 +373,15 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     ////   Leanback 测试 Demo end ---->
     ///////////////////////////////////////////////////////////////
 
+    public float getDimension(int id) {
+        return getResources().getDimension(id);
+    }
+
     // 左边侧边栏的单击事件.
     private void onViewItemClick(View v, int pos) {
         switch (pos) {
             case 0: // 横向 liner layout.
+                //
                 testRecyclerViewLinerLayout(LinearLayoutManager.HORIZONTAL);
                 break;
             case 1: // 纵向 liner layout.

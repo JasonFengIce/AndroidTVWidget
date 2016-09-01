@@ -21,7 +21,7 @@ import com.open.androidtvwidget.view.MainUpView;
 
 /**
  * DEMO测试.
- *  xml布局中 clipChildren clipToPadding 不要忘记了，不然移动的边框无法显示出来的. (强烈注意)
+ * xml布局中 clipChildren clipToPadding 不要忘记了，不然移动的边框无法显示出来的. (强烈注意)
  */
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -181,7 +181,8 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void switchNoDrawBridgeVersion() {
-        RectF rectf = new RectF(getDimension(R.dimen.w_20), getDimension(R.dimen.h_20), getDimension(R.dimen.w_18), getDimension(R.dimen.h_18));
+        RectF rectf = new RectF(getDimension(R.dimen.w_10), getDimension(R.dimen.h_10),
+                getDimension(R.dimen.w_9), getDimension(R.dimen.h_9));
         EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
         effectNoDrawBridge.setTranDurAnimTime(200);
 //        effectNoDrawBridge.setDrawUpRectPadding(rectf);
