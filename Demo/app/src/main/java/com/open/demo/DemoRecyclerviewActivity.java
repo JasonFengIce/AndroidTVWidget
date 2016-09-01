@@ -21,6 +21,8 @@ import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
 import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
+import com.open.androidtvwidget.leanback.widget.ItemContainerView;
+import com.open.androidtvwidget.leanback.widget.ListContentView;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
@@ -247,6 +249,10 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         }
     }
 
+    /**
+     * 改变一行的颜色.这里只是DEMO，你可以改变一行的图片哈，或者背景颜色哈.
+     * 具体可以看Leanback的android demo.
+     */
     private void setRowViewSelected(GeneralAdapter.ViewHolder viewHolder, boolean selected) {
         if (isListRowPresenter()) {
             try {
@@ -310,17 +316,50 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         mRecyclerView.setAdapter(generalAdapter);
         // 行选中的事件.
         mRecyclerView.setOnChildViewHolderSelectedListener(mRowSelectedListener);
-        // 更新数据测试
+        // 更新数据测试 并且重写请求焦点.(这里只是demo)
+        final Handler handler1 = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                // 我只是DEMO，不要每次都来按照我的写的，好么.
+                ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getChildAt(saveRowPos);
+                if (itemContainerView != null) {
+                    ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
+                    if (listContentView != null) {
+                        RecyclerViewTV columnRecyclerView = listContentView.getRecyclerViewTV();
+                        View view = columnRecyclerView.getChildAt(saveColumnPos);
+                        if (view != null)
+                            view.requestFocus();
+                    }
+                }
+            }
+        };
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                // 保存原来的焦点位置.
+                ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getSelectView();
+                if (itemContainerView != null) {
+                    saveRowPos = mRecyclerView.getSelectPostion(); // 保存第几列的焦点.
+                    ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
+                    if (listContentView != null) {
+                        RecyclerViewTV recyclerViewTV = listContentView.getRecyclerViewTV();
+                        saveColumnPos = recyclerViewTV.getSelectPostion();
+                    }
+                }
+                // 请求更新数据.
                 ListRow listRow = mListRows.get(0);
                 listRow.setHeaderItem("改变标题头数据");
                 mListRowPresenter.setItems(mListRows, 0);
+                // 更新数据，焦点会丢失，SB你会如何做
+                // 只有保存原来的焦点view的位置, 然后 延时请求焦点.
+                handler1.sendEmptyMessageDelayed(10, 500);
             }
         };
         handler.sendEmptyMessageDelayed(10, 6666);
     }
+
+    int saveColumnPos = -1;
+    int saveRowPos = -1;
 
     ///////////////////////////////////////////////////////////////
     ////   Leanback 测试 Demo end ---->

@@ -306,6 +306,13 @@ public class RecyclerViewTV extends RecyclerView {
         return mItemView;
     }
 
+    public int getSelectPostion() {
+        View view = getSelectView();
+        if (view != null)
+            return getPositionByView(view);
+        return -1;
+    }
+
     @Override
     protected int getChildDrawingOrder(int childCount, int i) {
         View view = getFocusedChild();
