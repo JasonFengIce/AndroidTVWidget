@@ -63,9 +63,9 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         // 注意这里，需要使用 RecyclerViewBridge 的移动边框 Bridge.
         mRecyclerViewBridge = (RecyclerViewBridge) mainUpView1.getEffectBridge();
         mRecyclerViewBridge.setUpRectResource(R.drawable.video_cover_cursor);
-        RectF receF = new RectF(getDimension(R.dimen.w_130), getDimension(R.dimen.h_130),
-                getDimension(R.dimen.w_130), getDimension(R.dimen.h_130));
-        mRecyclerViewBridge.setDrawShadowRectPadding(receF);
+        RectF receF = new RectF(getDimension(R.dimen.w_45), getDimension(R.dimen.h_40),
+                getDimension(R.dimen.w_45), getDimension(R.dimen.h_40));
+        mRecyclerViewBridge.setDrawUpRectPadding(receF);
         // 初始化左侧菜单.
         initLeftMenu();
         //  初始化带标题头的demo.
