@@ -72,8 +72,8 @@
 
                 <ImageView
                     android:id="@+id/test_top_iv"
-                    android:layout_width="@dimen/px220"
-                    android:layout_height="@dimen/px350"
+                    android:layout_width="@dimen/w_220"
+                    android:layout_height="@dimen/h_350"
                     android:scaleType="fitXY"
                     android:src="@drawable/top_test_bg" />
             </FrameLayout>
@@ -146,7 +146,7 @@
                 android:focusable="true"
                 app:isReflect="true"
                 app:isShape="true"
-                app:radius="@dimen/px20" >
+                app:radius="@dimen/w_20" >
 
                 <ImageView
                     android:layout_width="match_parent"
