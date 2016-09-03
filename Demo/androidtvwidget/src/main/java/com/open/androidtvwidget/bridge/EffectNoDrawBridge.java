@@ -24,6 +24,7 @@ import com.open.androidtvwidget.utils.Utils;
 public class EffectNoDrawBridge extends OpenEffectBridge {
 	protected AnimatorSet mCurrentAnimatorSet;
 
+	@Override
 	public void clearAnimator() {
 		if (mCurrentAnimatorSet != null)
 			mCurrentAnimatorSet.end();

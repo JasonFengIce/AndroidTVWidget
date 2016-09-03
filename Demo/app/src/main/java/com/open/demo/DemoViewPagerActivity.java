@@ -3,6 +3,7 @@ package com.open.demo;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 
+import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
@@ -42,7 +44,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
     OpenTabTitleAdapter mOpenTabTitleAdapter;
     // 移动边框.
     MainUpView mainUpView1;
-    OpenEffectBridge mOpenEffectBridge;
+    EffectNoDrawBridge mEffectNoDrawBridge;
     View mNewFocus;
     View mOldView;
 
@@ -56,9 +58,18 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         initAllTitleBar();
         // 初始化viewpager.
         initAllViewPager();
-        //
+        // 初始化移动边框.
+        initMoveBridge();
+    }
+
+    private void initMoveBridge() {
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
-        mOpenEffectBridge = (OpenEffectBridge) mainUpView1.getEffectBridge();
+        mEffectNoDrawBridge = new EffectNoDrawBridge();
+        mainUpView1.setEffectBridge(mEffectNoDrawBridge);
+        mEffectNoDrawBridge.setUpRectResource(R.drawable.white_light_10); // 设置移动边框图片.
+        RectF rectF = new RectF(getDimension(R.dimen.w_10), getDimension(R.dimen.h_10),
+                getDimension(R.dimen.w_10), getDimension(R.dimen.h_10));
+        mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
     }
 
     private void initAllTitleBar() {
@@ -84,7 +95,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         // 初始化滚动窗口适配.
         for (View view : viewList) {
             SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
-            shsv.setFadingEdge((int)getDimension(R.dimen.h_150));
+            shsv.setFadingEdge((int) getDimension(R.dimen.h_150));
         }
         //
         viewpager.setAdapter(new DemoPagerAdapter());
@@ -94,17 +105,17 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                 // 判断 : 避免焦点框跑到标题栏. (只是demo，你自己处理逻辑)
                 // 你也可以让标题栏放大，有移动边框.
-                if (newFocus != null && !(newFocus instanceof  TextViewWithTTF)) {
-                    mOpenEffectBridge.setVisibleWidget(false);
+                if (newFocus != null && !(newFocus instanceof TextViewWithTTF)) {
+                    mEffectNoDrawBridge.setVisibleWidget(false);
                     mNewFocus = newFocus;
                     mOldView = oldFocus;
                     mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
                     OPENLOG.D("addOnGlobalFocusChangeListener");
-                } else {
+                } else { // 标题栏处理.
                     mNewFocus = null;
                     mOldView = null;
                     mainUpView1.setUnFocusView(oldFocus);
-                    mOpenEffectBridge.setVisibleWidget(true);
+                    mEffectNoDrawBridge.setVisibleWidget(true);
                 }
             }
         });
@@ -128,14 +139,15 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
                     case ViewPager.SCROLL_STATE_IDLE: // viewpager 滚动结束.
                         mainUpView1.setFocusView(mNewFocus, mOldView, 1.2f);
                         // 监听动画事件.
-                        mOpenEffectBridge.setOnAnimatorListener(new OpenEffectBridge.NewAnimatorListener() {
+                        mEffectNoDrawBridge.setOnAnimatorListener(new OpenEffectBridge.NewAnimatorListener() {
                             @Override
                             public void onAnimationStart(OpenEffectBridge bridge, View view, Animator animation) {
                             }
+
                             @Override
                             public void onAnimationEnd(OpenEffectBridge bridge, View view, Animator animation) {
                                 // 动画结束的时候恢复原来的时间.
-                                mOpenEffectBridge.setTranDurAnimTime(OpenEffectBridge.DEFAULT_TRAN_DUR_ANIM);
+                                mEffectNoDrawBridge.setTranDurAnimTime(OpenEffectBridge.DEFAULT_TRAN_DUR_ANIM);
                             }
                         });
                         OPENLOG.D("SCROLL_STATE_IDLE");
@@ -144,8 +156,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
                         OPENLOG.D("SCROLL_STATE_DRAGGING");
                         break;
                     case ViewPager.SCROLL_STATE_SETTLING: // viewPager开始滚动.
-                        mOpenEffectBridge.clearAnimator(); // 清除之前的动画.
-                        mOpenEffectBridge.setTranDurAnimTime(0); // 避免边框从其它地方跑出来.
+                        mEffectNoDrawBridge.clearAnimator(); // 清除之前的动画.
+                        mEffectNoDrawBridge.setTranDurAnimTime(0); // 避免边框从其它地方跑出来.
                         OPENLOG.D("SCROLL_STATE_SETTLING");
                         break;
                 }
