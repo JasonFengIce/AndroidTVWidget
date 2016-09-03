@@ -90,10 +90,10 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         viewList.add(view2);
         viewList.add(view3);
         viewList.add(view4);
-        // 初始化滚动窗口适配.
+        // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
         for (View view : viewList) {
             SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
-            shsv.setFadingEdge((int) getDimension(R.dimen.h_150));
+            shsv.setFadingEdge((int) getDimension(R.dimen.w_200));
         }
         //
         viewpager.setAdapter(new DemoPagerAdapter());
