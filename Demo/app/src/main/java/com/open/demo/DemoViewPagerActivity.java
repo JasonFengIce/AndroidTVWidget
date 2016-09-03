@@ -88,19 +88,23 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         }
         //
         viewpager.setAdapter(new DemoPagerAdapter());
-        // 全局焦点监听.
+        // 全局焦点监听. (这里只是demo，为了方便这样写，你可以不这样写)
         viewpager.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                 // 判断 : 避免焦点框跑到标题栏. (只是demo，你自己处理逻辑)
                 // 你也可以让标题栏放大，有移动边框.
                 if (newFocus != null && !(newFocus instanceof  TextViewWithTTF)) {
+                    mOpenEffectBridge.setVisibleWidget(false);
                     mNewFocus = newFocus;
                     mOldView = oldFocus;
                     mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
                     OPENLOG.D("addOnGlobalFocusChangeListener");
                 } else {
+                    mNewFocus = null;
+                    mOldView = null;
                     mainUpView1.setUnFocusView(oldFocus);
+                    mOpenEffectBridge.setVisibleWidget(true);
                 }
             }
         });
