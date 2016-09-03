@@ -29,10 +29,8 @@ import java.util.List;
 
 /**
  * ViewPager demo：
- * 需要注意翻页的时候.(前一页，后一页焦点还在的问题)
- * 还有标题焦点问题.
- * 等等.
- *
+ * 注意标题栏和viewpager的焦点控制.(在XML布局中控制了, ids)
+ * 移动边框的问题也需要注意.
  * @author hailongqiu
  */
 public class DemoViewPagerActivity extends Activity implements OnTabSelectListener {
@@ -110,6 +108,8 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
                     mNewFocus = newFocus;
                     mOldView = oldFocus;
                     mainUpView1.setFocusView(newFocus, oldFocus, 1.2f);
+                    // 让被挡住的焦点控件在前面.
+                    newFocus.bringToFront();
                     OPENLOG.D("addOnGlobalFocusChangeListener");
                 } else { // 标题栏处理.
                     mNewFocus = null;
@@ -146,10 +146,13 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
 
                             @Override
                             public void onAnimationEnd(OpenEffectBridge bridge, View view, Animator animation) {
-                                // 动画结束的时候恢复原来的时间.
+                                // 动画结束的时候恢复原来的时间. (这里只是DEMO)
                                 mEffectNoDrawBridge.setTranDurAnimTime(OpenEffectBridge.DEFAULT_TRAN_DUR_ANIM);
                             }
                         });
+                        // 让被挡住的焦点控件在前面.
+                        if (mNewFocus != null)
+                            mNewFocus.bringToFront();
                         OPENLOG.D("SCROLL_STATE_IDLE");
                         break;
                     case ViewPager.SCROLL_STATE_DRAGGING:
