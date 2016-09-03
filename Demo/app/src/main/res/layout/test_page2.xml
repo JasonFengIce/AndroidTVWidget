@@ -4,10 +4,10 @@
     android:id="@+id/content11"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
-    android:paddingTop="80dp">
-	
+    android:background="@color/transparent">
+
     <com.open.androidtvwidget.view.SmoothHorizontalScrollView
+        android:id="@+id/test_hscroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"

@@ -9,6 +9,7 @@
     android:clipToPadding="false" >
 
     <com.open.androidtvwidget.view.SmoothHorizontalScrollView
+        android:id="@+id/test_hscroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
