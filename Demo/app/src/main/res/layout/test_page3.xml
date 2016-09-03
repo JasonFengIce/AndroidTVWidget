@@ -176,11 +176,4 @@
         </com.open.androidtvwidget.view.MainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 
-    <!-- 最顶层边框 -->
-
-    <com.open.androidtvwidget.view.MainUpView
-        android:id="@+id/mainUpView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </RelativeLayout>

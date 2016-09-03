@@ -16,6 +16,7 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
+        android:layout_marginTop="@dimen/h_100"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

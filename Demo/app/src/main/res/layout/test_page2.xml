@@ -7,28 +7,10 @@
     android:background="@color/transparent"
     android:paddingTop="80dp">
 	
-      <com.open.androidtvwidget.view.GridViewTV
-        android:id="@+id/gridView"
-        android:nextFocusUp="@+id/title_bar2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:padding="30dp"
-        android:paddingTop="80dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:columnWidth="200dp"
-        android:gravity="center_vertical"
-        android:horizontalSpacing="12dp"
-        android:numColumns="auto_fit"
-        android:scrollbars="none"
-        android:verticalSpacing="20dp" />
-      
     <com.open.androidtvwidget.view.SmoothHorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone"
         android:scrollbars="none" >
 
         <com.open.androidtvwidget.view.MainLayout
@@ -182,11 +164,5 @@
         </com.open.androidtvwidget.view.MainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 
-    <!-- 最顶层边框 -->
-
-    <com.open.androidtvwidget.view.MainUpView
-        android:id="@+id/mainUpView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </RelativeLayout>
