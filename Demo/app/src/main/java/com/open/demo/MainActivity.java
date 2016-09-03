@@ -18,6 +18,7 @@ import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.utils.Utils;
 import com.open.androidtvwidget.view.MainLayout;
 import com.open.androidtvwidget.view.MainUpView;
+import com.open.androidtvwidget.view.SmoothHorizontalScrollView;
 
 /**
  * DEMO测试.
@@ -38,6 +39,8 @@ public class MainActivity extends Activity implements OnClickListener {
         // WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.test_main);
+        SmoothHorizontalScrollView hscroll_view = (SmoothHorizontalScrollView) findViewById(R.id.hscroll_view);
+        hscroll_view.setFadingEdge((int)getDimension(R.dimen.w_100)); // 滚动窗口也需要适配.
         //
         test_top_iv = findViewById(R.id.test_top_iv);
         /* MainUpView 设置. */
