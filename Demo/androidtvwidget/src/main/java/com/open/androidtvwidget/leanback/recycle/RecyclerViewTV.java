@@ -4,18 +4,21 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 
+import com.open.androidtvwidget.leanback.recycle.impl.PrvInterface;
 import com.open.androidtvwidget.utils.OPENLOG;
 
 /**
  * RecyclerView TV适配版本.
  * https://github.com/zhousuqiang/TvRecyclerView(参考源码)
  */
-public class RecyclerViewTV extends RecyclerView {
+public class RecyclerViewTV extends RecyclerView implements PrvInterface {
 
     public RecyclerViewTV(Context context) {
         this(context, null);
@@ -101,7 +104,7 @@ public class RecyclerViewTV extends RecyclerView {
     @Override
     public void onChildAttachedToWindow(View child) {
         // 设置单击事件，修复.
-        if (!child.hasOnClickListeners()){
+        if (!child.hasOnClickListeners()) {
             child.setOnClickListener(mItemListener);
         }
         // 设置焦点事件，修复.
@@ -286,6 +289,7 @@ public class RecyclerViewTV extends RecyclerView {
      * @param offsetEnd
      */
     public void setSelectedItemOffset(int offsetStart, int offsetEnd) {
+        setSelectedItemAtCentered(false);
         this.mSelectedItemOffsetStart = offsetStart;
         this.mSelectedItemOffsetEnd = offsetEnd;
     }
@@ -409,5 +413,62 @@ public class RecyclerViewTV extends RecyclerView {
         }
         return params.getViewPosition();
     }
+
+    /////////////////// 按键加载更多 start start start //////////////////////////
+
+    private PagingableListener mPagingableListener;
+
+    public interface PagingableListener {
+        void onLoadMoreItems();
+    }
+
+    @Override
+    public void setOnLoadMoreComplete() {
+    }
+
+    @Override
+    public void setPagingableListener(PagingableListener pagingableListener) {
+        this.mPagingableListener = pagingableListener;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        int lastVisibleItem = findLastVisibleItemPosition(getLayoutManager());
+        return super.dispatchKeyEvent(event);
+    }
+
+    /**
+     * 最后的位置.
+     */
+    public int findLastVisibleItemPosition(RecyclerView.LayoutManager layoutManager) {
+        if (layoutManager != null) {
+            if (layoutManager instanceof LinearLayoutManager) {
+                return ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+            }
+            if (layoutManager instanceof GridLayoutManager) {
+                return ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
+    /**
+     * 滑动到底部.
+     */
+    public int findLastCompletelyVisibleItemPosition(RecyclerView.LayoutManager layoutManager) {
+        if (layoutManager != null) {
+            if (layoutManager instanceof LinearLayoutManager) {
+                return ((LinearLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();
+            }
+            if (layoutManager instanceof GridLayoutManager) {
+                return ((GridLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
+    /////////////////// 按键加载更多 end end end //////////////////////////
 
 }
