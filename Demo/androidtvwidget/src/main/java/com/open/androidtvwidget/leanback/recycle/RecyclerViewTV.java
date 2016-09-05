@@ -417,6 +417,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     /////////////////// 按键加载更多 start start start //////////////////////////
 
     private PagingableListener mPagingableListener;
+    private boolean isLoading = false;
 
     public interface PagingableListener {
         void onLoadMoreItems();
@@ -424,6 +425,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
 
     @Override
     public void setOnLoadMoreComplete() {
+        isLoading = false;
     }
 
     @Override
@@ -435,8 +437,46 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     public boolean dispatchKeyEvent(KeyEvent event) {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
-        int lastVisibleItem = findLastVisibleItemPosition(getLayoutManager());
+        if (action == KeyEvent.ACTION_UP) {
+            if (!isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                // 垂直布局向下按键.
+                exeuteKeyEvent();
+            } else if (isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                // 横向布局向右按键.
+                exeuteKeyEvent();
+            }
+        }
         return super.dispatchKeyEvent(event);
+    }
+
+    private void exeuteKeyEvent() {
+        int totalItemCount = getLayoutManager().getItemCount();
+        int lastVisibleItem = findLastVisibleItemPosition(getLayoutManager());
+        int lastComVisiPos = findLastCompletelyVisibleItemPosition(getLayoutManager());
+        if (!isLoading && (lastVisibleItem + 1) == totalItemCount) {
+            isLoading = true;
+            if (mPagingableListener != null)
+                mPagingableListener.onLoadMoreItems();
+            OPENLOG.D("lastVisibleItem:" + lastVisibleItem + " lastComVisiPos:" + lastComVisiPos);
+        }
+    }
+
+    /**
+     * 判断是否为横向布局
+     */
+    private boolean isHorizontalLayoutManger() {
+        LayoutManager lm = getLayoutManager();
+        if (lm != null) {
+            if (lm instanceof LinearLayoutManager) {
+                LinearLayoutManager llm = (LinearLayoutManager) lm;
+                return LinearLayoutManager.HORIZONTAL == llm.getOrientation();
+            }
+            if (lm instanceof GridLayoutManager) {
+                GridLayoutManager glm = (GridLayoutManager) lm;
+                return GridLayoutManager.HORIZONTAL == glm.getOrientation();
+            }
+        }
+        return false;
     }
 
     /**

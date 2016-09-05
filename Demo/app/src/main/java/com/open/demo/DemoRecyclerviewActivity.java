@@ -130,8 +130,23 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         layoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setFocusable(false);
-        GeneralAdapter generalAdapter = new GeneralAdapter(new RecyclerViewPresenter(100));
+        final RecyclerViewPresenter recyclerViewPresenter = new RecyclerViewPresenter(20);
+        GeneralAdapter generalAdapter = new GeneralAdapter(recyclerViewPresenter);
         mRecyclerView.setAdapter(generalAdapter);
+        mRecyclerView.setPagingableListener(new RecyclerViewTV.PagingableListener() {
+            @Override
+            public void onLoadMoreItems() {
+                // 加载更多测试.
+                final Handler handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        recyclerViewPresenter.addDatas(10);
+                        mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
+                    }
+                };
+                handler.sendEmptyMessageDelayed(10, 2000);
+            }
+        });
     }
 
     /**
@@ -240,7 +255,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     private void onRowSelected(RecyclerView parent, RecyclerView.ViewHolder viewHolder,
                                int position, int subposition) {
         if (mSelectedViewHolder != viewHolder) {
-            OPENLOG.D("pos:" + position + " vh:" + viewHolder);
+//            OPENLOG.D("pos:" + position + " vh:" + viewHolder);
             // 先清除 MselectedViewHolder 的一行选中颜色.
             if (mSelectedViewHolder != null) {
                 setRowViewSelected(mSelectedViewHolder, false);
@@ -296,7 +311,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt); // 标题头.
             List<Movie> movies = MOVIE_ITEMS;
-            if (i % 2 == 0)
+            if (i % 2 == 1)
                 movies = MOVIE_ITEMS2;
             listRow.addAll(movies); // 添加列的数据.
             listRow.setOpenPresenter(new TestMoviceListPresenter()); // 设置列的item样式.
