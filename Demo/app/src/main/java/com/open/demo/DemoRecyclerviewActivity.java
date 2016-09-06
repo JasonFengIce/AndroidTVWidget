@@ -22,13 +22,12 @@ import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
 import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
-import com.open.androidtvwidget.leanback.widget.ItemContainerView;
-import com.open.androidtvwidget.leanback.widget.ListContentView;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
+import com.open.demo.mode.LeanbackTestData;
 import com.open.demo.mode.Movie;
 import com.open.demo.mode.TestMoviceListPresenter;
 
@@ -147,6 +146,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 handler.sendEmptyMessageDelayed(10, 2000);
             }
         });
+        mRecyclerView.scrollToPosition(10);
     }
 
     /**
@@ -184,57 +184,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     ///////////////////////////////////////////////////////////////
     ////   Leanback 测试 Demo start ---->
     ///////////////////////////////////////////////////////////////
-
-    /**
-     * Leanback 标题头.
-     */
-    private static final String MOVIE_CATEGORY[] = {
-            "全部软件",
-            "聊天工具",
-            "浏览器",
-            "游戏娱乐",
-            "网络游戏",
-            "杀毒安全",
-    };
-
-    /**
-     * Leanback 横向 数据测试.
-     */
-    private static final List<Movie> MOVIE_ITEMS = new ArrayList<Movie>() {
-        {
-            add(new Movie(0, "天天2模拟器"));
-            add(new Movie(0, "陌陌222"));
-            add(new Movie(0, "爱奇艺222"));
-            add(new Movie(0, "英雄2联盟2"));
-            add(new Movie(0, "腾讯22视频"));
-            add(new Movie(0, "QQ22音乐"));
-            add(new Movie(0, "无敌22讯飞"));
-            add(new Movie(0, "360浏览器"));
-            add(new Movie(0, "美图秀秀"));
-            add(new Movie(0, "YY语音"));
-            add(new Movie(0, "迅雷"));
-            add(new Movie(0, "腾讯视频"));
-            add(new Movie(0, "酷狗阴影"));
-            add(new Movie(0, "优酷"));
-            add(new Movie(0, "篮球"));
-            add(new Movie(0, "足球"));
-        }
-    };
-    private static final List<Movie> MOVIE_ITEMS2 = new ArrayList<Movie>() {
-        {
-            add(new Movie(0, "天天模拟器AAA"));
-            add(new Movie(0, "陌陌AAA"));
-            add(new Movie(0, "爱奇艺222AAA"));
-            add(new Movie(0, "英雄2联盟2AA"));
-            add(new Movie(0, "腾讯视频AA"));
-            add(new Movie(0, "酷狗阴影AA"));
-            add(new Movie(0, "优酷AA"));
-            add(new Movie(0, "篮球AA"));
-            add(new Movie(0, "足球AAA1"));
-            add(new Movie(0, "足球AAA15"));
-            add(new Movie(0, "足球AAA16"));
-        }
-    };
 
     private final RecyclerViewTV.OnChildViewHolderSelectedListener mRowSelectedListener =
             new RecyclerViewTV.OnChildViewHolderSelectedListener() {
@@ -306,13 +255,13 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         // 添加测试数据。
-        for (int i = 0; i < MOVIE_CATEGORY.length; i++) {
-            String txt = MOVIE_CATEGORY[i];
+        for (int i = 0; i < LeanbackTestData.MOVIE_CATEGORY.length; i++) {
+            String txt = LeanbackTestData.MOVIE_CATEGORY[i];
             // 添加一行的数据.
             ListRow listRow = new ListRow(txt); // 标题头.
-            List<Movie> movies = MOVIE_ITEMS;
+            List<Movie> movies = LeanbackTestData.MOVIE_ITEMS;
             if (i % 2 == 1)
-                movies = MOVIE_ITEMS2;
+                movies = LeanbackTestData.MOVIE_ITEMS2;
             listRow.addAll(movies); // 添加列的数据.
             listRow.setOpenPresenter(new TestMoviceListPresenter()); // 设置列的item样式.
             // 添加一行的数据（标题头，列的数据)
@@ -335,54 +284,22 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         mRecyclerView.setAdapter(generalAdapter);
         // 行选中的事件.
         mRecyclerView.setOnChildViewHolderSelectedListener(mRowSelectedListener);
-        // 更新数据测试 并且重写请求焦点.(这里只是demo)
-        final Handler handler1 = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                // 我只是DEMO，不要每次都来按照我的写的，好么.
-                ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getChildAt(saveRowPos);
-                if (itemContainerView != null) {
-                    ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
-                    if (listContentView != null) {
-                        RecyclerViewTV columnRecyclerView = listContentView.getRecyclerViewTV();
-                        View view = columnRecyclerView.getChildAt(saveColumnPos);
-                        if (view != null)
-                            view.requestFocus();
-                    }
-                }
-            }
-        };
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                View view = mRecyclerView.getSelectView();
-                // 我这里DEMO比较多，不要照抄我的，谢谢.
-                if (view != null && view instanceof  ItemContainerView) {
-                    // 保存原来的焦点位置.
-                    ItemContainerView itemContainerView = (ItemContainerView) mRecyclerView.getSelectView();
-                    if (itemContainerView != null) {
-                        saveRowPos = mRecyclerView.getSelectPostion(); // 保存第几列的焦点.
-                        ListContentView listContentView = (ListContentView) itemContainerView.getChildAt(1);
-                        if (listContentView != null) {
-                            RecyclerViewTV recyclerViewTV = listContentView.getRecyclerViewTV();
-                            saveColumnPos = recyclerViewTV.getSelectPostion();
-                        }
-                    }
-                }
-                // 请求更新数据.
-                ListRow listRow = mListRows.get(0);
-                listRow.setHeaderItem("改变标题头数据");
-                mListRowPresenter.setItems(mListRows, 0);
-                // 更新数据，焦点会丢失，SB你会如何做
-                // 只有保存原来的焦点view的位置, 然后 延时请求焦点.
-                handler1.sendEmptyMessageDelayed(10, 500);
-            }
-        };
+        // 更新数据测试.
         handler.sendEmptyMessageDelayed(10, 6666);
     }
 
-    int saveColumnPos = -1;
-    int saveRowPos = -1;
+    // 更新数据测试.
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            View view = mRecyclerView.getSelectView();
+            // 请求更新数据.
+            ListRow listRow = mListRows.get(0);
+            listRow.setHeaderItem("改变标题头数据");
+            mListRowPresenter.setItems(mListRows, 0);
+            // 只有保存原来的焦点view的位置, 然后 延时请求焦点.
+        }
+    };
 
     ///////////////////////////////////////////////////////////////
     ////   Leanback 测试 Demo end ---->
@@ -396,7 +313,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     private void onViewItemClick(View v, int pos) {
         switch (pos) {
             case 0: // 横向 liner layout.
-                //
                 testRecyclerViewLinerLayout(LinearLayoutManager.HORIZONTAL);
                 break;
             case 1: // 纵向 liner layout.
