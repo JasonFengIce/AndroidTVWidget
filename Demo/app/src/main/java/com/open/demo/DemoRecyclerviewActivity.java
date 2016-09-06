@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.GridLayoutManager.SpanSizeLookup;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.open.androidtvwidget.leanback.recycle.LinearLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
-import com.open.demo.adapter.HeaderGridPresenter;
 import com.open.demo.adapter.LeftMenuPresenter;
 import com.open.demo.adapter.RecyclerViewPresenter;
 import com.open.demo.mode.LeanbackTestData;
@@ -158,26 +156,21 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         gridlayoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setFocusable(false);
-        GeneralAdapter generalAdapter = new GeneralAdapter(new RecyclerViewPresenter(100));
+        final RecyclerViewPresenter recyclerViewPresenter = new RecyclerViewPresenter(25);
+        GeneralAdapter generalAdapter = new GeneralAdapter(recyclerViewPresenter);
         mRecyclerView.setAdapter(generalAdapter);
-    }
-
-    /**
-     * 测试带标题栏的grid.
-     */
-    private void testHeaderGridLayout() {
-        final GridLayoutManagerTV gridlayoutManager = new GridLayoutManagerTV(this, 5); // 解决快速长按焦点丢失问题.
-        gridlayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        // recyclerView.setHasFixedSize(true); // 保持固定的大小
-        mRecyclerView.setLayoutManager(gridlayoutManager);
-        mRecyclerView.setFocusable(false);
-        final HeaderGridPresenter headerGridAdapter = new HeaderGridPresenter(100);
-        GeneralAdapter generalAdapter = new GeneralAdapter(headerGridAdapter);
-        mRecyclerView.setAdapter(generalAdapter);
-        gridlayoutManager.setSpanSizeLookup(new SpanSizeLookup() {
+        mRecyclerView.setPagingableListener(new RecyclerViewTV.PagingableListener() {
             @Override
-            public int getSpanSize(int position) {
-                return headerGridAdapter.isHeader(position) ? gridlayoutManager.getSpanCount() : 1;
+            public void onLoadMoreItems() {
+                // 加载更多测试.
+                final Handler handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        recyclerViewPresenter.addDatas(19);
+                        mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
+                    }
+                };
+                handler.sendEmptyMessageDelayed(10, 1888);
             }
         });
     }
@@ -325,10 +318,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             case 3: // 纵向 grid layout.
                 testRecyclerViewGridLayout(GridLayoutManager.VERTICAL);
                 break;
-            case 4: // 带header的grid.
-                testHeaderGridLayout();
-                break;
-            case 5: // Leanback demo.
+            case 4: // Leanback demo. (带标题头的demo).
                 testLeanbackDemo();
                 break;
             default:

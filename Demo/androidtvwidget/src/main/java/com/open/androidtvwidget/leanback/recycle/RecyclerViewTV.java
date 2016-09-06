@@ -453,15 +453,20 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
 
     private boolean exeuteKeyEvent() {
         int totalItemCount = getLayoutManager().getItemCount();
-        int lastVisibleItem = findLastVisibleItemPosition(getLayoutManager());
-        int lastComVisiPos = findLastCompletelyVisibleItemPosition(getLayoutManager());
-        if (!isLoading && (lastVisibleItem + 1) == totalItemCount) {
+        int lastVisibleItem = findLastVisibleItemPosition();
+        int lastComVisiPos = findLastCompletelyVisibleItemPosition();
+        int visibleItemCount = getChildCount();
+        int firstVisibleItem = findFirstVisibleItemPosition();
+        // 判断是否显示最底了.
+        if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem) {
             isLoading = true;
             if (mPagingableListener != null) {
+                OPENLOG.D(" totalItemCount: " + totalItemCount +
+                        " lastVisibleItem: " + lastVisibleItem +
+                        " lastComVisiPos: " + lastComVisiPos);
                 mPagingableListener.onLoadMoreItems();
                 return true;
             }
-            OPENLOG.D(this + "lastVisibleItem:" + lastVisibleItem + " lastComVisiPos:" + lastComVisiPos);
         }
         return false;
     }
@@ -487,7 +492,8 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     /**
      * 最后的位置.
      */
-    public int findLastVisibleItemPosition(RecyclerView.LayoutManager layoutManager) {
+    public int findLastVisibleItemPosition() {
+        RecyclerView.LayoutManager layoutManager = getLayoutManager();
         if (layoutManager != null) {
             if (layoutManager instanceof LinearLayoutManager) {
                 return ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
@@ -502,13 +508,27 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     /**
      * 滑动到底部.
      */
-    public int findLastCompletelyVisibleItemPosition(RecyclerView.LayoutManager layoutManager) {
+    public int findLastCompletelyVisibleItemPosition() {
+        LayoutManager layoutManager = getLayoutManager();
         if (layoutManager != null) {
             if (layoutManager instanceof LinearLayoutManager) {
                 return ((LinearLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();
             }
             if (layoutManager instanceof GridLayoutManager) {
                 return ((GridLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
+    public int findFirstVisibleItemPosition() {
+        LayoutManager lm = getLayoutManager();
+        if (lm != null) {
+            if (lm instanceof LinearLayoutManager) {
+                return ((LinearLayoutManager) lm).findFirstVisibleItemPosition();
+            }
+            if (lm instanceof GridLayoutManager) {
+                return ((GridLayoutManager) lm).findFirstVisibleItemPosition();
             }
         }
         return RecyclerView.NO_POSITION;

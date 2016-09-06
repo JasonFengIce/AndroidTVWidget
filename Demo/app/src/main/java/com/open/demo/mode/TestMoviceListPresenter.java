@@ -1,6 +1,8 @@
 package com.open.demo.mode;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,14 @@ import com.open.demo.R;
 public class TestMoviceListPresenter extends DefualtListPresenter {
 
     boolean mIsSelect;
+
+    /**
+     * 你可以重写这里，传入AutoGridViewLayoutManger.
+     */
+    @Override
+    public RecyclerView.LayoutManager getLayoutManger(Context context) {
+        return super.getLayoutManger(context);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
