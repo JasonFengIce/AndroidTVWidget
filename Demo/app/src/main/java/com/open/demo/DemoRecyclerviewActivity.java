@@ -129,24 +129,34 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         layoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setFocusable(false);
-        final RecyclerViewPresenter recyclerViewPresenter = new RecyclerViewPresenter(20);
-        GeneralAdapter generalAdapter = new GeneralAdapter(recyclerViewPresenter);
-        mRecyclerView.setAdapter(generalAdapter);
+        mRecyclerViewPresenter = new RecyclerViewPresenter(20);
+        mGeneralAdapter = new GeneralAdapter(mRecyclerViewPresenter);
+        mRecyclerView.setAdapter(mGeneralAdapter);
+        mRecyclerView.setSelectedItemOffset(111, 111); // 测试.
         mRecyclerView.setPagingableListener(new RecyclerViewTV.PagingableListener() {
             @Override
             public void onLoadMoreItems() {
                 // 加载更多测试.
-                final Handler handler = new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-                        recyclerViewPresenter.addDatas(10);
-                        mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
-                    }
-                };
-                handler.sendEmptyMessageDelayed(10, 2000);
+//                moreHandler.removeCallbacksAndMessages(null);
+                Message msg = moreHandler.obtainMessage();
+                msg.arg1 = 10;
+                moreHandler.sendMessageDelayed(msg, 3000);
             }
         });
     }
+
+    RecyclerViewPresenter mRecyclerViewPresenter;
+    GeneralAdapter mGeneralAdapter;
+    Handler moreHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            mRecyclerViewPresenter.addDatas(msg.arg1);
+            int updatePos = mRecyclerView.getSelectPostion();
+            mGeneralAdapter.notifyItemChanged(updatePos+1);
+            mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
+            OPENLOG.D("加载更多....");
+        }
+    };
 
     /**
      * 测试GridLayout.
@@ -156,21 +166,18 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         gridlayoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setFocusable(false);
-        final RecyclerViewPresenter recyclerViewPresenter = new RecyclerViewPresenter(25);
-        GeneralAdapter generalAdapter = new GeneralAdapter(recyclerViewPresenter);
-        mRecyclerView.setAdapter(generalAdapter);
+        mRecyclerView.setSelectedItemAtCentered(true); // 设置item在中间移动.
+        mRecyclerViewPresenter = new RecyclerViewPresenter(25);
+        mGeneralAdapter = new GeneralAdapter(mRecyclerViewPresenter);
+        mRecyclerView.setAdapter(mGeneralAdapter);
         mRecyclerView.setPagingableListener(new RecyclerViewTV.PagingableListener() {
             @Override
             public void onLoadMoreItems() {
                 // 加载更多测试.
-                final Handler handler = new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-                        recyclerViewPresenter.addDatas(19);
-                        mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
-                    }
-                };
-                handler.sendEmptyMessageDelayed(10, 1888);
+//                moreHandler.removeCallbacksAndMessages(null);
+                Message msg = moreHandler.obtainMessage();
+                msg.arg1 = 21;
+                moreHandler.sendMessageDelayed(msg, 3000);
             }
         });
     }
@@ -248,6 +255,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     private void testLeanbackDemo() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setSelectedItemAtCentered(true); // 设置item在中间移动.
         // 添加测试数据。
         for (int i = 0; i < LeanbackTestData.MOVIE_CATEGORY.length; i++) {
             String txt = LeanbackTestData.MOVIE_CATEGORY[i];
@@ -282,7 +290,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         handler.sendEmptyMessageDelayed(10, 6666);
     }
 
-    // 更新数据测试.
+    // 更新数据测试(更新某条数据).
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

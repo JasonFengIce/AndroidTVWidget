@@ -41,7 +41,7 @@ public class RecyclerViewPresenter extends OpenPresenter {
         for (int i = sum; i < sum + count; i++) {
             labels.add(String.valueOf(i));
         }
-        this.mAdapter.notifyDataSetChanged();
+//        this.mAdapter.notifyDataSetChanged();
     }
 
     @Override

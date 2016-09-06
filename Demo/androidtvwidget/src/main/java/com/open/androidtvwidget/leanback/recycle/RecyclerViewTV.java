@@ -288,7 +288,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
      * 与setSelectedItemAtCentered()方法二选一
      *
      * @param offsetStart
-     * @param offsetEnd
+     * @param offsetEnd 从结尾到你移动的位置.
      */
     public void setSelectedItemOffset(int offsetStart, int offsetEnd) {
         setSelectedItemAtCentered(false);
@@ -461,9 +461,9 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
         if (!isLoading && totalItemCount - visibleItemCount <= firstVisibleItem) {
             isLoading = true;
             if (mPagingableListener != null) {
-                OPENLOG.D(" totalItemCount: " + totalItemCount +
-                        " lastVisibleItem: " + lastVisibleItem +
-                        " lastComVisiPos: " + lastComVisiPos);
+//                OPENLOG.D(" totalItemCount: " + totalItemCount +
+//                        " lastVisibleItem: " + lastVisibleItem +
+//                        " lastComVisiPos: " + lastComVisiPos);
                 mPagingableListener.onLoadMoreItems();
                 return true;
             }
