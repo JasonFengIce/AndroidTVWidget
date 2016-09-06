@@ -20,7 +20,6 @@ public class DefualtListPresenter extends OpenPresenter {
     private static final float DEFUALT_SCALE = 1.2f;
 
     List<Object> mItems;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerViewTV.OnItemListener mOnItemListener;
     private RecyclerViewTV.OnItemClickListener mOnItemClickListener; // item 单击事件.
 
@@ -32,11 +31,9 @@ public class DefualtListPresenter extends OpenPresenter {
      * 返回自己的 LayoutMAnger.
      */
     public RecyclerView.LayoutManager getLayoutManger(Context context) {
-        if (mLayoutManager == null) {
-            mLayoutManager = new LinearLayoutManagerTV(context, LinearLayoutManager.HORIZONTAL, false);
-            ((LinearLayoutManagerTV) mLayoutManager).setAutoMeasureEnabled(true); // 自动适应布局.
-        }
-        return mLayoutManager;
+        LinearLayoutManagerTV layoutManager = new LinearLayoutManagerTV(context, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setAutoMeasureEnabled(true); // 自动适应布局.
+        return layoutManager;
     }
 
     public float getScaleX() {
@@ -45,10 +42,6 @@ public class DefualtListPresenter extends OpenPresenter {
 
     public float getScanleY() {
         return DEFUALT_SCALE;
-    }
-
-    public RecyclerView.LayoutManager getLayoutManger() {
-        return this.mLayoutManager;
     }
 
     public RecyclerViewTV.OnItemListener getOnItemListener() {

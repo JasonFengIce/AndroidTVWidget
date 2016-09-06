@@ -227,7 +227,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                     //
                     RecyclerViewTV recyclerViewTV = itemListViewHolder.getRecyclerViewTV();
                     int count = recyclerViewTV.getChildCount();
-                    for (int i = 0; i < count; i++) {
+                    for (int i = 0; i <= count; i++) {
                         View view = recyclerViewTV.getChildAt(i);
                         if (selected) {
                             view.setAlpha(0.5f);

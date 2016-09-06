@@ -23,16 +23,14 @@ public class ItemListPresenter extends OpenPresenter {
     public void onBindViewHolder(ViewHolder viewHolder, final Object item) {
         final ItemListViewHolder itemListViewHolder = (ItemListViewHolder) viewHolder;
         ListRow listRow = (ListRow) item;
-        if (itemListViewHolder.mDefualtListPresenter == null) {
-            DefualtListPresenter openPresenter = (DefualtListPresenter) listRow.getOpenPresenter();
-            itemListViewHolder.setDefualtListPresenter(openPresenter);
-        }
-        itemListViewHolder.mDefualtListPresenter.setItems(listRow.getItems());
-        GeneralAdapter generalAdapter = new GeneralAdapter(itemListViewHolder.mDefualtListPresenter);
-        itemListViewHolder.mRecyclerViewTV.setLayoutManager(itemListViewHolder.mDefualtListPresenter.getLayoutManger(viewHolder.view.getContext()));
+        DefualtListPresenter openPresenter = (DefualtListPresenter) listRow.getOpenPresenter();
+        itemListViewHolder.setDefualtListPresenter(openPresenter); // 保存一下，外面需要调用.
+        openPresenter.setItems(listRow.getItems());
+        itemListViewHolder.mRecyclerViewTV.setLayoutManager(openPresenter.getLayoutManger(viewHolder.view.getContext()));
+        GeneralAdapter generalAdapter = new GeneralAdapter(openPresenter);
         itemListViewHolder.mRecyclerViewTV.setAdapter(generalAdapter);
-        itemListViewHolder.mRecyclerViewTV.setOnItemListener(itemListViewHolder.mDefualtListPresenter.getOnItemListener());
-        itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(itemListViewHolder.mDefualtListPresenter.getOnItemClickListener());
+        itemListViewHolder.mRecyclerViewTV.setOnItemListener(openPresenter.getOnItemListener());
+        itemListViewHolder.mRecyclerViewTV.setOnItemClickListener(openPresenter.getOnItemClickListener());
     }
 
     public static class ItemListViewHolder extends OpenPresenter.ViewHolder {

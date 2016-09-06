@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 /**
+ * JSON网络加载布局DEMO.(高危DEMO，请勿模仿)
  * Created by hailongqiu on 2016/9/4.
  */
 public class BaseNetWorkActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Object> {
@@ -24,7 +25,6 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Object> loader, Object data) {
-
     }
 
     @Override
