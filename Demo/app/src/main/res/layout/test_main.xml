@@ -19,7 +19,7 @@
         android:fillViewport="true"
         android:scrollbars="none" >
 
-        <com.open.androidtvwidget.view.MainLayout
+        <com.open.androidtvwidget.view.FrameMainLayout
             android:id="@+id/main_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -266,7 +266,7 @@
                     android:text="RecyclerView测试"
                     android:textColor="#ffffff" />
             </com.open.androidtvwidget.view.ReflectItemView>
-        </com.open.androidtvwidget.view.MainLayout>
+        </com.open.androidtvwidget.view.FrameMainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 
     <!-- 最顶层边框 -->

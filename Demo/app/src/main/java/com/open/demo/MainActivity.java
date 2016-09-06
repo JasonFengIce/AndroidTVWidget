@@ -2,7 +2,6 @@ package com.open.demo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -16,7 +15,7 @@ import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.open.androidtvwidget.bridge.OpenEffectBridge;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.utils.Utils;
-import com.open.androidtvwidget.view.MainLayout;
+import com.open.androidtvwidget.view.FrameMainLayout;
 import com.open.androidtvwidget.view.MainUpView;
 import com.open.androidtvwidget.view.SmoothHorizontalScrollView;
 
@@ -66,7 +65,7 @@ public class MainActivity extends Activity implements OnClickListener {
         // mainUpView1.setDrawShadowPadding(0); // 阴影图片设置距离.
         // mOpenEffectBridge.setTranDurAnimTime(500); // 动画时间.
 
-        MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay);
+        FrameMainLayout main_lay11 = (FrameMainLayout) findViewById(R.id.main_lay);
         main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {

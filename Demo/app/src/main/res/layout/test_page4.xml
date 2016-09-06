@@ -15,7 +15,7 @@
         android:fillViewport="true"
         android:scrollbars="none" >
 
-        <com.open.androidtvwidget.view.MainLayout
+        <com.open.androidtvwidget.view.FrameMainLayout
             android:id="@+id/main_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -162,7 +162,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/mainview_cloudlist" />
             </com.open.androidtvwidget.view.ReflectItemView>
-        </com.open.androidtvwidget.view.MainLayout>
+        </com.open.androidtvwidget.view.FrameMainLayout>
     </com.open.androidtvwidget.view.SmoothHorizontalScrollView>
 
 </RelativeLayout>
