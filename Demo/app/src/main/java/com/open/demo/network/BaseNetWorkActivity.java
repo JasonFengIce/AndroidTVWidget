@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.widget.FrameLayout;
 
+import com.open.androidtvwidget.view.MainUpView;
 import com.open.demo.R;
 
 /**
@@ -16,6 +17,7 @@ import com.open.demo.R;
 public class BaseNetWorkActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Object> {
 
     FrameLayout mFrameLayout;
+    MainUpView mMainUpView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
 
     private void initAllViews() {
         mFrameLayout = (FrameLayout) findViewById(R.id.main_lay);
+        mMainUpView = (MainUpView) findViewById(R.id.mainup_view);
     }
 
     @Override
