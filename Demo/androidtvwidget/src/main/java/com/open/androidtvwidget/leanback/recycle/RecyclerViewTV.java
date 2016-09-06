@@ -9,10 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.open.androidtvwidget.leanback.recycle.impl.PrvInterface;
 import com.open.androidtvwidget.utils.OPENLOG;
+
+import java.util.ArrayList;
 
 /**
  * RecyclerView TV适配版本.
@@ -440,25 +443,28 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
         if (action == KeyEvent.ACTION_UP) {
             if (!isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
                 // 垂直布局向下按键.
-                exeuteKeyEvent();
+                return exeuteKeyEvent();
             } else if (isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 // 横向布局向右按键.
-                exeuteKeyEvent();
+                return exeuteKeyEvent();
             }
         }
         return super.dispatchKeyEvent(event);
     }
 
-    private void exeuteKeyEvent() {
+    private boolean exeuteKeyEvent() {
         int totalItemCount = getLayoutManager().getItemCount();
         int lastVisibleItem = findLastVisibleItemPosition(getLayoutManager());
         int lastComVisiPos = findLastCompletelyVisibleItemPosition(getLayoutManager());
         if (!isLoading && (lastVisibleItem + 1) == totalItemCount) {
             isLoading = true;
-            if (mPagingableListener != null)
+            if (mPagingableListener != null) {
                 mPagingableListener.onLoadMoreItems();
+                return true;
+            }
             OPENLOG.D("lastVisibleItem:" + lastVisibleItem + " lastComVisiPos:" + lastComVisiPos);
         }
+        return false;
     }
 
     /**
@@ -510,5 +516,29 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     }
 
     /////////////////// 按键加载更多 end end end //////////////////////////
+
+    /////////////////// 按键拖动 Item start start start ///////////////////////
+
+    private final ArrayList<OnItemKeyListener> mOnItemKeyListeners =
+            new ArrayList<OnItemKeyListener>();
+
+    public static interface OnItemKeyListener {
+        public boolean dispatchKeyEvent(KeyEvent event);
+    }
+
+    public void addOnItemKeyListener(OnItemKeyListener listener) {
+        mOnItemKeyListeners.add(listener);
+    }
+
+    public void removeOnItemKeyListener(OnItemKeyListener listener) {
+        mOnItemKeyListeners.remove(listener);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+        return super.onInterceptTouchEvent(e);
+    }
+
+    ////////////////// 按键拖动 Item end end end /////////////////////////
 
 }
