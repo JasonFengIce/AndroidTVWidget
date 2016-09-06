@@ -146,7 +146,6 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 handler.sendEmptyMessageDelayed(10, 2000);
             }
         });
-        mRecyclerView.scrollToPosition(10);
     }
 
     /**
