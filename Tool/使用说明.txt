@@ -39,9 +39,7 @@ padding 尽量使用 left_padding right_padd... 等等来使用.
 
 【资源文件分辨率问题】
 如果.9图片无法适配，请注意
-120dpi drawable-ldpi
-160dpi drawable-mdpi
-240dpi drawable-hdpi
-320dpi drawable-xhdpi
-具体看这里:http://www.androidtvdev.com/forum.php?mod=viewthread&tid=307&extra=
+请看目录的图片，还是不太明白
+具体看这里:http://www.cocoachina.com/android/20151030/13971.html
+还有这里:http://www.androidtvdev.com/forum.php?mod=viewthread&tid=307&extra=
 
