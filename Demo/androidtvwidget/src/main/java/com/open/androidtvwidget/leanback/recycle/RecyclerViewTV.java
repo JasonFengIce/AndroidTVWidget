@@ -130,12 +130,11 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
 
     @Override
     public boolean isInTouchMode() {
-        boolean result = super.isInTouchMode();
         // 解决4.4版本抢焦点的问题
         if (Build.VERSION.SDK_INT == 19) {
-            return !(hasFocus() && !result);
+            return !(hasFocus() && !super.isInTouchMode());
         } else {
-            return result;
+            return super.isInTouchMode();
         }
     }
 
@@ -443,10 +442,10 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
         if (action == KeyEvent.ACTION_UP) {
             if (!isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
                 // 垂直布局向下按键.
-                return exeuteKeyEvent();
+                exeuteKeyEvent();
             } else if (isHorizontalLayoutManger() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
                 // 横向布局向右按键.
-                return exeuteKeyEvent();
+                exeuteKeyEvent();
             }
         }
         return super.dispatchKeyEvent(event);
@@ -462,7 +461,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
                 mPagingableListener.onLoadMoreItems();
                 return true;
             }
-            OPENLOG.D("lastVisibleItem:" + lastVisibleItem + " lastComVisiPos:" + lastComVisiPos);
+            OPENLOG.D(this + "lastVisibleItem:" + lastVisibleItem + " lastComVisiPos:" + lastComVisiPos);
         }
         return false;
     }

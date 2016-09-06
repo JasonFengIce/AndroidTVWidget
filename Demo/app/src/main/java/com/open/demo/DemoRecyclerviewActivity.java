@@ -21,6 +21,7 @@ import com.open.androidtvwidget.leanback.mode.ListRow;
 import com.open.androidtvwidget.leanback.mode.ListRowPresenter;
 import com.open.androidtvwidget.leanback.mode.OpenPresenter;
 import com.open.androidtvwidget.leanback.recycle.GridLayoutManagerTV;
+import com.open.androidtvwidget.leanback.recycle.LinearLayoutManagerTV;
 import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
@@ -69,7 +70,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         initLeftMenu();
         //  初始化带标题头的demo.
 //        testHeaderGridLayout();
-        testLeanbackDemo();
+//        testLeanbackDemo();
+        testRecyclerViewLinerLayout(RecyclerView.HORIZONTAL);
         //
         mRecyclerView.setOnItemListener(this);
         // item 单击事件处理.
@@ -125,7 +127,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
      * 测试LinerLayout.
      */
     private void testRecyclerViewLinerLayout(int orientation) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManagerTV layoutManager = new LinearLayoutManagerTV(this);
         layoutManager.setOrientation(orientation);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setFocusable(false);
