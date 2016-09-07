@@ -132,7 +132,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         mRecyclerViewPresenter = new RecyclerViewPresenter(20);
         mGeneralAdapter = new GeneralAdapter(mRecyclerViewPresenter);
         mRecyclerView.setAdapter(mGeneralAdapter);
-        mRecyclerView.setSelectedItemOffset(111, 111); // 测试.
+        mRecyclerView.setSelectedItemOffset(111, 111); // 测试移动间距.
         mRecyclerView.setPagingableListener(new RecyclerViewTV.PagingableListener() {
             @Override
             public void onLoadMoreItems() {
