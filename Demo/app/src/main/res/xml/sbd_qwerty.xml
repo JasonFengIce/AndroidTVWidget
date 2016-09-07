@@ -53,13 +53,13 @@
         <key
             key_code="@string/keycode_center"
             key_icon="@drawable/g_search_icon"
-            key_height="@dimen/px210"
-            key_text_size="@dimen/px30" />
+            key_height="@dimen/h_210"
+            key_text_size="@dimen/h_30" />
     </row>
 
     <!-- 第三行 -->
     <row
-        key_bottom_padding="@dimen/px30">
+        key_bottom_padding="@dimen/h_30">
         <keys
             codes="54|52|31|50"
             labels="Z|X|C|V"
@@ -68,7 +68,7 @@
         <key
             key_code="@string/keycode_space"
             key_icon="@drawable/kongge"
-            key_width="@dimen/px210" />
+            key_width="@dimen/w_210" />
 
         <keys
             codes="30|42|41"

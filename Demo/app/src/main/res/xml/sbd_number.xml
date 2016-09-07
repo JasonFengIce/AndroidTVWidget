@@ -61,7 +61,7 @@
     </row>
 
     <!-- 第三行 -->
-    <row key_bottom_padding="@dimen/px30" >
+    <row key_bottom_padding="@dimen/h_30" >
         <key
             key_code="110"
             key_label="翻页"
@@ -69,13 +69,13 @@
         
         <key
             key_label=".com"
-            key_text_size="@dimen/px30" />
+            key_text_size="@dimen/w_30" />
         <key
             key_label=".CN"
             key_text_size="@dimen/w_30" />
         <key
             key_label="www."
-            key_text_size="@dimen/px30" />
+            key_text_size="@dimen/w_30" />
         <key key_label="/" />
         <!-- 空格 -->
         <key
