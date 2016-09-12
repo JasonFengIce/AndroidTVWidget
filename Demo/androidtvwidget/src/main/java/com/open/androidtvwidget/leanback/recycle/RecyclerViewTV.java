@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.open.androidtvwidget.leanback.adapter.GeneralAdapter;
 import com.open.androidtvwidget.leanback.recycle.impl.PrvInterface;
 import com.open.androidtvwidget.utils.OPENLOG;
 
@@ -559,5 +560,15 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     }
 
     ////////////////// 按键拖动 Item end end end /////////////////////////
+
+    /**
+     * 设置默认选中.
+     */
+    public void setDefaultSelect(int pos) {
+        GeneralAdapter.ViewHolder vh = (GeneralAdapter.ViewHolder) findViewHolderForAdapterPosition(pos);
+        requestFocusFromTouch();
+        if (vh != null)
+            vh.itemView.requestFocus();
+    }
 
 }

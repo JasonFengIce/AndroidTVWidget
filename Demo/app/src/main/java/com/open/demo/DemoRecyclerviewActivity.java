@@ -143,7 +143,17 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 moreHandler.sendMessageDelayed(msg, 3000);
             }
         });
+        mFocusHandler.sendEmptyMessageDelayed(10, 1000);
     }
+
+    private int mSavePos = 2;
+
+    Handler mFocusHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            mRecyclerView.setDefaultSelect(mSavePos);
+        }
+    };
 
     RecyclerViewPresenter mRecyclerViewPresenter;
     GeneralAdapter mGeneralAdapter;
@@ -151,9 +161,10 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         @Override
         public void handleMessage(Message msg) {
             mRecyclerViewPresenter.addDatas(msg.arg1);
-            int updatePos = mRecyclerView.getSelectPostion();
-            mGeneralAdapter.notifyItemChanged(updatePos+1);
+            mSavePos = mRecyclerView.getSelectPostion();
+            mGeneralAdapter.notifyDataSetChanged();
             mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
+            mFocusHandler.sendEmptyMessageDelayed(10, 10); // 延时请求焦点.
             OPENLOG.D("加载更多....");
         }
     };

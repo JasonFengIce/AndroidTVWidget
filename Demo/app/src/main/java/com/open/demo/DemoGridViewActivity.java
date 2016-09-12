@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.open.androidtvwidget.bridge.EffectNoDrawBridge;
+import com.open.androidtvwidget.view.GridViewTV;
 import com.open.androidtvwidget.view.MainUpView;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class DemoGridViewActivity extends Activity {
     private List<String> data;
     private MainUpView mainUpView1;
     private View mOldView;
-    private GridView gridView;
+    private GridViewTV gridView;
     private GridViewAdapter mAdapter;
     private int mSavePos = -1;
     private int mCount = 50;
@@ -63,7 +64,7 @@ public class DemoGridViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_grid_view);
 
-        gridView = (GridView) findViewById(R.id.gridView);
+        gridView = (GridViewTV) findViewById(R.id.gridView);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
         // 建议使用 NoDraw.
         mainUpView1.setEffectBridge(new EffectNoDrawBridge());
@@ -114,8 +115,7 @@ public class DemoGridViewActivity extends Activity {
     Handler mFirstHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            gridView.requestFocusFromTouch();
-            gridView.setSelection(10);
+            gridView.setDefualtSelect(2);
         }
     };
 
