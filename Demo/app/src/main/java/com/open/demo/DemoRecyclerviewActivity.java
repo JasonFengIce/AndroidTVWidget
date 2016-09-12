@@ -47,6 +47,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     private MainUpView mainUpView1;
     private RecyclerViewBridge mRecyclerViewBridge;
     private View oldView;
+    private View load_more_pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         setContentView(R.layout.demo_recyclerview_activity);
         OPENLOG.initTag("hailongqiu", true); // 打开debug信息.
         mContext = DemoRecyclerviewActivity.this;
+        load_more_pb = findViewById(R.id.load_more_pb);
         left_menu_rv = (RecyclerViewTV) findViewById(R.id.left_menu_rv);
         mRecyclerView = (RecyclerViewTV) findViewById(R.id.recyclerView);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
@@ -141,6 +143,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
                 Message msg = moreHandler.obtainMessage();
                 msg.arg1 = 10;
                 moreHandler.sendMessageDelayed(msg, 3000);
+                load_more_pb.setVisibility(View.VISIBLE);
             }
         });
         mFocusHandler.sendEmptyMessageDelayed(10, 1000);
@@ -167,6 +170,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
             mFocusHandler.sendEmptyMessageDelayed(10, 10); // 延时请求焦点.
             OPENLOG.D("加载更多....");
+            load_more_pb.setVisibility(View.GONE);
         }
     };
 
