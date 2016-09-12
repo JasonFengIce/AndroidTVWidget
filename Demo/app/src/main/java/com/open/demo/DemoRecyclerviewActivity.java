@@ -157,12 +157,12 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
 
     RecyclerViewPresenter mRecyclerViewPresenter;
     GeneralAdapter mGeneralAdapter;
+
     Handler moreHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             mRecyclerViewPresenter.addDatas(msg.arg1);
             mSavePos = mRecyclerView.getSelectPostion();
-            mGeneralAdapter.notifyDataSetChanged();
             mRecyclerView.setOnLoadMoreComplete(); // 加载更多完毕.
             mFocusHandler.sendEmptyMessageDelayed(10, 10); // 延时请求焦点.
             OPENLOG.D("加载更多....");
