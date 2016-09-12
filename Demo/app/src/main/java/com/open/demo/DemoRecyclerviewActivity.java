@@ -151,7 +151,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
     Handler mFocusHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            mRecyclerView.setDefaultSelect(mSavePos);
+            if (!isListRowPresenter())
+                mRecyclerView.setDefaultSelect(mSavePos);
         }
     };
 
