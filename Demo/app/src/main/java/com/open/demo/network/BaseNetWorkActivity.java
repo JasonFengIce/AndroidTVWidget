@@ -85,6 +85,9 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
         root_lay.setBackgroundResource(upRes);
         //
         initAllViews();
+        OPENLOG.D("getDimension:" + getResources().getDimension(R.dimen.w_10));
+        OPENLOG.D("getDimensionPixelSize:" + getResources().getDimensionPixelSize(R.dimen.w_10));
+        OPENLOG.D("getDimensionPixelOffset:" + getResources().getDimensionPixelOffset(R.dimen.w_10));
     }
 
     private void initAllViews() {

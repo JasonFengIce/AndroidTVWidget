@@ -13,7 +13,7 @@ public class IdentifierUtuils {
             if (!name.startsWith("w_"))
                 name = "w_" + name;
             int id = getIdentifierDimen(context, name);
-            return context.getResources().getDimension(id);
+            return context.getResources().getDimensionPixelSize(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class IdentifierUtuils {
             if (!name.startsWith("h_"))
                 name = "h_" + name;
             int id = getIdentifierDimen(context, name);
-            return context.getResources().getDimension(id);
+            return context.getResources().getDimensionPixelSize(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
