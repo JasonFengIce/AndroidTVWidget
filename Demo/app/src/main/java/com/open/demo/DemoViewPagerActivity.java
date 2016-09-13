@@ -61,12 +61,13 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
     }
 
     private void initMoveBridge() {
+        float density = getResources().getDisplayMetrics().density;
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
         mEffectNoDrawBridge = new EffectNoDrawBridge();
         mainUpView1.setEffectBridge(mEffectNoDrawBridge);
         mEffectNoDrawBridge.setUpRectResource(R.drawable.white_light_10); // 设置移动边框图片.
-        RectF rectF = new RectF(getDimension(R.dimen.w_10), getDimension(R.dimen.h_10),
-                getDimension(R.dimen.w_10), getDimension(R.dimen.h_10));
+        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
+                getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
         mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
     }
 
@@ -92,8 +93,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         viewList.add(view4);
         // 初始化滚动窗口适配. (请注意哈，在不同的dpi下, 滚动相差的间距不一样哈)
         for (View view : viewList) {
+            float density = getResources().getDisplayMetrics().density;
             SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
-            shsv.setFadingEdge((int) getDimension(R.dimen.w_200));
+            shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
         }
         //
         viewpager.setAdapter(new DemoPagerAdapter());

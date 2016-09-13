@@ -183,8 +183,9 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void switchNoDrawBridgeVersion() {
-        RectF rectf = new RectF(getDimension(R.dimen.w_10), getDimension(R.dimen.h_10),
-                getDimension(R.dimen.w_9), getDimension(R.dimen.h_9));
+        float density = getResources().getDisplayMetrics().density;
+        RectF rectf = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
+                getDimension(R.dimen.w_9) * density, getDimension(R.dimen.h_9) * density);
         EffectNoDrawBridge effectNoDrawBridge = new EffectNoDrawBridge();
         effectNoDrawBridge.setTranDurAnimTime(200);
 //        effectNoDrawBridge.setDrawUpRectPadding(rectf);

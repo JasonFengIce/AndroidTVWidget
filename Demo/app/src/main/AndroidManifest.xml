@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <!-- 测试的主Activity-->
         <activity
-            android:name=".network.BaseNetWorkActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

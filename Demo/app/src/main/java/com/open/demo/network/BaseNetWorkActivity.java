@@ -85,12 +85,10 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
         root_lay.setBackgroundResource(upRes);
         //
         initAllViews();
-        OPENLOG.D("getDimension:" + getResources().getDimension(R.dimen.w_10));
-        OPENLOG.D("getDimensionPixelSize:" + getResources().getDimensionPixelSize(R.dimen.w_10));
-        OPENLOG.D("getDimensionPixelOffset:" + getResources().getDimensionPixelOffset(R.dimen.w_10));
     }
 
     private void initAllViews() {
+        float density = getResources().getDisplayMetrics().density;
         mFrameLayout = (FrameLayout) findViewById(R.id.main_lay);
         mMainUpView = (MainUpView) findViewById(R.id.mainup_view);
         //
@@ -110,8 +108,8 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
         float rightPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectRightPadding());
         float topPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectTopPadding());
         float bottomPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectBottomPadding());
-
-        RectF rectf = new RectF(leftPadding, topPadding, rightPadding, bottomPadding);
+        // 为何要乘以 density，
+        RectF rectf = new RectF(leftPadding*density, topPadding*density, rightPadding*density, bottomPadding*density);
         openEffectBridge.setDrawUpRectPadding(rectf); // 间距.
 
         mScaleX = upRectItem.getScaleX();
