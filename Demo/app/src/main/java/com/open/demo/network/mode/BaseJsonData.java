@@ -1,7 +1,5 @@
 package com.open.demo.network.mode;
 
-import android.graphics.RectF;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +48,13 @@ public class BaseJsonData {
         boolean isFocus; // 是否有焦点移动边框.
         boolean isMouse;
         boolean isReflect; // 倒影.
-        float radius; // 圆角角度.
+        String radius; // 圆角角度.
 
-        public float getRadius() {
+        public String getRadius() {
             return radius;
         }
 
-        public void setRadius(float radius) {
+        public void setRadius(String radius) {
             this.radius = radius;
         }
 

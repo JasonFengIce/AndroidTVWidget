@@ -54,6 +54,7 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
             item.setText("item" + i);
             item.setFocus(true);
             item.setMouse(true);
+            item.setRadius("10");
             x += width + 20;
             items.add(item);
         }
@@ -79,19 +80,17 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
         setContentView(R.layout.demo_json_load_activity);
         mContext = getApplicationContext();
         getSupportLoaderManager().initLoader(0, null, this);
-        //
+        // 设置背景
         View root_lay = findViewById(R.id.root_lay);
         int upRes = IdentifierUtuils.getIdentifierDrawable(mContext, mBaseJsonData.getBgRes());
         root_lay.setBackgroundResource(upRes);
         //
         initAllViews();
+        initJsonLoadViews();
     }
 
-    private void initAllViews() {
+    private void initJsonLoadViews() {
         float density = getResources().getDisplayMetrics().density;
-        mFrameLayout = (FrameLayout) findViewById(R.id.main_lay);
-        mMainUpView = (MainUpView) findViewById(R.id.mainup_view);
-        //
         BaseJsonData.UpRectItem upRectItem = mBaseJsonData.getUpRectItem();
         OpenEffectBridge openEffectBridge = new OpenEffectBridge();
         if (upRectItem.getType() == 0) {
@@ -100,40 +99,38 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
         } else {
             mMainUpView.setEffectBridge(openEffectBridge);
         }
+        /*  设置边框图片 */
         int upRes = IdentifierUtuils.getIdentifierDrawable(mContext, upRectItem.getUpRes());
         openEffectBridge.setUpRectResource(upRes);
+        /* 设置边框移动时间 */
         openEffectBridge.setTranDurAnimTime(upRectItem.getTranAnimTime());
-
+        /* 设置边框间距 */
         float leftPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectLeftPadding());
         float rightPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectRightPadding());
         float topPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectTopPadding());
         float bottomPadding = IdentifierUtuils.getIdentifierWidthDimen(mContext, upRectItem.getRectBottomPadding());
-        // 为何要乘以 density，
-        RectF rectf = new RectF(leftPadding*density, topPadding*density, rightPadding*density, bottomPadding*density);
+        RectF rectf = new RectF(leftPadding * density, topPadding * density, rightPadding * density, bottomPadding * density);
         openEffectBridge.setDrawUpRectPadding(rectf); // 间距.
-
+        /* 获取放大Scale */
         mScaleX = upRectItem.getScaleX();
         mScaleY = upRectItem.getScaleY();
-        //
+        /* item view 处理 */
         List<BaseJsonData.Item> items = mBaseJsonData.getItems();
-
         for (BaseJsonData.Item item : items) {
 
             int x = (int) IdentifierUtuils.getIdentifierWidthDimen(mContext, item.getX());
             int y = (int) IdentifierUtuils.getIdentifierHeightDimen(mContext, item.getY());
-
             int width = (int) IdentifierUtuils.getIdentifierWidthDimen(mContext, item.getWidth());
             int height = (int) IdentifierUtuils.getIdentifierHeightDimen(mContext, item.getHeight());
+            float radius = IdentifierUtuils.getIdentifierWidthDimen(mContext, item.getRadius());
 
             JsonItemView child = new JsonItemView(mContext);
-            child.setBackgroundResource(R.drawable.mainview_cloudlist);
+            child.setBackgroundResource(R.drawable.cd_bg_1);
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, height);
-
             lp.leftMargin = x;
             lp.topMargin = y;
-
             mFrameLayout.addView(child, lp);
-
+            /* 焦点 */
             if (item.isFocus()) {
                 child.setFocusable(true);
                 child.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -145,22 +142,31 @@ public class BaseNetWorkActivity extends FragmentActivity implements LoaderManag
                         mOldView = v;
                     }
                 });
-                child.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        OPENLOG.D("v id: " + v.getId());
-                    }
-                });
             }
+            /* 单击事件 */
+            child.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OPENLOG.D("v id: " + v.getId());
+                }
+            });
             /* 鼠标 */
             if (item.isMouse()) {
                 child.setClickable(true);
                 child.setFocusableInTouchMode(true);
             }
+            /* 文本 */
             child.setText(item.getText());
+            /*  背景图片 */
+            /* 圆角 */
             child.setDrawShape(true);
-            child.setRadius(10);
+            child.setRadius(radius);
         }
+    }
+
+    private void initAllViews() {
+        mFrameLayout = (FrameLayout) findViewById(R.id.main_lay);
+        mMainUpView = (MainUpView) findViewById(R.id.mainup_view);
     }
 
     @Override
