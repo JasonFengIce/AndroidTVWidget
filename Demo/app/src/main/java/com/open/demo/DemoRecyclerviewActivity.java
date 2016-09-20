@@ -302,7 +302,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         GeneralAdapter generalAdapter = new GeneralAdapter(mListRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
         // 行选中的事件.
-        mRecyclerView.setOnChildViewHolderSelectedListener(mRowSelectedListener);
+//        mRecyclerView.setOnChildViewHolderSelectedListener(mRowSelectedListener);
         // 更新数据测试.
         handler.sendEmptyMessageDelayed(10, 6666);
     }
