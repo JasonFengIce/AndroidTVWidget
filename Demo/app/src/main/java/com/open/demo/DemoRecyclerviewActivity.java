@@ -71,8 +71,8 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         initLeftMenu();
         //  初始化带标题头的demo.
 //        testHeaderGridLayout();
-//        testLeanbackDemo();
-        testRecyclerViewLinerLayout(RecyclerView.HORIZONTAL);
+        testLeanbackDemo();
+//        testRecyclerViewLinerLayout(RecyclerView.HORIZONTAL);
         //
         mRecyclerView.setOnItemListener(this);
         // item 单击事件处理.
@@ -299,6 +299,7 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
         mListRowPresenter = new ListRowPresenter(mListRows,
                 new ItemHeaderPresenter(),
                 new ItemListPresenter());
+        mListRowPresenter.setDefaultPos(0, 2); // 设置默认选中.
         GeneralAdapter generalAdapter = new GeneralAdapter(mListRowPresenter);
         mRecyclerView.setAdapter(generalAdapter);
         // 行选中的事件.
@@ -315,8 +316,9 @@ public class DemoRecyclerviewActivity extends Activity implements RecyclerViewTV
             // 请求更新数据.
             ListRow listRow = mListRows.get(0);
             listRow.setHeaderItem("改变标题头数据");
+            mListRowPresenter.setDefaultPos(0, 5); // 随便设置默认，也可以用于还原位置.
             mListRowPresenter.setItems(mListRows, 0);
-            // 只有保存原来的焦点view的位置, 然后 延时请求焦点.
+            mRecyclerView.getAdapter().notifyDataSetChanged();
         }
     };
 

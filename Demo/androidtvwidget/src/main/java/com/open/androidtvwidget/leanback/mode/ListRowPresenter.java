@@ -20,6 +20,20 @@ public class ListRowPresenter extends OpenPresenter {
     List<ListRow> mItems;
     GeneralAdapter mAdapter;
 
+    private int mColumn;
+    private int mRow;
+    private int mTime = 188;
+
+    public void setDefaultPos(int row, int column) {
+        setDelayDefaultPos(row, column, 188);
+    }
+
+    public void setDelayDefaultPos(int row, int column, int time) {
+        this.mRow = row;
+        this.mColumn = column;
+        this.mTime = time;
+    }
+
     /**
      * 你可以设置自己的 头 presenter, 还有横向 presenter.
      *
@@ -104,6 +118,12 @@ public class ListRowPresenter extends OpenPresenter {
         }
 
         if (listRowViewHolder.mListViewHolder != null) {
+            if (mRow == position) {
+                ItemListPresenter.ItemListViewHolder itemListViewHolder =  (ItemListPresenter.ItemListViewHolder) listRowViewHolder.mListViewHolder;
+                itemListViewHolder.getRecyclerViewTV().setDelayDefaultSelect(mColumn, this.mTime);
+                mColumn = -1;
+                mRow = -1;
+            }
             mItemListPresenter.onBindViewHolder(listRowViewHolder.mListViewHolder, listRow);
         }
 

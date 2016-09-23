@@ -576,7 +576,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
     /**
      * 延时选中默认.
      */
-    public void setHandlerDefaultSelect(int pos, int time) {
+    public void setDelayDefaultSelect(int pos, int time) {
         Message msg = mHandler.obtainMessage();
         msg.arg1 = pos;
         mHandler.sendMessageDelayed(msg, time);
