@@ -3,6 +3,8 @@ package com.open.androidtvwidget.leanback.recycle;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -289,7 +291,7 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
      * 与setSelectedItemAtCentered()方法二选一
      *
      * @param offsetStart
-     * @param offsetEnd 从结尾到你移动的位置.
+     * @param offsetEnd   从结尾到你移动的位置.
      */
     public void setSelectedItemOffset(int offsetStart, int offsetEnd) {
         setSelectedItemAtCentered(false);
@@ -570,5 +572,22 @@ public class RecyclerViewTV extends RecyclerView implements PrvInterface {
         if (vh != null)
             vh.itemView.requestFocus();
     }
+
+    /**
+     * 延时选中默认.
+     */
+    public void setHandlerDefaultSelect(int pos, int time) {
+        Message msg = mHandler.obtainMessage();
+        msg.arg1 = pos;
+        mHandler.sendMessageDelayed(msg, time);
+    }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int pos = msg.arg1;
+            setDefaultSelect(pos);
+        }
+    };
 
 }
