@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 这里只是测试的demo -->
-<com.open.androidtvwidget.leanback.widget.OpenCardView
+<com.open.demo.mode.OpenCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/white"
     android:clipChildren="false"
@@ -19,4 +19,4 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</com.open.androidtvwidget.leanback.widget.OpenCardView>
+</com.open.demo.mode.OpenCardView>

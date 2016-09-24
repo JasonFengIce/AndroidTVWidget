@@ -1,4 +1,4 @@
-package com.open.androidtvwidget.leanback.widget;
+package com.open.demo.mode;
 
 import android.content.Context;
 import android.graphics.Canvas;

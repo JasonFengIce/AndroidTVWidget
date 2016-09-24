@@ -3,17 +3,12 @@ package com.open.demo.mode;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.open.androidtvwidget.leanback.mode.DefualtListPresenter;
-import com.open.androidtvwidget.leanback.recycle.RecyclerViewTV;
-import com.open.androidtvwidget.leanback.widget.ItemContainerView;
-import com.open.androidtvwidget.leanback.widget.ListContentView;
-import com.open.androidtvwidget.leanback.widget.OpenCardView;
 import com.open.demo.R;
 
 /**
