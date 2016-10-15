@@ -66,9 +66,9 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         mEffectNoDrawBridge = new EffectNoDrawBridge();
         mainUpView1.setEffectBridge(mEffectNoDrawBridge);
         mEffectNoDrawBridge.setUpRectResource(R.drawable.white_light_10); // 设置移动边框图片.
-//        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
-//                getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
-//        mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
+        RectF rectF = new RectF(getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density,
+                getDimension(R.dimen.w_10) * density, getDimension(R.dimen.h_10) * density);
+        mEffectNoDrawBridge.setDrawUpRectPadding(rectF);
     }
 
     private void initAllTitleBar() {
@@ -95,7 +95,7 @@ public class DemoViewPagerActivity extends Activity implements OnTabSelectListen
         for (View view : viewList) {
             float density = getResources().getDisplayMetrics().density;
             SmoothHorizontalScrollView shsv = (SmoothHorizontalScrollView) view.findViewById(R.id.test_hscroll);
-//            shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
+            shsv.setFadingEdge((int) (getDimension(R.dimen.w_200) * density));
         }
         //
         viewpager.setAdapter(new DemoPagerAdapter());
