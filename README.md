@@ -2,8 +2,8 @@
 
 官方论坛：http://www.androidtvdev.com/ 
 
-QQ群：522186932 (收费 10元，作为网站维护费用)
-QQv2.0群: 468357191 (免费)
+QQ群：522186932 ()
+QQv2.0群: 468357191 ()
 
 ![运行DEMO](https://git.oschina.net/hailongqiu/AndroidTVWidget/raw/master/doc/demo.gif?dir=0&filepath=doc%2Fdemo.gif&oid=f30160b097d319e464d106b39c6b5414acc9fdac&sha=9de6aa98d14c3c80d88f4dfb93a5064ba2614a81 "在这里输入图片标题")
 
@@ -75,9 +75,6 @@ API文档：
  欢迎进入 TV开发，希望大家不断的分享代码，一起进步，谢谢. （hailongqiu 356752238@qq.com）
 
 欢迎加入QQ群，一起学习，一起进步，这里有很多TV方面的高手噢。
-
-1群收费10元 作为网站维护成本
-2群免费.
   
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0223/094451_e49419a7_111902.png "在这里输入图片标题")
  
