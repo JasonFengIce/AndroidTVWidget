@@ -1,12 +1,55 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def projectName = "ismartv_androidtvwidget"
+def versionTag = rootProject.ext.moduleVersion
+def groupId = "com.open.androidtvwidget"
+def siteUrl = 'git@github.com:JasonFengIce/videocache.git'
+def gitUrl = 'git@github.com:JasonFengIce/videocache.gitt'
+
+
+version = versionTag
+group = groupId
+
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'aar'
+        }
+    }
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = projectName
+        desc = 'Ismartv Downloader'
+        websiteUrl = siteUrl
+        issueTrackerUrl = 'https://github.com/bintray/bintray-examples/issues'
+        vcsUrl = gitUrl
+        licenses = ['Apache-2.0']
+        labels = ['aar', 'android']
+        publicDownloadNumbers = true
+    }
+}
+
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
     }
