@@ -568,6 +568,13 @@ public class SoftKeyboardView extends View {
         public boolean onKeyBoardAnim(final SoftKeyboardView softKeyboardView, final SoftKey oldSoftkey, final SoftKey targetSoftKey);
     }
 
+    /**
+     *  设置动画回调.
+     */
+    public void setOnKeyBoardAnimListener(OnKeyBoardAnimListener listener) {
+        this.mOnKeyBoardAnimListener = listener;
+    }
+
     private OnKeyBoardAnimListener mOnKeyBoardAnimListener;
     private static final int DEFAULT_MOVE_DURATION = 300;
     private boolean mIsMoveRect = false;

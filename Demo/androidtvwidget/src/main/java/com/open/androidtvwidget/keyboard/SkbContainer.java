@@ -264,6 +264,11 @@ public class SkbContainer extends RelativeLayout implements SoftKeyBoardable {
 		mSoftKeyboardView.setKeyScale(scale);
 	}
 
+	@Override
+	public void setOnKeyBoardAnimListener(SoftKeyboardView.OnKeyBoardAnimListener listener) {
+		mSoftKeyboardView.setOnKeyBoardAnimListener(listener);
+	}
+
 	/**
 	 * 根据 上，下，左，右 来绘制按键位置.
 	 */

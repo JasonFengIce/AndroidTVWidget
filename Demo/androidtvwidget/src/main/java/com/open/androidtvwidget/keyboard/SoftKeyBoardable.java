@@ -76,4 +76,6 @@ public interface SoftKeyBoardable {
 	 *  设置按键缩放.
      */
 	public void setKeyScale(float scale);
+	public void setOnKeyBoardAnimListener(SoftKeyboardView.OnKeyBoardAnimListener listener);
+
 }
