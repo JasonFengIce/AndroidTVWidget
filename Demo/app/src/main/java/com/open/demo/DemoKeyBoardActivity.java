@@ -118,6 +118,7 @@ public class DemoKeyBoardActivity extends Activity {
 			public void onClick(View v) {
 				setSkbContainerOther();
 				skbContainer.setSkbLayout(R.xml.sbd_number);
+				skbContainer.setKeyScale(1.1f); // 设置按键放大.
 			}
 		});
 		// 全键盘切换测试.
@@ -126,6 +127,7 @@ public class DemoKeyBoardActivity extends Activity {
 			public void onClick(View v) {
 				setSkbContainerOther();
 				skbContainer.setSkbLayout(R.xml.skb_all_key);
+				skbContainer.setKeyScale(1.0f); // 设置按键放大.
 			}
 		});
 		findViewById(R.id.t9_key_btn).setOnClickListener(new OnClickListener() {
