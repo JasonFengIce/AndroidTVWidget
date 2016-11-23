@@ -1,8 +1,12 @@
 package com.open.demo;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.open.androidtvwidget.utils.OPENLOG;
@@ -13,14 +17,22 @@ import com.open.androidtvwidget.view.SmoothVorizontalScrollView;
  */
 public class DemoViewflipperActivity extends Activity {
 
+    View view1;
+    View view2;
+    View view3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewflipper_demo);
-        SmoothVorizontalScrollView vf = (SmoothVorizontalScrollView) findViewById(R.id.vscrollview);
+        final SmoothVorizontalScrollView vf = (SmoothVorizontalScrollView) findViewById(R.id.vscrollview);
         vf.setFadingEdge(200);
         OPENLOG.initTag("hailongqiu", true);
         //
+        view1 = findViewById(R.id.content11);
+        view2 = findViewById(R.id.content12);
+        view3 = findViewById(R.id.content13);
+
         final MainUpView mainUpView = (MainUpView) findViewById(R.id.mainUpView1);
         mainUpView.setUpRectResource(R.drawable.test_rectangle);
         vf.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
@@ -29,6 +41,29 @@ public class DemoViewflipperActivity extends Activity {
                 mainUpView.setFocusView(newFocus, oldFocus, 1.0f);
             }
         });
+        // 翻页.
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                int[] location = new int[2];
+                view3.getLocationOnScreen(location);
+                Rect rect = findLocationWithView(view2);
+                int scrollY = vf.getScrollY();
+                int offset =  rect.top + scrollY;
+                if (offset < 0) {
+                    offset = 0;
+                }
+                vf.smoothScrollTo(0, offset);
+            }
+        };
+        handler.sendEmptyMessageDelayed(-250, 100);
+    }
+
+    public Rect findLocationWithView(View view) {
+        ViewGroup root = (ViewGroup) view.getParent();
+        Rect rect = new Rect();
+        root.offsetDescendantRectToMyCoords(view, rect);
+        return rect;
     }
 
 }
