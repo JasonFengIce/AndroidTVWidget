@@ -24,6 +24,16 @@
         </LinearLayout>
     </com.open.androidtvwidget.view.SmoothVorizontalScrollView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/switch1_btn"
+            android:text="第二页"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <com.open.androidtvwidget.view.MainUpView
         android:id="@+id/mainUpView1"
         android:layout_width="wrap_content"

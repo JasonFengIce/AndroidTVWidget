@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 
 import com.open.androidtvwidget.utils.OPENLOG;
 import com.open.androidtvwidget.view.MainUpView;
@@ -21,14 +22,19 @@ public class DemoViewflipperActivity extends Activity {
     View view2;
     View view3;
 
+    Button switch1_btn;
+    SmoothVorizontalScrollView vf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewflipper_demo);
-        final SmoothVorizontalScrollView vf = (SmoothVorizontalScrollView) findViewById(R.id.vscrollview);
+        vf = (SmoothVorizontalScrollView) findViewById(R.id.vscrollview);
         vf.setFadingEdge(200);
         OPENLOG.initTag("hailongqiu", true);
         //
+        switch1_btn = (Button) findViewById(R.id.switch1_btn);
+
         view1 = findViewById(R.id.content11);
         view2 = findViewById(R.id.content12);
         view3 = findViewById(R.id.content13);
@@ -42,25 +48,27 @@ public class DemoViewflipperActivity extends Activity {
             }
         });
         // 翻页.
-        Handler handler = new Handler() {
+        switch1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void handleMessage(Message msg) {
-                int[] location = new int[2];
-                view3.getLocationOnScreen(location);
-                Rect rect = findLocationWithView(view2);
-                int scrollY = vf.getScrollY();
-                int offset =  rect.top + scrollY;
-                if (offset < 0) {
-                    offset = 0;
+            public void onClick(View v) {
+                ViewGroup viewGroup = (ViewGroup) vf.getChildAt(0);
+                View view = viewGroup.getChildAt(1);
+                OPENLOG.D("view:" + view);
+                if (view != null) {
+                    Rect rect = findLocationWithView(view);
+                    int scrollY = vf.getScrollY();
+                    int offset = rect.top + scrollY;
+                    if (offset < 0) {
+                        offset = 0;
+                    }
+                    vf.scrollTo(0, offset);
                 }
-                vf.smoothScrollTo(0, offset);
             }
-        };
-        handler.sendEmptyMessageDelayed(-250, 100);
+        });
     }
 
     public Rect findLocationWithView(View view) {
-        ViewGroup root = (ViewGroup) view.getParent();
+        ViewGroup root = (ViewGroup) vf.getParent();
         Rect rect = new Rect();
         root.offsetDescendantRectToMyCoords(view, rect);
         return rect;
