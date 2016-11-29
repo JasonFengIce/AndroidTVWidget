@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.open.androidtvwidget.view.SmoothVorizontalScrollView
+    <com.open.demo.NewViewPager
         android:id="@+id/vscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +22,7 @@
 
             <include layout="@layout/test_page3" />
         </LinearLayout>
-    </com.open.androidtvwidget.view.SmoothVorizontalScrollView>
+    </com.open.demo.NewViewPager>
 
     <LinearLayout
         android:layout_width="match_parent"
