@@ -71,4 +71,11 @@ public interface SoftKeyBoardable {
 	 */
 	public boolean onSoftKeyDown(int keyCode, KeyEvent event);
 	public boolean onSoftKeyUp(int keyCode, KeyEvent event);
+
+	/**
+	 *  设置按键缩放.
+     */
+	public void setKeyScale(float scale);
+	public void setOnKeyBoardAnimListener(SoftKeyboardView.OnKeyBoardAnimListener listener);
+
 }
