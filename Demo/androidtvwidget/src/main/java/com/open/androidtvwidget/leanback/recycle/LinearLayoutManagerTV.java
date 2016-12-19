@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
  * Created by hailongqiu on 2016/8/25.
  */
 public class LinearLayoutManagerTV extends LinearLayoutManager {
+    private static final String TAG = "LinearLayoutManagerTV";
 
     private int[] mMeasuredDimension = new int[2];
     private boolean mIsAutoMeaure = false;
@@ -122,7 +124,22 @@ public class LinearLayoutManagerTV extends LinearLayoutManager {
     @Override
     public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler, RecyclerView.State state) {
         View nextFocus = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
+        Log.d(TAG, "onFocusSearchFailed: " + nextFocus);
+        if (focusSearchFailedListener!=null){
+            return focusSearchFailedListener.onFocusSearchFailed();
+        }
         return null;
     }
 
+    public interface FocusSearchFailedListener{
+        View onFocusSearchFailed();
+    }
+
+
+    private  FocusSearchFailedListener focusSearchFailedListener;
+
+
+    public void setFocusSearchFailedListener(FocusSearchFailedListener focusSearchFailedListener) {
+        this.focusSearchFailedListener = focusSearchFailedListener;
+    }
 }
