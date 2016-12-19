@@ -126,13 +126,13 @@ public class LinearLayoutManagerTV extends LinearLayoutManager {
         View nextFocus = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
         Log.d(TAG, "onFocusSearchFailed: " + nextFocus);
         if (focusSearchFailedListener!=null){
-            return focusSearchFailedListener.onFocusSearchFailed();
+            return focusSearchFailedListener.onFocusSearchFailed(focused, focusDirection, recycler, state);
         }
         return null;
     }
 
     public interface FocusSearchFailedListener{
-        View onFocusSearchFailed();
+        View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler, RecyclerView.State state);
     }
 
 
